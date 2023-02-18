@@ -1,28 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Workout Tracker</title>
 </head>
-<body>
-    <div class="form-container">
-        <form action="submit">
-            <label for="workout-input">Workout date:</label>
-            <input type="date" name="workout-date" id="workout-input">
-            <label for="exercise-input">Exercise:</label>
-            <input type="text" name="exercise-name" id="exercise-input">
-            <label for="weight-input">Weight used:</label>
-            <input type="text" name="weight-used" id="weight-input">
-            <label for="reps-input">Repetions:</label>
-            <input type="number" name="reps-performed" id="reps-input">
-            <label for="superset-input">Superset?</label>
-            <input type="checkbox" name="superset" id="superset-input">
-        </form>
-    </div>
-    <div class="workout-container">
 
-    </div>
+<body>
+    <section id="main-section">
+        <div class="form-container">
+            <form action="submit">
+                <div class="input-container">
+                    <label for="workout-input">Workout date:</label>
+                    <input type="date" name="workout-date" id="workout-input">
+                </div>
+                <div class="input-container">
+                    <label for="exercise-input">Exercise:</label>
+                    <input type="text" name="exercise-name" id="exercise-input">
+                </div>
+                <div class="input-container">
+                    <label for="weight-input">Weight used:</label>
+                    <input type="text" name="weight-used" id="weight-input">
+                </div>
+                <div class="input-container">
+                    <label for="reps-input">Repetions:</label>
+                    <input type="number" name="reps-performed" id="reps-input">
+                </div>
+                <div class="input-container">
+                    <label for="superset-input">Superset?</label>
+                    <input type="checkbox" name="superset" id="superset-input">
+                </div>
+
+
+
+
+            </form>
+        </div>
+        <div class="workout-container">
+
+        </div>
+    </section>
 </body>
+
 </html>
