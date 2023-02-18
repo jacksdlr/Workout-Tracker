@@ -8,7 +8,7 @@ supersetCheckbox.addEventListener("change", () => {
 
         const supersetExerciseLabel = document.createElement("label")
         supersetExerciseLabel.setAttribute("for", "superset-exercise-input")
-        supersetExerciseLabel.insertAdjacentText("afterbegin", "Exercise:")
+        supersetExerciseLabel.insertAdjacentText("afterbegin", "Exercise: ")
 
         const supersetExerciseInput = document.createElement("input")
         supersetExerciseInput.setAttribute("type", "text")
@@ -26,7 +26,7 @@ supersetCheckbox.addEventListener("change", () => {
 
         const supersetWeightLabel = document.createElement("label")
         supersetWeightLabel.setAttribute("for", "superset-weight-input")
-        supersetWeightLabel.insertAdjacentText("afterbegin", "Weight used:")
+        supersetWeightLabel.insertAdjacentText("afterbegin", "Weight used: ")
 
         const supersetWeightInput = document.createElement("input")
         supersetWeightInput.setAttribute("type", "text")
@@ -44,7 +44,7 @@ supersetCheckbox.addEventListener("change", () => {
 
         const supersetRepsLabel = document.createElement("label")
         supersetRepsLabel.setAttribute("for", "superset-reps-input")
-        supersetRepsLabel.insertAdjacentText("afterbegin", "Repetitions:")
+        supersetRepsLabel.insertAdjacentText("afterbegin", "Repetitions: ")
 
         const supersetRepsInput = document.createElement("input")
         supersetRepsInput.setAttribute("type", "number")

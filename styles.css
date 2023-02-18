@@ -1,9 +1,10 @@
 #main-section {
   display: flex;
 }
-#main-section .form-container {
+#main-section .form {
   display: flex;
   flex-direction: column;
+  gap: 10px;
   border: 1px solid black;
 }
 
