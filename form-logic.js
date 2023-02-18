@@ -4,7 +4,7 @@ supersetCheckbox.addEventListener("change", () => {
     if (supersetCheckbox.checked) {
         // superset exercise input
         const supersetExercise = document.createElement("div")
-        supersetExercise.classList.add("superset-input-container")
+        supersetExercise.classList.add("superset-input-container", "input-container")
 
         const supersetExerciseLabel = document.createElement("label")
         supersetExerciseLabel.setAttribute("for", "superset-exercise-input")
@@ -22,7 +22,7 @@ supersetCheckbox.addEventListener("change", () => {
         
         // superset weight input
         const supersetWeight = document.createElement("div")
-        supersetWeight.classList.add("superset-input-container")
+        supersetWeight.classList.add("superset-input-container", "input-container")
 
         const supersetWeightLabel = document.createElement("label")
         supersetWeightLabel.setAttribute("for", "superset-weight-input")
@@ -40,7 +40,7 @@ supersetCheckbox.addEventListener("change", () => {
 
         // superset reps input
         const supersetReps = document.createElement("div")
-        supersetReps.classList.add("superset-input-container")
+        supersetReps.classList.add("superset-input-container", "input-container")
 
         const supersetRepsLabel = document.createElement("label")
         supersetRepsLabel.setAttribute("for", "superset-reps-input")
@@ -56,12 +56,8 @@ supersetCheckbox.addEventListener("change", () => {
 
         form.appendChild(supersetReps)
         
-        
-        
-        
-        
     } else {
-        const lastSuperset = document.querySelectorAll(".superset-input-container")
+        const lastSuperset = document.querySelectorAll(".superset-input-container", "input-container")
         lastSuperset.forEach((superset) => {
             superset.remove()
         })
