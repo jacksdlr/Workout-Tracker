@@ -1,0 +1,25 @@
+{
+    "name": "Workout-Tracker",
+    "version": "0.0.0",
+    "description": "Workout tracker allowing for exercises/sets to be added and stored per user",
+    "author": "Jack Sadler <jacksdlr@gmail.com>",
+    "keywords": [
+        "workout",
+        "exercise",
+        "tracker",
+        "node",
+        "mongoDB"
+    ],
+    "homepage": "https://jacksdlr.github.io/Workout-Tracker",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jacksdlr/Workout-Tracker"
+    },
+    "license": "",
+    "dependencies": {
+        "body-parser": "^1.20.1",
+        "mongoose": "^6.9.2",
+        "express": "^4.18.2",
+        "dotenv": "^16.0.3"
+    }
+}
