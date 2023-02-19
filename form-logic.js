@@ -29,12 +29,27 @@ supersetCheckbox.addEventListener("change", () => {
         supersetWeightLabel.insertAdjacentText("afterbegin", "Weight used: ")
 
         const supersetWeightInput = document.createElement("input")
-        supersetWeightInput.setAttribute("type", "text")
+        supersetWeightInput.setAttribute("type", "number")
         supersetWeightInput.setAttribute("name", "superset-weight-used")
         supersetWeightInput.setAttribute("id", "superset-weight-input")
+        supersetWeightInput.setAttribute("min", "0")
+
+        const supersetWeightUnit = document.createElement("select")
+        supersetWeightUnit.setAttribute("name", "superset-weight-unit")
+        
+        const supersetWeightUnitKg = document.createElement("option")
+        supersetWeightUnitKg.setAttribute("value", "kg")
+        supersetWeightUnitKg.insertAdjacentText("afterbegin", "kg")
+        const supersetWeightUnitLbs = document.createElement("option")
+        supersetWeightUnitLbs.setAttribute("value", "lbs")
+        supersetWeightUnitLbs.insertAdjacentText("afterbegin", "lbs")
+
+        supersetWeightUnit.appendChild(supersetWeightUnitKg)
+        supersetWeightUnit.appendChild(supersetWeightUnitLbs)
 
         supersetWeight.appendChild(supersetWeightLabel)
         supersetWeight.appendChild(supersetWeightInput)
+        supersetWeight.appendChild(supersetWeightUnit)
 
         form.appendChild(supersetWeight)
 
@@ -50,6 +65,7 @@ supersetCheckbox.addEventListener("change", () => {
         supersetRepsInput.setAttribute("type", "number")
         supersetRepsInput.setAttribute("name", "superset-reps-performed")
         supersetRepsInput.setAttribute("id", "superset-reps-input")
+        supersetRepsInput.setAttribute("min", "0")
 
         supersetReps.appendChild(supersetRepsLabel)
         supersetReps.appendChild(supersetRepsInput)
