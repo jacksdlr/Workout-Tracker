@@ -1,5 +1,5 @@
 {
-    "name": "Workout-Tracker",
+    "name": "workout-tracker",
     "version": "0.0.0",
     "description": "Workout tracker allowing for exercises/sets to be added and stored per user",
     "author": "Jack Sadler <jacksdlr@gmail.com>",
