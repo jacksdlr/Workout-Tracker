@@ -33,6 +33,7 @@ supersetCheckbox.addEventListener("change", () => {
         supersetWeightInput.setAttribute("name", "superset-weight-used")
         supersetWeightInput.setAttribute("id", "superset-weight-input")
         supersetWeightInput.setAttribute("min", "0")
+        supersetWeightInput.setAttribute("step", "0.01")
 
         const supersetWeightUnit = document.createElement("select")
         supersetWeightUnit.setAttribute("name", "superset-weight-unit")
