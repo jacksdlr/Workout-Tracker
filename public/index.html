@@ -13,7 +13,7 @@
 <body>
     <section id="main-section">
         <div class="form-container">
-            <form action="/api/workouts/create" method="POST" class="form" id="exercise-form">
+            <form method="POST" class="form" id="exercise-form">
                 <div class="input-container">
                     <label for="workout-input">Workout date:</label>
                     <input type="date" name="workout-date" id="workout-input" required="true">
@@ -39,7 +39,7 @@
                     <input type="checkbox" name="superset" id="superset-input">
                 </div>
                 <textarea name="comment" id="comment-input" placeholder="Additional comments (e.g. technique, rest time, reps in reserve)"></textarea>
-                <button type="submit">Submit</button>
+                <button type="submit" id="submit-button">Submit</button>
             </form>
         </div>
         <div class="workout-container">

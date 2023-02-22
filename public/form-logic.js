@@ -1,3 +1,12 @@
+const username = "jack" // require this from log in auth/form whatever
+
+const submitButton = document.getElementById("submit-button")
+submitButton.addEventListener("click", () => {
+    const workout = document.getElementById("workout-input").value
+    document.getElementById("exercise-form").action= `/api/${username}/${workout}`
+})
+
+
 const supersetCheckDiv = document.querySelector("#superset-check")
 const supersetCheckbox = document.querySelector("#superset-input")
 supersetCheckbox.addEventListener("change", () => {

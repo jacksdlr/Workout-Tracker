@@ -39,13 +39,13 @@ module.exports = (app) => {
     const Workout = mongoose.model("Workout", workoutSchema)
     const User = mongoose.model("User", userSchema)
 
-    app.route("/api/exercises/:workout")
+    app.route("/api/:user/:workout")
         .get((req, res) => {
             res.send(`success. workout = ${req.params.workout}`)
         })
 
         .post((req, res) => {
-            console.log(req.body)
+            res.send(req.params)
         })
 
     app.route("/api/workouts/create")
