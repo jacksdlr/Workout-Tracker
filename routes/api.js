@@ -40,4 +40,9 @@ module.exports = (app) => {
         .post((req, res) => {
             console.log(req.body)
         })
+
+    app.route("/api/workouts/create")
+        .post((req, res) => {
+            res.send(req.body)
+        })
 }
