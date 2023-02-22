@@ -28,9 +28,16 @@ module.exports = (app) => {
         exercises: [exerciseSchema]
     }, {versionKey: false})
 
+    const userSchema = new Schema({
+        username: String,
+        password: String,
+        workouts: [workoutSchema]
+    }, {versionKey: false})
+
     const Set = mongoose.model("Set", setSchema)
     const Exercise = mongoose.model("Exercise", exerciseSchema)
     const Workout = mongoose.model("Workout", workoutSchema)
+    const User = mongoose.model("User", userSchema)
 
     app.route("/api/exercises/:workout")
         .get((req, res) => {
