@@ -1,22 +1,31 @@
 {
-  "name": "workout-tracker",
-  "version": "1.0.0",
-  "description": "Workout tracker allowing for exercises/sets to be added and stored per user",
-  "author": "Jack Sadler <jacksdlr@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jacksdlr/Workout-Tracker"
-  },
-  "private": true,
-  "scripts": {
-    "start": "node ./bin/www"
-  },
-  "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
-  }
+    "name": "workout-tracker",
+    "version": "1.0.0",
+    "description": "Workout tracker allowing for exercises/sets to be added and stored per user",
+    "author": "Jack Sadler <jacksdlr@gmail.com>",
+    "keywords": [
+        "workout",
+        "exercise",
+        "tracker",
+        "node",
+        "mongoDB"
+    ],
+    "main": "app.js",
+    "scripts": {
+        "start": "nodemon app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jacksdlr/Workout-Tracker"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.20.1",
+        "mongoose": "^6.9.2",
+        "express": "^4.18.2",
+        "dotenv": "^16.0.3"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    }
 }
