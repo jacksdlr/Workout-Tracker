@@ -4,12 +4,16 @@ block content
     h1 Login Form 
         p= loginError
         form(action="/login" method="POST")
-            input(type="text" name="username")
-            input(type="password" name="password")
+            label(for="login-username") Username
+            input(type="text" name="username" id="login-username")
+            label(for="login-password") Password
+            input(type="password" name="password" id="login-password")
             button(type="submit") Login
     h1 Signup Form 
         p= SignupError
         form(action="/signup" method="POST")
-            input(type="text" name="username")
-            input(type="password" name="password")
+            label(for="signup-username") Username
+            input(type="text" name="username" id="signup-username")
+            label(for="signup-password") Password
+            input(type="password" name="password" id="signup-password")
             button(type="submit") Signup

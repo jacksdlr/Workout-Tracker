@@ -1,6 +1,7 @@
 extends layout.pug
 
 block content
+    script(src='/public/form-logic.js' defer='')
     section#main-section
         .form-container
             form#exercise-form.form(action=username method='POST')
