@@ -1,9 +1,17 @@
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config()
+}
+
 const express = require("express")
 const pug = require("pug")
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt")
+const passport = require("passport")
+const flash = require("express-flash")
+const session = require("express-session")
 
-require("dotenv").config();
+const initializePassport = require("./passport-config")
+initializePassport(passport, username)
 
 const mongoose = require("mongoose")
 mongoose.set('strictQuery', true)
@@ -20,6 +28,14 @@ app.use(express.urlencoded({extended: false}))
 app.use("/", bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use("/public", express.static(process.cwd()+ "/public"))
+app.use(flash())
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Routes
 app.route("/")
