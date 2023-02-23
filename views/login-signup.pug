@@ -1,0 +1,15 @@
+extends layout
+
+block content 
+    h1 Login Form 
+        p= loginError
+        form(action="/login" method="POST")
+            input(type="text" name="username")
+            input(type="password" name="password")
+            button(type="submit") Login
+    h1 Signup Form 
+        p= SignupError
+        form(action="/signup" method="POST")
+            input(type="text" name="username")
+            input(type="password" name="password")
+            button(type="submit") Signup

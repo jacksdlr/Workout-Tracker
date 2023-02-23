@@ -27,10 +27,10 @@ app.route("/").get((req, res) => {
 })
 
 app.get("/login", (req, res) => {
-    res.render("login")
+    res.render("login-signup")
 })
-app.get("/register", (req, res) => {
-    res.render("register")
+app.get("/signup", (req, res) => {
+    res.render("login-signup")
 })
 
 apiRoutes(app)

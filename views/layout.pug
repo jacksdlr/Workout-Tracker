@@ -10,8 +10,7 @@ header
     .header
         .login-container
             if !loggedIn
-                a(href="/login" value="login") Login
-                a(href="/register" value="register") Register
+                a(href="/login" value="login") Login / Signup
             else if loggedIn
                 p Hi, #{username}
                 form(name=logoutForm action=username+"/logout" method="POST" hidden)
