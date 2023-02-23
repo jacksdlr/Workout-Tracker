@@ -45,7 +45,7 @@ app.route("/signup")
             const hashedPassword = await bcrypt.hash(password, 10)
             User.findOne({username}, (err, existingUser) => {
                 if (existingUser) {
-                    res.render("/login-signup", {signupError: "User already exists"})
+                    res.render("login-signup", {signupError: "User already exists"})
                 } else {
                     User.create({
                         username,
