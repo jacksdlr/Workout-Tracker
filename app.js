@@ -26,12 +26,11 @@ app.route("/").get((req, res) => {
     res.render("index")
 })
 
-app.route("/login").post((req, res) => {
-    if (req.body.login) {
-        res.render("login")
-    } else if (req.body.register) {
-        res.render("register")
-    }
+app.get("/login", (req, res) => {
+    res.render("login")
+})
+app.get("/register", (req, res) => {
+    res.render("register")
 })
 
 apiRoutes(app)
