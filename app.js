@@ -1,4 +1,6 @@
 const express = require("express")
+const pug = require("pug")
+
 
 require("dotenv").config();
 
@@ -7,17 +9,29 @@ mongoose.set('strictQuery', true)
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const app = express();
+const bodyParser = require("body-parser")
+    app.use("/", bodyParser.json())
+    app.use(bodyParser.urlencoded({extended: true}))
 
 const apiRoutes = require("./routes/api.js")
 
 // Middleware
 app.use(express.json())
+app.set("view engine", "pug")
 
 // Routes
 app.use("/public", express.static(process.cwd()+ "/public"))
 
 app.route("/").get((req, res) => {
-    res.sendFile(process.cwd() + "/public/index.html")
+    res.render("index")
+})
+
+app.route("/login").post((req, res) => {
+    if (req.body.login) {
+        res.render("login")
+    } else if (req.body.register) {
+        res.render("register")
+    }
 })
 
 apiRoutes(app)

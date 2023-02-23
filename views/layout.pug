@@ -1,0 +1,24 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(rel='stylesheet' href='/public/styles.css')
+  script(src='/public/form-logic.js' defer='')
+  title Workout Tracker
+header
+    .header
+        .login-container
+            if !loggedIn
+                form(action="/login", method="POST") 
+                    button(type="submit" name="login" value="login") Login
+                form(action="/register", method="POST") 
+                    button(type="submit" name="register" value="register") Register
+            else if loggedIn
+                p Hi, #{username}
+                form(name=logoutForm action=username+"/logout" method="POST" hidden)
+                    input(type="submit" value="logout" hidden)
+<!--  if statement for if user is logged in, if not display links to login/register, otherwise display name and logout link  -->
+block content
+
+footer
