@@ -97,6 +97,16 @@ app.route("/signup")
         }
     })
 
+app.route("/logout")
+    .get((req, res, next) => {
+        req.logOut((err) => {
+            if (err) {
+                return next(err)
+            }
+            res.redirect("/login")
+        })
+    })
+
 const port = 3000
 
 app.listen(port, console.log(`App is listening on port ${port}...`))
