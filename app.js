@@ -11,7 +11,7 @@ const flash = require("express-flash")
 const session = require("express-session")
 
 const initializePassport = require("./passport-config")
-initializePassport(passport, username)
+initializePassport(passport)
 
 const mongoose = require("mongoose")
 mongoose.set('strictQuery', true)
@@ -47,9 +47,11 @@ app.route("/login")
     .get((req, res) => {
         res.render("login-signup")
     })
-    .post((req, res) => {
-
-    })
+    .post(passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/login",
+        failureFlash: true
+    }))
 
 app.route("/signup")
     .get((req, res) => {
