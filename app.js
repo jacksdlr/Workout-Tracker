@@ -37,27 +37,42 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+const checkAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next()
+    }
+
+    res.redirect("/login")
+} // PUT THIS ANYWHERE THE USER NEEDS TO BE LOGGED IN (viewing all workouts, etc.)
+
+const checkNotAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return res.redirect("/")
+    }
+    next()
+} // PUT THIS ANYWHERE THAT A LOGGED IN USER SHOULD NOT BE VISITING (login page, etc.)
+
 // Routes
 app.route("/")
-    .get((req, res) => {
-        res.render("index")
+    .get(checkAuthenticated, (req, res) => {
+        res.render("index", {username: req.user.username})
     })
 
 app.route("/login")
-    .get((req, res) => {
+    .get(checkNotAuthenticated, (req, res) => {
         res.render("login-signup")
     })
-    .post(passport.authenticate("local", {
+    .post(checkNotAuthenticated, passport.authenticate("local", {
         successRedirect: "/",
         failureRedirect: "/login",
         failureFlash: true
     }))
 
 app.route("/signup")
-    .get((req, res) => {
+    .get(checkNotAuthenticated, (req, res) => {
         res.render("login-signup")
     })
-    .post(async (req, res) => {
+    .post(checkNotAuthenticated, async (req, res) => {
         try {
             const {username, password} = req.body
             const hashedPassword = await bcrypt.hash(password, 10)
@@ -72,7 +87,7 @@ app.route("/signup")
                         if (err) {
                             res.status(400).send(err)
                         } else {
-                            res.redirect("/") // MIGHT NEED TO CHANGE THIS 13:45 IN VIDEO
+                            res.render("login-signup", {message: "Successfully created account, please login"}) // MIGHT NEED TO CHANGE THIS 13:45 IN VIDEO
                         }
                     })
                 }
@@ -85,3 +100,5 @@ app.route("/signup")
 const port = 3000
 
 app.listen(port, console.log(`App is listening on port ${port}...`))
+
+// 28:48, maybe rewind to implement error messages

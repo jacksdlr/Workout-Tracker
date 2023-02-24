@@ -9,7 +9,6 @@ const initialize = (passport, getUserById) => {
                 return done(null, false, {message: "No such user exists"})
             }
             if (bcrypt.compareSync(password, user.password)) {
-                console.log(user)
                 return done(null, user)
             } else {
                 return done(null, false, {message: "Password incorrect"})
