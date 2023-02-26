@@ -41,7 +41,6 @@ const checkAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next()
     }
-
     res.redirect("/login")
 } // PUT THIS ANYWHERE THE USER NEEDS TO BE LOGGED IN (viewing all workouts, etc.)
 
@@ -74,20 +73,27 @@ app.route("/signup")
     })
     .post(checkNotAuthenticated, async (req, res) => {
         try {
-            const {username, password} = req.body
+            const {username, email, password} = req.body
             const hashedPassword = await bcrypt.hash(password, 10)
-            User.findOne({username}, (err, existingUser) => {
-                if (existingUser) {
-                    res.render("login-signup", {signupError: "User already exists"})
+            User.findOne({email}, (err, existingEmail) => {
+                if (existingEmail) {
+                    res.render("login-signup", {signupError: "Email already in use"})
                 } else {
-                    User.create({
-                        username,
-                        password: hashedPassword
-                    }, (err, newUser) => {
-                        if (err) {
-                            res.status(400).send(err)
+                    User.findOne({username}, (err, existingUsername) => {
+                        if (existingUsername) {
+                            res.render("login-signup", {signupError: "Username already in use"})
                         } else {
-                            res.render("login-signup", {message: "Successfully created account, please login"}) // MIGHT NEED TO CHANGE THIS 13:45 IN VIDEO
+                            User.create({
+                                username,
+                                email,
+                                password: hashedPassword
+                            }, (err, newUser) => {
+                                if (err) {
+                                    res.status(400).send(err)
+                                } else {
+                                    res.render("login-signup", {message: "Successfully created account, please login"}) // MIGHT NEED TO CHANGE THIS 13:45 IN VIDEO
+                                }
+                            })
                         }
                     })
                 }

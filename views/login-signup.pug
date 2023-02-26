@@ -17,6 +17,8 @@ block content
         form(action="/signup" method="POST")
             label(for="signup-username") Username
             input(type="text" name="username" id="signup-username" required)
+            label(for="login-email") Email
+            input(type="email" name="email" id="login-email" required)
             label(for="signup-password") Password
             input(type="password" name="password" id="signup-password" required)
             button(type="submit") Signup

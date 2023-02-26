@@ -21,6 +21,7 @@ const workoutSchema = new Schema({
 
 const userSchema = new Schema({
     username: String,
+    email: String,
     password: String,
     workouts: [workoutSchema]
 }, {versionKey: false})
