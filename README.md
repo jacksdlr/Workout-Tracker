@@ -8,3 +8,4 @@ To run this application/server yourself, follow these steps:
 3. Run "npm install" in the terminal to ensure necessary modules are installed
 4. Edit sample.env where instructed in the file to the required specifications (this will require a MongoDB account to connect to a database)
 5. Rename sample.env to just .env
+6. Use "npm start" in the terminal to run the app/server at localhost:3000
