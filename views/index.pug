@@ -4,37 +4,37 @@ block content
     script(src='/public/form-logic.js' defer='')
     section#main-section
         .form-container
-            form#exercise-form.form(action=username method='POST')
+            form#exercise-form.form(action='workouts' method='POST')
                 .input-container
                     label(for='workout-input') Workout date:
-                    input#workout-input(type='date' name='workout-date' required='true')
+                    input#workout-input(type='date' name='workoutDate' required='true')
                 .input-container
                     label(for='exercise-input') Exercise:
-                    input#exercise-input(type='text' name='exercise-name' required='true')
+                    input#exercise-input(type='text' name='exerciseName' required='true')
                 .input-container
                     label(for='weight-input') Weight used:
-                    input#weight-input(type='number' name='weight-used' min='0' step='0.01')
-                    select(name='weight-unit')
+                    input#weight-input(type='number' name='weightUsed' min='0' step='0.01')
+                    select(name='weightUnit')
                         option(value='kg') kg
                         option(value='lbs') lbs
                 .input-container
                     label(for='reps-input') Repetitions:
-                    input#reps-input(type='number' name='reps-performed' min='0')
+                    input#reps-input(type='number' name='repsPerformed' min='0')
                 #superset-check.input-container
                     label(for='superset-input') Superset?
                     input#superset-input(type='checkbox' name='superset')
                     .superset-input-container.input-container(style='visibility: hidden; display: none')
                         label(for='superset-exercise-input') Exercise:
-                        input(type='text' name='superset-exercise-name' id='superset-exercise-input')
+                        input(type='text' name='supersetExerciseName' id='superset-exercise-input')
                     .superset-input-container.input-container(style='visibility: hidden; display: none')
                         label(for='superset-weight-input') Weight used:
-                        input(type='number' name='superset-weight-used' id='superset-weight-input' min='0' step='0.01')
-                        select(name='superset-weight-unit')
+                        input(type='number' name='supersetWeightUsed' id='superset-weight-input' min='0' step='0.01')
+                        select(name='supersetWeightUnit')
                             option(value='kg') kg
                             option(value='lbs') lbs
                     .superset-input-container.input-container(style='visibility: hidden; display: none')
                         label(for='superset-reps-input') Repetitions:
-                        input(type='number' name='superset-reps-performed' id='superset-reps-input' min='0')
+                        input(type='number' name='supersetRepsPerformed' id='superset-reps-input' min='0')
                 textarea#comment-input(name='comment' placeholder='Additional comments (e.g. technique, rest time, reps in reserve)')
                 button#submit-button(type='submit') Submit
         .workout-container

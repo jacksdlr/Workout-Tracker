@@ -54,9 +54,10 @@ const checkNotAuthenticated = (req, res, next) => {
 // Routes
 app.route("/")
     .get(checkAuthenticated, (req, res) => {
-        res.render("index", {username: req.user.username})
+        res.render("index")
     })
 
+// LOGIN/SIGNUP PAGE ROUTES
 app.route("/login")
     .get(checkNotAuthenticated, (req, res) => {
         res.render("login-signup")
@@ -110,6 +111,46 @@ app.route("/logout")
                 return next(err)
             }
             res.redirect("/login")
+        })
+    })
+
+// WORKOUT CREATION ROUTES
+app.route("/workouts")
+    /*.get(checkAuthenticated, (req, res) => {
+        const {id} = req.user
+    }) <-- GET ALL USER WORKOUTS??? */
+    .post(checkAuthenticated, (req, res) => {
+        // Get user's MongoDB _id from passport
+        const {id} = req.user 
+        // Get form inputs
+        let {
+            workoutdate,
+            exerciseName,
+            weightUsed,
+            repsPerformed,
+            supersetExerciseName,
+            supersetWeightUsed,
+            supersetRepsPerformed,
+            comment
+        } = req.body 
+        // Suffix the weight unit from form if exercise weight has been given
+        if (req.body.weightUsed) {
+            weightUsed = `${req.body.weightUsed}${req.body.weightUnit}`
+        }
+        if (req.body.supersetWeightUsed) {
+            supersetWeightUsed = `${req.body.supersetWeightUsed}${req.body.supersetWeightUnit}`
+        }
+
+        res.send({
+            id,
+            workoutdate,
+            exerciseName,
+            weightUsed,
+            repsPerformed,
+            supersetExerciseName,
+            supersetWeightUsed,
+            supersetRepsPerformed,
+            comment
         })
     })
 
