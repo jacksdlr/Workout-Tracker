@@ -14,7 +14,7 @@ supersetCheckbox.addEventListener("change", () => {
             container.style.visibility = "hidden"
             container.style.display = "none"
         })
-        supersetExercise.setAttribute("required", "false")
+        supersetExercise.removeAttribute("required")
     }
 })
 /*

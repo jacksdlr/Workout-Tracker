@@ -2,17 +2,17 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const setSchema = new Schema({
-    set_weight: String,
-    set_reps: Number,
-    superset_exercise: String,
-    superset_weight: String,
-    superset_reps: Number,
-    comment: String
+    set_weight: {type: String, set: a => a === '' ? undefined : a},
+    set_reps: {type: Number, set: a => a === null ? undefined : a},
+    superset_exercise: {type: String, set: a => a === '' ? undefined : a},
+    superset_weight: {type: String, set: a => a === '' ? undefined : a},
+    superset_reps: {type: Number, set: a => a === null ? undefined : a},
 }, {versionKey: false})
 
 const exerciseSchema = new Schema({
     exercise_name: String,
-    sets: [setSchema]
+    sets: [setSchema],
+    comments: [String]
 }, {versionKey: false})
 
 const workoutSchema = new Schema({
