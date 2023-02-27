@@ -6,7 +6,8 @@ const setSchema = new Schema({
     set_reps: Number,
     superset_exercise: String,
     superset_weight: String,
-    superset_reps: Number
+    superset_reps: Number,
+    comment: String
 }, {versionKey: false})
 
 const exerciseSchema = new Schema({
