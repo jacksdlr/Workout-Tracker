@@ -124,21 +124,23 @@ app.route("/workouts")
         const {id} = req.user 
         // Get form inputs
         let {
-            workoutDate,
-            exerciseName,
-            weightUsed,
-            repsPerformed,
-            supersetExerciseName,
-            supersetWeightUsed,
-            supersetRepsPerformed,
+            date,
+            exercise_name,
+            set_weight,
+            set_weight_unit,
+            set_reps,
+            superset_exercise,
+            superset_weight,
+            superset_weight_unit,
+            superset_reps,
             comment
         } = req.body 
         // Suffix the weight unit from form if exercise weight has been given
-        if (req.body.weightUsed) {
-            weightUsed = `${req.body.weightUsed}${req.body.weightUnit}`
+        if (set_weight) {
+            set_weight = `${set_weight}${set_weight_unit}`
         }
-        if (req.body.supersetWeightUsed) {
-            supersetWeightUsed = `${req.body.supersetWeightUsed}${req.body.supersetWeightUnit}`
+        if (superset_weight) {
+            superset_weight = `${superset_weight}${superset_weight_unit}`
         }
 /*
         console.log({
@@ -160,24 +162,24 @@ app.route("/workouts")
                 return
             }
             const newSet = new Set({
-                set_weight: weightUsed,
-                set_reps: repsPerformed,
-                superset_exercise: supersetExerciseName,
-                superset_weight: supersetWeightUsed,
-                superset_reps: supersetRepsPerformed,
+                set_weight,
+                set_reps,
+                superset_exercise,
+                superset_weight,
+                superset_reps,
                 comment
             })
             const newExercise = new Exercise({
-                exercise_name: exerciseName,
+                exercise_name,
                 sets: newSet
             })
             const newWorkout = new Workout({
-                date: workoutDate,
+                date,
                 exercises: newExercise
             })
-            console.log(user.workouts.find(workout => workout.date == workoutDate))
+            console.log(user.workouts.find(workout => workout.date == date))
             //if (!user.workouts.find(workout => workout.date == new Date(workoutDate)))
-            //User.findByIdAndUpdate(id, {$push: {date: workoutDate, workouts: newWorkout}}, {new: true}, (err, workout) => {})
+            User.findByIdAndUpdate(id, {$push: {date, workouts: newWorkout}}, {new: true}, (err, workout) => {})
         })
     })
 
