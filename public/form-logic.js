@@ -1,5 +1,22 @@
 const supersetCheckDiv = document.querySelector("#superset-check")
 const supersetCheckbox = document.querySelector("#superset-input")
+const supersetInputContainers = document.querySelectorAll(".superset-input-container")
+supersetCheckbox.addEventListener("change", () => {
+    if (supersetCheckbox.checked) {
+        supersetInputContainers.forEach((container) => {
+            container.style.visibility = "visible"
+            container.style.display = "block"
+        })
+    } else {
+        supersetInputContainers.forEach((container) => {
+            container.style.visibility = "hidden"
+            container.style.display = "none"
+        })
+    }
+})
+/*
+const supersetCheckDiv = document.querySelector("#superset-check")
+const supersetCheckbox = document.querySelector("#superset-input")
 supersetCheckbox.addEventListener("change", () => {
     if (supersetCheckbox.checked) {
         // superset exercise input
@@ -79,4 +96,4 @@ supersetCheckbox.addEventListener("change", () => {
             superset.remove()
         })
     }
-})
+})*/

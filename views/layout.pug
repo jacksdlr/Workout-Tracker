@@ -9,10 +9,10 @@ header
     .header
         .login-container
             if !username
-                a(href="/login" value="login") Login / Signup
+                a(href='/login' value='login') Login / Signup
             else
                 p Hi, #{username}
-                a(href="/logout" value="logout") Logout
+                a(href='/logout' value='logout') Logout
 block content
 
 footer

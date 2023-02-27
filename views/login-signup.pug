@@ -6,19 +6,19 @@ block content
     h1 Login Form 
         if messages.error
             p= messages.error
-        form(action="/login" method="POST")
-            label(for="login-username") Username
-            input(type="text" name="username" id="login-username" required)
-            label(for="login-password") Password
-            input(type="password" name="password" id="login-password" required)
-            button(type="submit") Login
+        form(action='/login' method='POST')
+            label(for='login-username') Username
+            input(type='text' name='username' id='login-username' required)
+            label(for='login-password') Password
+            input(type='password' name='password' id='login-password' required)
+            button(type='submit') Login
     h1 Signup Form 
         p= signupError
-        form(action="/signup" method="POST")
-            label(for="signup-username") Username
-            input(type="text" name="username" id="signup-username" required)
-            label(for="login-email") Email
-            input(type="email" name="email" id="login-email" required)
-            label(for="signup-password") Password
-            input(type="password" name="password" id="signup-password" required)
-            button(type="submit") Signup
+        form(action='/signup' method='POST')
+            label(for='signup-username') Username
+            input(type='text' name='username' id='signup-username' required)
+            label(for='login-email') Email
+            input(type='email' name='email' id='login-email' required)
+            label(for='signup-password') Password
+            input(type='password' name='password' id='signup-password' required)
+            button(type='submit') Signup
