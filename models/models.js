@@ -16,7 +16,7 @@ const exerciseSchema = new Schema({
 }, {versionKey: false})
 
 const workoutSchema = new Schema({
-    date: {Date},
+    date: Date,
     exercises: [exerciseSchema]
 }, {versionKey: false})
 
