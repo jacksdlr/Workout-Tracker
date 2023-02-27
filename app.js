@@ -54,7 +54,7 @@ const checkNotAuthenticated = (req, res, next) => {
 // Routes
 app.route("/")
     .get(checkAuthenticated, (req, res) => {
-        res.render("index")
+        res.render("index", {username: req.user.username})
     })
 
 // LOGIN/SIGNUP PAGE ROUTES
@@ -124,7 +124,7 @@ app.route("/workouts")
         const {id} = req.user 
         // Get form inputs
         let {
-            workoutdate,
+            workoutDate,
             exerciseName,
             weightUsed,
             repsPerformed,
@@ -140,10 +140,10 @@ app.route("/workouts")
         if (req.body.supersetWeightUsed) {
             supersetWeightUsed = `${req.body.supersetWeightUsed}${req.body.supersetWeightUnit}`
         }
-
-        res.send({
+/*
+        console.log({
             id,
-            workoutdate,
+            workoutDate,
             exerciseName,
             weightUsed,
             repsPerformed,
@@ -151,6 +151,33 @@ app.route("/workouts")
             supersetWeightUsed,
             supersetRepsPerformed,
             comment
+        })
+*/
+        User.findById(id, (err, user) => {
+            if (err || !user) {
+                res.status(400).send({error: "Could not find user"})
+                console.log(err)
+                return
+            }
+            const newSet = new Set({
+                set_weight: weightUsed,
+                set_reps: repsPerformed,
+                superset_exercise: supersetExerciseName,
+                superset_weight: supersetWeightUsed,
+                superset_reps: supersetRepsPerformed,
+                comment
+            })
+            const newExercise = new Exercise({
+                exercise_name: exerciseName,
+                sets: newSet
+            })
+            const newWorkout = new Workout({
+                date: workoutDate,
+                exercises: newExercise
+            })
+            console.log(user.workouts.find(workout => workout.date == workoutDate))
+            //if (!user.workouts.find(workout => workout.date == new Date(workoutDate)))
+            //User.findByIdAndUpdate(id, {$push: {date: workoutDate, workouts: newWorkout}}, {new: true}, (err, workout) => {})
         })
     })
 
