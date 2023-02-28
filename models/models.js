@@ -7,6 +7,7 @@ const setSchema = new Schema({
     superset_exercise: {type: String, set: a => a === '' ? undefined : a},
     superset_weight: {type: String, set: a => a === '' ? undefined : a},
     superset_reps: {type: Number, set: a => a === null ? undefined : a},
+    sets_count: {type: Number, default: 1}
 }, {versionKey: false})
 
 const exerciseSchema = new Schema({
