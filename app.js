@@ -122,7 +122,7 @@ app.route("/workouts")
     }) <-- GET ALL USER WORKOUTS??? */
     .post(checkAuthenticated, async (req, res) => {
         // Get user's MongoDB _id from passport
-        const { id, username } = req.user
+        const { id } = req.user
         // Get form inputs
         let {
             date,
@@ -139,7 +139,7 @@ app.route("/workouts")
             set_weight = `${set_weight}${set_weight_unit}`
         } else {
             set_weight = undefined
-        }  
+        }
         if (set_reps == "") {
             set_reps = undefined
         }
@@ -186,8 +186,6 @@ app.route("/workouts")
             { $unwind: "$workouts" },
             { $match: { _id: ObjectId(id), "workouts.date": date } }
         ])
-
-        //data.workouts.find(workout => workout.date == date) USE THIS LATER
 
         if (existingWorkout == "") {
             User.findByIdAndUpdate(id, { $push: { workouts: newWorkout } }, { new: true }, (err, data) => {
@@ -256,50 +254,7 @@ app.route("/workouts")
                     })
                 }
             }
-
         }
-
-
-        /*
-                User.findById(id, (err, user) => {
-                    if (err || !user) {
-                        res.status(400).send({error: "Could not find user"})
-                        console.log(err)
-                        return
-                    }
-                    const newSet = new Set({
-                        set_weight,
-                        set_reps,
-                        superset_exercise,
-                        superset_weight,
-                        superset_reps
-                    })
-                    const newExercise = new Exercise({
-                        exercise_name,
-                        sets: newSet,
-                        comments: comment
-                    })
-                    const newWorkout = new Workout({
-                        date,
-                        exercises: newExercise
-                    })
-                    /*
-                    if (!user.workouts.find(workout => workout.date == date)) {
-                        console.log("not found!")
-                        User.findByIdAndUpdate(id, {$push: {date, workouts: newWorkout}}, {new: true}, (err, user) => {
-                            if (err) {
-                                res.status(400).send({error: "Something went wrong"})
-                            } else {
-                                console.log(user)
-                            }
-                        })
-                    } else {
-                        console.log("found it!")
-                        
-                    }
-                    */
-
-        //})
     })
 
 const port = 3000
