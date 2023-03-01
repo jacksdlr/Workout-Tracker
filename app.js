@@ -200,13 +200,6 @@ app.route("/workouts")
             const query = { _id: ObjectId(id), "workouts.date": date }
 
             // Find if an existing workout already has the exercise added
-            /*
-            const existingExercise = await User.aggregate([
-                { $unwind: "$workouts" },
-                { $unwind: "$workouts.exercises" },
-                { $match: { _id: ObjectId(id), "workouts.date": date, "workouts.exercises.exercise_name": exercise_name } }
-            ])*/
-
             const existingExercise = existingWorkout.workouts.exercises.find(exercise => exercise.exercise_name == exercise_name)
 
             if (!existingExercise) {
