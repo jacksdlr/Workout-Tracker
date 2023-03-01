@@ -127,11 +127,12 @@ app.route("/workouts")
         let {
             date,
             exercise_name,
+            exercise_comment,
             set_weight,
             set_weight_unit,
             set_reps,
-            superset,
-            comment
+            set_comment,
+            superset
         } = req.body
         // Suffix the weight unit from form if exercise weight has been given
         if (set_weight) {
@@ -167,12 +168,13 @@ app.route("/workouts")
             set_reps,
             superset_exercise,
             superset_weight,
-            superset_reps
+            superset_reps,
+            comments: set_comment
         })
         const newExercise = new Exercise({
             exercise_name,
             sets: newSet,
-            comments: comment
+            comments: exercise_comment
         })
         const newWorkout = new Workout({
             date,
@@ -226,9 +228,9 @@ app.route("/workouts")
                     set.superset_weight == superset_weight &&
                     set.superset_reps == superset_reps
                 )
-                
+
                 if (!existingSet) {
-                    User.findOneAndUpdate(query, { $push: { [`workouts.$.exercises.${exerciseIndex}.sets`]: newSet } }, { new: true }, (err, data) => {
+                    User.findOneAndUpdate(query, { $push: { [`workouts.$.exercises.${exerciseIndex}.sets`]: newSet, [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment } }, { new: true }, (err, data) => {
                         if (err) {
                             console.log(err)
                         } else {
@@ -244,7 +246,7 @@ app.route("/workouts")
                         set.superset_weight == superset_weight &&
                         set.superset_reps == superset_reps
                     )
-                    User.findOneAndUpdate(query, { $inc: { [`workouts.$.exercises.${exerciseIndex}.sets.${setIndex}.sets_count`]: 1 } }, { new: true }, (err, data) => {
+                    User.findOneAndUpdate(query, { $inc: { [`workouts.$.exercises.${exerciseIndex}.sets.${setIndex}.sets_count`]: 1 }, $push: { [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment, [`workouts.$.exercises.${exerciseIndex}.sets.${setIndex}.comments`]: set_comment } }, { new: true }, (err, data) => {
                         if (err) {
                             console.log(err)
                         } else {
@@ -256,7 +258,6 @@ app.route("/workouts")
             }
 
         }
-
 
 
         /*
