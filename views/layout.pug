@@ -3,16 +3,19 @@ head
   meta(charset='UTF-8')
   meta(http-equiv='X-UA-Compatible' content='IE=edge')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  link(rel='stylesheet' href='/public/styles/styles.css')
+  block scripts
+  block styles
+    link(rel='stylesheet' href='/public/styles/layout.css')
   title Workout Tracker
-header
-    .header
-        .login-container
-            if !username
-                a(href='/login' value='login') Login / Signup
-            else
-                p Hi, #{username}
-                a(href='/logout' value='logout') Logout
-block content
+body
+    header
+        .header
+            .login-container
+                if !username
+                    a(href='/login' value='login') Login / Signup
+                else
+                    p Hi, #{username}
+                    a(href='/logout' value='logout') Logout
+    block content
 
-footer
+    footer

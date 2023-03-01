@@ -1,7 +1,12 @@
 extends layout.pug
 
-block content
+block scripts
     script(src='/public/javascripts/form-logic.js' defer='')
+
+block styles
+    link(rel='stylesheet' href='/public/styles/index.css')
+
+block content
     section#main-section
         .form-container
             form#exercise-form.form(action='workouts' method='POST')
