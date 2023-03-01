@@ -17,6 +17,13 @@ supersetCheckbox.addEventListener("change", () => {
         supersetExercise.removeAttribute("required")
     }
 })
+
+const submitButton = document.getElementById("submit-button")
+const exerciseCommentInput = document.getElementById("exercise-comment-input")
+const setCommentInput = document.getElementById("set-comment-input")
+submitButton.addEventListener("click", () => {
+    setTimeout(() => {exerciseCommentInput.value = ""; setCommentInput.value = ""}, 250)
+})
 /*
 const supersetCheckDiv = document.querySelector("#superset-check")
 const supersetCheckbox = document.querySelector("#superset-input")
