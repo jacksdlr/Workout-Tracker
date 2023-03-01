@@ -124,6 +124,17 @@ app.route("/workouts")
         // Get user's MongoDB _id from passport
         const { id } = req.user
         // Get form inputs
+        let variables = {}
+
+        for (const key in req.body) {
+            let value = req.body[key]
+            if (value == "" || null) {
+                variables[key] = undefined
+            } else {
+                variables[key] = value
+            }
+        }
+
         let {
             date,
             exercise_name,
@@ -132,34 +143,18 @@ app.route("/workouts")
             set_weight_unit,
             set_reps,
             set_comment,
-            superset
-        } = req.body
+            superset_exercise,
+            superset_weight,
+            superset_weight_unit,
+            superset_reps
+        } = variables
+
         // Suffix the weight unit from form if exercise weight has been given
         if (set_weight) {
             set_weight = `${set_weight}${set_weight_unit}`
-        } else {
-            set_weight = undefined
         }
-        if (set_reps == "") {
-            set_reps = undefined
-        }
-
-        // Define superset variables if form checkbox is checked
-        if (superset == "on") {
-            var {
-                superset_exercise,
-                superset_weight,
-                superset_weight_unit,
-                superset_reps
-            } = req.body
-            if (superset_weight) {
-                superset_weight = `${superset_weight}${superset_weight_unit}`
-            } else {
-                superset_weight = undefined
-            }
-            if (superset_reps == "") {
-                superset_reps = undefined
-            }
+        if (superset_weight) {
+            superset_weight = `${superset_weight}${superset_weight_unit}`
         }
 
         // Define set, exercise, and workout objects for database
@@ -182,12 +177,17 @@ app.route("/workouts")
         })
 
         // Find if a workout for the user has already been created
-        const existingWorkout = await User.aggregate([
+        const existingWorkout = (await User.aggregate([
             { $unwind: "$workouts" },
             { $match: { _id: ObjectId(id), "workouts.date": date } }
-        ])
+        ]))[0]
 
-        if (existingWorkout == "") {
+        console.log((await User.aggregate([
+            { $unwind: "$workouts" },
+            { $match: { _id: ObjectId(id), "workouts.date": date } }
+        ]))[0])
+
+        if (!existingWorkout) {
             User.findByIdAndUpdate(id, { $push: { workouts: newWorkout } }, { new: true }, (err, data) => {
                 if (err) {
                     res.status(400).send({ error: "Something went wrong" })
@@ -200,13 +200,16 @@ app.route("/workouts")
             const query = { _id: ObjectId(id), "workouts.date": date }
 
             // Find if an existing workout already has the exercise added
+            /*
             const existingExercise = await User.aggregate([
                 { $unwind: "$workouts" },
                 { $unwind: "$workouts.exercises" },
                 { $match: { _id: ObjectId(id), "workouts.date": date, "workouts.exercises.exercise_name": exercise_name } }
-            ])
+            ])*/
 
-            if (existingExercise == "") {
+            const existingExercise = existingWorkout.workouts.exercises.find(exercise => exercise.exercise_name == exercise_name)
+
+            if (!existingExercise) {
                 User.findOneAndUpdate(query, { $push: { "workouts.$.exercises": newExercise } }, { new: true }, (err, data) => {
                     if (err) {
                         console.log(err)
@@ -216,10 +219,10 @@ app.route("/workouts")
                     }
                 })
             } else {
-                const exerciseIndex = existingWorkout[0].workouts.exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
+                const exerciseIndex = existingWorkout.workouts.exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
                 // Find if a set has been done with the same weight, reps, etc.
-                const existingSet = existingWorkout[0].workouts.exercises[exerciseIndex].sets.find(set =>
+                const existingSet = existingWorkout.workouts.exercises[exerciseIndex].sets.find(set =>
                     set.set_reps == set_reps &&
                     set.set_weight == set_weight &&
                     set.superset_exercise == superset_exercise &&
@@ -237,7 +240,7 @@ app.route("/workouts")
                         }
                     })
                 } else {
-                    const setIndex = existingWorkout[0].workouts.exercises[exerciseIndex].sets.findIndex(set =>
+                    const setIndex = existingWorkout.workouts.exercises[exerciseIndex].sets.findIndex(set =>
                         set.set_reps == set_reps &&
                         set.set_weight == set_weight &&
                         set.superset_exercise == superset_exercise &&
