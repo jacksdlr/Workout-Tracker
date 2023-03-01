@@ -11,6 +11,7 @@ block content
                 .input-container
                     label(for='exercise-input') Exercise:
                     input#exercise-input(type='text' name='exercise_name' required='true')
+                textarea#exercise-comment-input(name='exercise-comment' placeholder='Exercise comments (e.g. technique used, rest time)')
                 .input-container
                     label(for='weight-input') Weight used:
                     input#weight-input(type='number' name='set_weight' min='0' step='0.01')
@@ -35,6 +36,6 @@ block content
                     .superset-input-container.input-container(style='visibility: hidden; display: none')
                         label(for='superset-reps-input') Repetitions:
                         input(type='number' name='superset_reps' id='superset-reps-input' min='0')
-                textarea#comment-input(name='comment' placeholder='Additional comments (e.g. technique, rest time, reps in reserve)')
+                textarea#set-comment-input(name='set-comment' placeholder='Set comments (e.g. reps in reserve)')
                 button#submit-button(type='submit') Submit
         .workout-container
