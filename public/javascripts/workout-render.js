@@ -65,6 +65,8 @@ const createSetContainers = (exercise) => {
             populateSetContainers(set, setContainer)
         } else {
             console.log("found set container")
+            let existingDetails = setContainer.lastChild
+            setContainer.removeChild(existingDetails)
             populateSetContainers(set, setContainer)
         }
     })
