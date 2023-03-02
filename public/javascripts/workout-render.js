@@ -62,8 +62,16 @@ const createSetContainers = (exercise) => {
             setContainer.classList.add("set-container")
             setContainer.setAttribute("id", set._id)
             exerciseContainer.appendChild(setContainer)
+            populateSetContainers(set, setContainer)
         } else {
             console.log("found set container")
+            populateSetContainers(set, setContainer)
         }
     })
+}
+
+const populateSetContainers = (set, setContainer) => {
+    let setDetails = document.createElement("p")
+    setDetails.insertAdjacentText("afterbegin", `${set.sets_count} set(s) using ${set.set_weight} for ${set.set_reps} reps, superset with ${set.superset_exercise} using ${set.superset_weight} for ${set.superset_reps} reps`)
+    setContainer.appendChild(setDetails)
 }
