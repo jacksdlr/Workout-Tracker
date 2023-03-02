@@ -116,13 +116,13 @@ app.route("/logout")
     })
 
 // WORKOUT CREATION ROUTES
-app.route("/workouts")
+app.route("/")
     /*.get(checkAuthenticated, (req, res) => {
         const {id} = req.user
     }) <-- GET ALL USER WORKOUTS??? */
     .post(checkAuthenticated, async (req, res) => {
         // Get user's MongoDB _id from passport
-        const { id } = req.user
+        const { id, username } = req.user
         // Get form inputs
         let variables = {}
 
@@ -182,13 +182,8 @@ app.route("/workouts")
             { $match: { _id: ObjectId(id), "workouts.date": date } }
         ]))[0]
 
-        console.log((await User.aggregate([
-            { $unwind: "$workouts" },
-            { $match: { _id: ObjectId(id), "workouts.date": date } }
-        ]))[0])
-
         if (!existingWorkout) {
-            User.findByIdAndUpdate(id, { $push: { workouts: newWorkout } }, { new: true }, (err, data) => {
+            User.findByIdAndUpdate(id, { $push: { workouts: newWorkout } }, { new: true, _id: 0 }, (err, data) => {
                 if (err) {
                     res.status(400).send({ error: "Something went wrong" })
                 } else {
@@ -251,6 +246,14 @@ app.route("/workouts")
                 }
             }
         }
+    })
+
+app.route("/workouts/:date")
+    .get(checkAuthenticated, (req, res) => {
+        User.findById(req.user._id, (err, data) => {
+            const workout = data.workouts.find(workout => workout.date == req.params.date)
+            res.send(workout.exercises)
+        })
     })
 
 const port = 3000
