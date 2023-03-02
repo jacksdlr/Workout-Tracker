@@ -2,14 +2,15 @@ extends layout.pug
 
 block scripts
     script(src='/public/javascripts/form-logic.js' defer='')
-
+    script(src='/public/javascripts/workout-render.js' defer='')
+    
 block styles
     link(rel='stylesheet' href='/public/styles/index.css')
 
 block content
     section#main-section
         .form-container
-            form#exercise-form.form(action='workouts' method='POST')
+            form#exercise-form.form(action='/' method='POST')
                 .input-container
                     label(for='workout-input') Workout date:
                     input#workout-input(type='date' name='date' required='true')
