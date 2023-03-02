@@ -13,7 +13,6 @@ form.addEventListener("submit", () => {
             // Parse the response data
             let data = JSON.parse(this.response)
             console.log(JSON.stringify(data, null, 4))
-            console.log(data[0].sets[0].sets_count)
             renderWorkout(data)
         }
     }, 250);
@@ -22,7 +21,31 @@ form.addEventListener("submit", () => {
 
 const renderWorkout = (data) => {
     const workoutContainer = document.querySelector(".workout-container")
-    const para = document.createElement("p")
-    para.textContent = data[0].sets[0].sets_count
-    workoutContainer.appendChild(para)
+    data.forEach(exercise => {
+        let exerciseContainer = document.getElementById(exercise._id)
+        console.log(exerciseContainer)
+        console.log("Test")
+        if (!exerciseContainer) {
+            console.log("no exercise container found")
+            exerciseContainer = document.createElement("div")
+            exerciseContainer.classList.add("exercise-container")
+            exerciseContainer.setAttribute("id", exercise._id)
+            workoutContainer.appendChild(exerciseContainer)
+        } else {
+            console.log("found exercise container")
+            exercise.sets.forEach(set => {
+                let setContainer = document.getElementById(set._id)
+                if (!setContainer) {
+                    console.log("no set container found")
+                    setContainer = document.createElement("div")
+                    setContainer.classList.add("set-container")
+                    setContainer.setAttribute("id", set._id)
+                    exerciseContainer.appendChild(setContainer)
+                } else {
+                    console.log("found set container")
+                }
+            })
+            
+        }
+    })
 }
