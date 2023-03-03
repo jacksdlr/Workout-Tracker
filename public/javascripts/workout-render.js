@@ -2,6 +2,7 @@ const xhttp = new XMLHttpRequest()
 
 const form = document.getElementById("exercise-form")
 const workoutContainer = document.querySelector(".workout-container")
+const displayDate = document.getElementById("display-date")
 
 xhttp.open("GET", "/workouts/" + new Date().toISOString().split("T")[0])
 xhttp.send()
@@ -13,10 +14,9 @@ xhttp.onload = function () {
 form.addEventListener("submit", () => {
     setTimeout(() => {
         // Get the date and submit a GET request to return the user's workout for that date
-        const date = document.getElementById("workout-input").value
-        console.log(date)
+        const inputDate = document.getElementById("workout-input").value
         
-        xhttp.open("GET", "/workouts/" + date)
+        xhttp.open("GET", "/workouts/" + inputDate)
         xhttp.send()
         xhttp.onload = function () {
             // Clear the comment fields
@@ -31,16 +31,20 @@ form.addEventListener("submit", () => {
 })
 
 const renderWorkout = (data) => {
-    data.forEach(exercise => {
+    if (data.date != displayDate.value) {
+        const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
+        existingContainers.forEach(container => container.remove())
+    }
+    // ADD A TITLE FOR THE WORKOUT
+    displayDate.value = data.date
+    data.exercises.forEach(exercise => {
         let exerciseContainer = document.getElementById(exercise._id)
+        // APPEND SOMETHING LIKE (WORKOUT FOR: <DATE>)
         console.log(exerciseContainer)
-        console.log("Test")
         if (!exerciseContainer) {
-            console.log("no exercise container found")
             createExerciseContainer(exercise)
             createSetContainers(exercise)
         } else {
-            console.log("found exercise container")
             createSetContainers(exercise)
         }
     })
@@ -51,20 +55,20 @@ const createExerciseContainer = (exercise) => {
     exerciseContainer.classList.add("exercise-container")
     exerciseContainer.setAttribute("id", exercise._id)
     workoutContainer.appendChild(exerciseContainer)
+    // APPEND THE EXERCISE NAME (H1, ID, ETC.)
+    // CHECK IF COMMENTS AND APPEND DIV FOR THEM
 }
 
 const createSetContainers = (exercise) => {
     exercise.sets.forEach(set => {
         let setContainer = document.getElementById(set._id)
         if (!setContainer) {
-            console.log("no set container found")
             setContainer = document.createElement("div")
             setContainer.classList.add("set-container")
             setContainer.setAttribute("id", set._id)
             exerciseContainer.appendChild(setContainer)
             populateSetContainers(set, setContainer)
         } else {
-            console.log("found set container")
             let existingDetails = setContainer.lastChild
             setContainer.removeChild(existingDetails)
             populateSetContainers(set, setContainer)
@@ -76,4 +80,5 @@ const populateSetContainers = (set, setContainer) => {
     let setDetails = document.createElement("p")
     setDetails.insertAdjacentText("afterbegin", `${set.sets_count} set(s) using ${set.set_weight} for ${set.set_reps} reps, superset with ${set.superset_exercise} using ${set.superset_weight} for ${set.superset_reps} reps`)
     setContainer.appendChild(setDetails)
+    // LOGIC FOR VARIABLES, CREATE DIFFERENT SENTENCE STRUCTURE FOR DIFFERENT COMBINATIONS
 }
