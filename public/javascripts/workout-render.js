@@ -51,12 +51,9 @@ const renderWorkout = (data, reset) => {
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
         existingContainers.forEach(container => container.remove())
     }
-    // ADD A TITLE FOR THE WORKOUT
     displayDate.value = data.date
     data.exercises.forEach(exercise => {
         let exerciseContainer = document.getElementById(exercise._id)
-        // APPEND SOMETHING LIKE (WORKOUT FOR: <DATE>)
-        console.log(exerciseContainer)
         if (!exerciseContainer) {
             createExerciseContainer(exercise)
             createSetContainers(exercise)
@@ -71,8 +68,25 @@ const createExerciseContainer = (exercise) => {
     exerciseContainer.classList.add("exercise-container")
     exerciseContainer.setAttribute("id", exercise._id)
     workoutContainer.appendChild(exerciseContainer)
-    // APPEND THE EXERCISE NAME (H1, ID, ETC.)
-    // CHECK IF COMMENTS AND APPEND DIV FOR THEM
+
+    let exerciseName = document.createElement("h2")
+    exerciseName.classList.add("exercise-name")
+    exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
+    exerciseContainer.appendChild(exerciseName)
+
+    // Append exercise comments (if they exist)
+
+    // EXERCISE COMMENTS SHOULD BE A LIGHT SHADED BOX BELOW THE EXERCISE NAME, ITALIC STYLING, NOT TOO MUCH SCREEN SPACE TAKEN
+    if (exercise.comments != "") {
+        let exerciseComments = document.createElement("div")
+        exerciseComments.classList.add("exercise-comments")
+        exercise.comments.forEach(comment => {
+            let exerciseComment = document.createElement("li")
+            exerciseComment.textContent = comment
+            exerciseComments.appendChild(exerciseComment)
+        })
+        exerciseContainer.appendChild(exerciseComments)
+    }
 }
 
 const createSetContainers = (exercise) => {
@@ -90,6 +104,7 @@ const createSetContainers = (exercise) => {
             populateSetContainers(set, setContainer)
         }
     })
+    
 }
 
 const populateSetContainers = (set, setContainer) => {
