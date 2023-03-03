@@ -3,29 +3,31 @@ const xhttp = new XMLHttpRequest()
 const form = document.getElementById("exercise-form")
 const workoutContainer = document.querySelector(".workout-container")
 const displayDate = document.getElementById("display-date")
+document.getElementById("workout-input").value = new Date().toISOString().split("T")[0]
 
-xhttp.open("GET", "/workouts/" + new Date().toISOString().split("T")[0])
-xhttp.send()
-xhttp.onload = function () {
-    console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-    renderWorkout(JSON.parse(this.response))
+const submitRequest = (date) => {
+    xhttp.open("GET", "/workouts/" + date)
+    xhttp.send()
+    xhttp.onload = function () {
+        if (this.response) {
+            console.log(JSON.stringify(JSON.parse(this.response), null, 4))
+            renderWorkout(JSON.parse(this.response))
+            return
+        } else {
+            renderWorkout("not found")
+            return
+        }
+    }
 }
+
+submitRequest(new Date().toISOString().split("T")[0])
 
 form.addEventListener("submit", () => {
     setTimeout(() => {
         // Get the date and submit a GET request to return the user's workout for that date
         const inputDate = document.getElementById("workout-input").value
-        
-        xhttp.open("GET", "/workouts/" + inputDate)
-        xhttp.send()
-        xhttp.onload = function () {
-            // Clear the comment fields
-            resetComments()
-
-            // Parse the response data
-            console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-            renderWorkout(JSON.parse(this.response))
-        }
+        submitRequest(inputDate)
+        resetComments()
     }, 250);
 
 })
@@ -35,18 +37,16 @@ displayDate.addEventListener("change", () => {
         // Get the date and submit a GET request to return the user's workout for that date
         const inputDate = displayDate.value
         
-        xhttp.open("GET", "/workouts/" + inputDate)
-        xhttp.send()
-        xhttp.onload = function () {
-            // Parse the response data
-            console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-            renderWorkout(JSON.parse(this.response), true)
-        }
+        submitRequest(inputDate)
     }, 250);
 
 })
 
 const renderWorkout = (data, reset) => {
+    if (data == "not found") {
+        alert("No workout found for that date")
+        return submitRequest(new Date().toISOString().split("T")[0])
+    }
     if (data.date != displayDate.value || reset == true) {
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
         existingContainers.forEach(container => container.remove())
@@ -56,8 +56,10 @@ const renderWorkout = (data, reset) => {
         let exerciseContainer = document.getElementById(exercise._id)
         if (!exerciseContainer) {
             createExerciseContainer(exercise)
+            addExerciseComments(exercise)
             createSetContainers(exercise)
         } else {
+            addExerciseComments(exercise)
             createSetContainers(exercise)
         }
     })
@@ -71,25 +73,43 @@ const createExerciseContainer = (exercise) => {
 
     let exerciseName = document.createElement("h2")
     exerciseName.classList.add("exercise-name")
+    exerciseName.setAttribute("id", exercise._id+"-name")
     exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
     exerciseContainer.appendChild(exerciseName)
 
     // Append exercise comments (if they exist)
 
     // EXERCISE COMMENTS SHOULD BE A LIGHT SHADED BOX BELOW THE EXERCISE NAME, ITALIC STYLING, NOT TOO MUCH SCREEN SPACE TAKEN
-    if (exercise.comments != "") {
+}
+
+const addExerciseComments = (exercise) => {
+    let exerciseComments = document.getElementById(exercise._id+"-comments")
+    if (!exerciseComments && exercise.comments != "") {
         let exerciseComments = document.createElement("div")
         exerciseComments.classList.add("exercise-comments")
+        exerciseComments.setAttribute("id", exercise._id+"-comments")
         exercise.comments.forEach(comment => {
             let exerciseComment = document.createElement("li")
             exerciseComment.textContent = comment
             exerciseComments.appendChild(exerciseComment)
         })
-        exerciseContainer.appendChild(exerciseComments)
+        document.getElementById(exercise._id).appendChild(exerciseComments)
+    } else if (exercise.comments != "") {
+        exerciseComments.remove()
+        exerciseComments = document.createElement("div")
+        exerciseComments.classList.add("exercise-comments")
+        exerciseComments.setAttribute("id", exercise._id+"-comments")
+        exercise.comments.forEach(comment => {
+            let exerciseComment = document.createElement("li")
+            exerciseComment.textContent = comment
+            exerciseComments.appendChild(exerciseComment)
+        })
+        document.getElementById(exercise._id+"-name").insertAdjacentElement("afterend", exerciseComments)
     }
 }
 
 const createSetContainers = (exercise) => {
+    exerciseContainer = document.getElementById(exercise._id)
     exercise.sets.forEach(set => {
         let setContainer = document.getElementById(set._id)
         if (!setContainer) {
