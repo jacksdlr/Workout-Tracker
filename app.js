@@ -252,7 +252,7 @@ app.route("/workouts/:date")
     .get(checkAuthenticated, (req, res) => {
         User.findById(req.user._id, (err, data) => {
             const workout = data.workouts.find(workout => workout.date == req.params.date)
-            res.send(workout.exercises)
+            res.send(workout)
         })
     })
 
