@@ -30,8 +30,24 @@ form.addEventListener("submit", () => {
 
 })
 
-const renderWorkout = (data) => {
-    if (data.date != displayDate.value) {
+displayDate.addEventListener("change", () => {
+    setTimeout(() => {
+        // Get the date and submit a GET request to return the user's workout for that date
+        const inputDate = displayDate.value
+        
+        xhttp.open("GET", "/workouts/" + inputDate)
+        xhttp.send()
+        xhttp.onload = function () {
+            // Parse the response data
+            console.log(JSON.stringify(JSON.parse(this.response), null, 4))
+            renderWorkout(JSON.parse(this.response), true)
+        }
+    }, 250);
+
+})
+
+const renderWorkout = (data, reset) => {
+    if (data.date != displayDate.value || reset == true) {
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
         existingContainers.forEach(container => container.remove())
     }
