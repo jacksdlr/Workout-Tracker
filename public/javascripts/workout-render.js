@@ -122,8 +122,10 @@ const createSetContainers = (exercise) => {
             exerciseContainer.appendChild(setContainer)
             populateSetContainers(set, setContainer)
         } else {
-            let existingDetails = setContainer.lastChild
+            let existingDetails = setContainer.firstChild
+            let existingComments = setContainer.lastChild
             setContainer.removeChild(existingDetails)
+            setContainer.removeChild(existingComments)
             populateSetContainers(set, setContainer)
         }
     })
@@ -131,8 +133,24 @@ const createSetContainers = (exercise) => {
 }
 
 const populateSetContainers = (set, setContainer) => {
-    let setDetails = document.createElement("p")
-    setDetails.insertAdjacentText("afterbegin", `${set.sets_count} set(s) using ${set.set_weight} for ${set.set_reps} reps, superset with ${set.superset_exercise} using ${set.superset_weight} for ${set.superset_reps} reps`)
-    setContainer.appendChild(setDetails)
+    let setDescription = document.createElement("div")
+    setDescription.classList.add("set-description")
+    setDescription.setAttribute("id", set._id+"-description")
     // LOGIC FOR VARIABLES, CREATE DIFFERENT SENTENCE STRUCTURE FOR DIFFERENT COMBINATIONS
+    setContainer.insertAdjacentText("afterbegin", `${set.sets_count} set(s) using ${set.set_weight} for ${set.set_reps} reps, superset with ${set.superset_exercise} using ${set.superset_weight} for ${set.superset_reps} reps`)
+    
+    setContainer.appendChild(setDescription)
+
+    let setComments = document.createElement("div")
+    setComments.classList.add("set-comments")
+    setComments.setAttribute("id", set._id+"-comments")
+    set.comments.forEach(comment => {
+        let newComment = document.createElement("li")
+        newComment.textContent = comment
+        setComments.appendChild(newComment)
+    })
+    setContainer.appendChild(setComments)
+    
+    
+    
 }
