@@ -5,13 +5,13 @@ const workoutContainer = document.querySelector(".workout-container")
 const displayDate = document.getElementById("display-date")
 document.getElementById("workout-input").value = new Date().toISOString().split("T")[0]
 
-const submitRequest = (date) => {
+const submitRequest = (date, reset) => {
     xhttp.open("GET", "/workouts/" + date)
     xhttp.send()
     xhttp.onload = function () {
         if (this.response) {
             console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-            renderWorkout(JSON.parse(this.response))
+            renderWorkout(JSON.parse(this.response), reset)
             return
         } else {
             renderWorkout("not found")
@@ -37,15 +37,25 @@ displayDate.addEventListener("change", () => {
         // Get the date and submit a GET request to return the user's workout for that date
         const inputDate = displayDate.value
         
-        submitRequest(inputDate)
+        submitRequest(inputDate, true)
     }, 250);
 
 })
 
 const renderWorkout = (data, reset) => {
+    let notFound = document.getElementById("not-found")
+    if (notFound) {
+        notFound.remove()
+    }
     if (data == "not found") {
-        alert("No workout found for that date")
-        return submitRequest(new Date().toISOString().split("T")[0])
+        notFound = document.createElement("p")
+        notFound.setAttribute("id", "not-found")
+        notFound.textContent = "No workout exists for this date..."
+        workoutContainer.appendChild(notFound)
+        const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
+        existingContainers.forEach(container => container.remove())
+        workoutContainer.appendChild(notFound)
+        return //submitRequest(new Date().toISOString().split("T")[0])
     }
     if (data.date != displayDate.value || reset == true) {
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
@@ -71,6 +81,11 @@ const createExerciseContainer = (exercise) => {
     exerciseContainer.setAttribute("id", exercise._id)
     workoutContainer.appendChild(exerciseContainer)
 
+    let exerciseComments = document.createElement("div")
+    exerciseComments.classList.add("exercise-comments")
+    exerciseComments.setAttribute("id", exercise._id+"-comments")
+    exerciseContainer.appendChild(exerciseComments)
+
     let exerciseName = document.createElement("h2")
     exerciseName.classList.add("exercise-name")
     exerciseName.setAttribute("id", exercise._id+"-name")
@@ -84,21 +99,9 @@ const createExerciseContainer = (exercise) => {
 
 const addExerciseComments = (exercise) => {
     let exerciseComments = document.getElementById(exercise._id+"-comments")
-    if (!exerciseComments && exercise.comments != "") {
-        let exerciseComments = document.createElement("div")
-        exerciseComments.classList.add("exercise-comments")
-        exerciseComments.setAttribute("id", exercise._id+"-comments")
-        exercise.comments.forEach(comment => {
-            let exerciseComment = document.createElement("li")
-            exerciseComment.textContent = comment
-            exerciseComments.appendChild(exerciseComment)
-        })
-        document.getElementById(exercise._id).appendChild(exerciseComments)
-    } else if (exercise.comments != "") {
-        exerciseComments.remove()
-        exerciseComments = document.createElement("div")
-        exerciseComments.classList.add("exercise-comments")
-        exerciseComments.setAttribute("id", exercise._id+"-comments")
+    if (exercise.comments != "") {
+        let existingComments = exerciseComments.querySelectorAll("li")
+        existingComments.forEach(comment => comment.remove())
         exercise.comments.forEach(comment => {
             let exerciseComment = document.createElement("li")
             exerciseComment.textContent = comment
