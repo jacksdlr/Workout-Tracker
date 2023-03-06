@@ -14,7 +14,7 @@ const submitRequest = (date, reset) => {
             renderWorkout(JSON.parse(this.response), reset)
             return
         } else {
-            renderWorkout("not found")
+            renderWorkout("not found", true, date)
             return
         }
     }
@@ -42,7 +42,7 @@ displayDate.addEventListener("change", () => {
 
 })
 
-const renderWorkout = (data, reset) => {
+const renderWorkout = (data, reset, date) => {
     let notFound = document.getElementById("not-found")
     if (notFound) {
         notFound.remove()
@@ -55,6 +55,7 @@ const renderWorkout = (data, reset) => {
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
         existingContainers.forEach(container => container.remove())
         workoutContainer.appendChild(notFound)
+        displayDate.value = date
         return //submitRequest(new Date().toISOString().split("T")[0])
     }
     if (data.date != displayDate.value || reset == true) {
