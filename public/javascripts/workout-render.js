@@ -134,10 +134,12 @@ const createSetContainers = (exercise) => {
 }
 
 const populateSetContainers = (set, setContainer) => {
+    // Create the element that holds that set data
     let setDescription = document.createElement("div")
     setDescription.classList.add("set-description")
     setDescription.setAttribute("id", set._id+"-description")
-    // LOGIC FOR VARIABLES, CREATE DIFFERENT SENTENCE STRUCTURE FOR DIFFERENT COMBINATIONS
+
+    // Descructure all possible set variables
     let {
         set_weight,
         set_reps,
@@ -146,46 +148,76 @@ const populateSetContainers = (set, setContainer) => {
         superset_reps,
         sets_count
     } = set
+
+    // Get the sets count so that grammar is correct when displaying set data
+    if (sets_count == 1) {
+        var sets = "1 set"
+    } else if (sets_count > 1) {
+        var sets = `${sets_count} sets`
+    }
+
+    // MAYBE ADD A RADIO OPTION FOR SIMPLE VS DESCRIPTIVE DISPLAY (SIMPLE WOULD BE <WEIGHT: XX, REPS: XX, ETC.>)
+
     if (set_weight && set_reps && superset_weight && superset_reps) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
+        // All form inputs
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
     } else if (set_weight && set_reps && superset_weight) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for unspecified reps`)
+        // Weight, reps, and superset weight (anywhere with superset weight/reps will have the exercise name)
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for unspecified reps`)
     } else if (set_weight && set_reps && superset_reps) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using unspecified weight for ${superset_reps} reps`)
+        // Weight, reps, and superset reps
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using unspecified weight for ${superset_reps} reps`)
     } else if (set_weight && superset_weight && superset_reps) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for unspecified reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
+        // Weight, superset weight, and superset reps
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for unspecified reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
     } else if (set_reps && superset_weight && superset_reps) {
-        setContainer.insertAdjacentText("afterbegin", `Unspecified weight for ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
+        // Reps, superset weight, and superset reps
+        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
     } else if (set_weight && set_reps && superset_exercise) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for ${set_reps} reps, superset with ${superset_exercise}, using unspecified weight for unspecified reps`)
+        // Weight, reps, and only superset exercise name
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise}`)
     } else if (set_weight && set_reps) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for ${set_reps} reps`)
+        // Only weight and reps
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps`)
     } else if (set_weight && superset_weight) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for unspecified reps, superset with ${superset_exercise}, using ${superset_weight} for unspecified reps`)
+        // Weight and superset weight
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}, superset with ${superset_exercise} using ${superset_weight}`)
     } else if (set_weight && superset_reps) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for unspecified reps, superset with ${superset_exercise}, using unspecified weight for ${superset_reps} reps`)
+        // Weight and superset reps
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}, superset with ${superset_exercise} for ${superset_reps} reps`)
     } else if (set_reps && superset_weight) {
-        setContainer.insertAdjacentText("afterbegin", `Unspecified weight for ${set_reps} reps, superset with ${superset_exercise}, using ${superset_weight} for unspecified reps`)
+        // Reps and superset weight
+        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight}`)
     } else if (set_reps && superset_reps) {
-        setContainer.insertAdjacentText("afterbegin", `Unspecified weight for ${set_reps} reps, superset with ${superset_exercise}, using unspecified weight for ${superset_reps} reps`)
+        // Reps and superset reps
+        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise} for ${superset_reps} reps`)
     } else if (set_weight && superset_exercise) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for unspecified reps, superset with ${superset_exercise}, using unspecified weight for unspecified reps`)
+        // Weight and only superset exercise name
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}, superset with ${superset_exercise}`)
     } else if (set_reps && superset_exercise) {
-        setContainer.insertAdjacentText("afterbegin", `Unspecified weight for ${set_reps} reps, superset with ${superset_exercise}, using unspecified weight for unspecified reps`)
+        // Weight and superset exercise name
+        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise}`)
     } else if (superset_weight && superset_reps) {
-        setContainer.insertAdjacentText("afterbegin", `Unspecified weight for unspecified reps, superset with ${superset_exercise}, using ${superset_weight} for ${superset_reps} reps`)
+        // Only superset weight and reps
+        setContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
     } else if (superset_weight) {
-        setContainer.insertAdjacentText("afterbegin", `Unspecified weight for unspecified reps, superset with ${superset_exercise}, using ${superset_weight} for unspecified reps`)
+        // Only superset weight
+        setContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise} using ${superset_weight}`)
     } else if (superset_reps) {
-        setContainer.insertAdjacentText("afterbegin", `Unspecified weight for unspecified reps, superset with ${superset_exercise}, using unspecified weight for ${superset_reps} reps`)
+        // Only superset rep
+        setContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise} for ${superset_reps} reps`)
     } else if (set_weight) {
-        setContainer.insertAdjacentText("afterbegin", `${set_weight} for unspecified reps`)
+        // Only weight
+        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}`)
     } else if (set_reps) {
-        setContainer.insertAdjacentText("afterbegin", `Unspecified weight for ${set_reps} reps`)
+        // Only reps
+        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps`)
     } else if (superset_exercise) {
-        setContainer.insertAdjacentText("afterbegin", `Unspecified weight for unspecified reps, superset with ${superset_exercise}, using unspecified weight for unspecified reps`)
+        // Only superset exercise name
+        setContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise}`)
     } else {
-        setContainer.insertAdjacentText("afterbegin", `no details given`)
+        // Only the set count (no other info was input)
+        setContainer.insertAdjacentText("afterbegin", `${sets}`)
     }
         
     
