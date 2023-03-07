@@ -3,10 +3,10 @@ const Schema = mongoose.Schema
 
 const setSchema = new Schema({
     set_weight: String,
-    set_reps: Number,
+    set_reps: [Number],
     superset_exercise: String,
     superset_weight: String,
-    superset_reps: Number,
+    superset_reps: [Number],
     comments: [String],
     sets_count: {type: Number, default: 1}
 }, {versionKey: false})
