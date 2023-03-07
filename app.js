@@ -210,36 +210,33 @@ app.route("/")
                 const exerciseIndex = existingWorkout.workouts.exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
                 // Find if a set has been done with the same weight, reps, etc.
-                const existingSet = existingWorkout.workouts.exercises[exerciseIndex].sets.find(set =>
-                    set.set_reps == set_reps &&
+                const existingWeight = existingWorkout.workouts.exercises[exerciseIndex].sets.find(set =>
                     set.set_weight == set_weight &&
                     set.superset_exercise == superset_exercise &&
-                    set.superset_weight == superset_weight &&
-                    set.superset_reps == superset_reps
+                    set.superset_weight == superset_weight
                 )
 
-                if (!existingSet) {
+                if (!existingWeight) {
                     User.findOneAndUpdate(query, { $push: { [`workouts.$.exercises.${exerciseIndex}.sets`]: newSet, [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment } }, { new: true }, (err, data) => {
                         if (err) {
                             console.log(err)
                         } else {
-                            console.log("Added new set!")
+                            console.log("Added new weight!")
                             return
                         }
                     })
                 } else {
-                    const setIndex = existingWorkout.workouts.exercises[exerciseIndex].sets.findIndex(set =>
-                        set.set_reps == set_reps &&
+                    const weightIndex = existingWorkout.workouts.exercises[exerciseIndex].sets.findIndex(set =>
                         set.set_weight == set_weight &&
                         set.superset_exercise == superset_exercise &&
-                        set.superset_weight == superset_weight &&
-                        set.superset_reps == superset_reps
+                        set.superset_weight == superset_weight
                     )
-                    User.findOneAndUpdate(query, { $inc: { [`workouts.$.exercises.${exerciseIndex}.sets.${setIndex}.sets_count`]: 1 }, $push: { [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment, [`workouts.$.exercises.${exerciseIndex}.sets.${setIndex}.comments`]: set_comment } }, { new: true }, (err, data) => {
+
+                    User.findOneAndUpdate(query, { $inc: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.sets_count`]: 1 }, $push: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps`]: set_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps`]: superset_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: set_comment } }, { new: true }, (err, data) => {
                         if (err) {
                             console.log(err)
                         } else {
-                            console.log("Updated set count!")
+                            console.log("Added new set of reps!")
                             return
                         }
                     })
