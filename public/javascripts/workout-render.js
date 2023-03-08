@@ -36,7 +36,7 @@ displayDate.addEventListener("change", () => {
     setTimeout(() => {
         // Get the date and submit a GET request to return the user's workout for that date
         const inputDate = displayDate.value
-        
+
         submitRequest(inputDate, true)
     }, 250);
 
@@ -84,12 +84,12 @@ const createExerciseContainer = (exercise) => {
 
     let exerciseComments = document.createElement("div")
     exerciseComments.classList.add("exercise-comments")
-    exerciseComments.setAttribute("id", exercise._id+"-comments")
+    exerciseComments.setAttribute("id", exercise._id + "-comments")
     exerciseContainer.appendChild(exerciseComments)
 
     let exerciseName = document.createElement("h2")
     exerciseName.classList.add("exercise-name")
-    exerciseName.setAttribute("id", exercise._id+"-name")
+    exerciseName.setAttribute("id", exercise._id + "-name")
     exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
     exerciseContainer.appendChild(exerciseName)
 
@@ -99,7 +99,7 @@ const createExerciseContainer = (exercise) => {
 }
 
 const addExerciseComments = (exercise) => {
-    let exerciseComments = document.getElementById(exercise._id+"-comments")
+    let exerciseComments = document.getElementById(exercise._id + "-comments")
     if (exercise.comments != "") {
         let existingComments = exerciseComments.querySelectorAll("li")
         existingComments.forEach(comment => comment.remove())
@@ -108,7 +108,7 @@ const addExerciseComments = (exercise) => {
             exerciseComment.textContent = comment
             exerciseComments.appendChild(exerciseComment)
         })
-        document.getElementById(exercise._id+"-name").insertAdjacentElement("afterend", exerciseComments)
+        document.getElementById(exercise._id + "-name").insertAdjacentElement("afterend", exerciseComments)
     }
 }
 
@@ -134,7 +134,7 @@ const createweightContainers = (exercise) => {
             populateweightContainers(set, weightContainer)
         }
     })
-    
+
 }
 
 const populateweightContainers = (set, weightContainer) => {
@@ -169,11 +169,13 @@ const populateweightContainers = (set, weightContainer) => {
 
     let setDetails = document.createElement("div")
     setDetails.classList.add("set-details")
-    
-    let setReps = document.createElement("p")
-    setReps.classList.add("set-reps")
-    setReps.textContent = `Reps: ${set_reps}`
-    setDetails.appendChild(setReps)
+
+    if (set_reps != "") {
+        let setReps = document.createElement("p")
+        setReps.classList.add("set-reps")
+        setReps.textContent = `Reps: ${set_reps}`
+        setDetails.appendChild(setReps)
+    }
 
     if (set.comments != "") {
         let setComments = document.createElement("ul")
@@ -193,31 +195,30 @@ const populateweightContainers = (set, weightContainer) => {
 
     if (superset_exercise) {
         setDetails.insertAdjacentText("afterend", "~ Superset with ~")
-    
 
-    let supersetExerciseAndWeight = document.createElement("div")
-    supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
+        let supersetExerciseAndWeight = document.createElement("div")
+        supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
 
-    let supersetExercise = document.createElement("h3")
-    supersetExercise.classList.add("superset-exercise")
-    supersetExercise.textContent = superset_exercise
-    supersetExerciseAndWeight.appendChild(supersetExercise)
+        let supersetExercise = document.createElement("h3")
+        supersetExercise.classList.add("superset-exercise")
+        supersetExercise.textContent = superset_exercise
+        supersetExerciseAndWeight.appendChild(supersetExercise)
 
-    let supersetWeight = document.createElement("h3")
-    supersetWeight.classList.add("superset-weight")
-    supersetWeight.textContent = superset_weight
-    supersetExerciseAndWeight.appendChild(supersetWeight)
+        let supersetWeight = document.createElement("h3")
+        supersetWeight.classList.add("superset-weight")
+        supersetWeight.textContent = superset_weight
+        supersetExerciseAndWeight.appendChild(supersetWeight)
 
-    let supersetDetails = document.createElement("div")
-    supersetDetails.classList.add("superset-details")
-    
-    let supersetReps = document.createElement("p")
-    supersetReps.classList.add("set-reps")
-    supersetReps.textContent = `Reps: ${superset_reps}`
-    supersetDetails.appendChild(supersetReps)
+        let supersetDetails = document.createElement("div")
+        supersetDetails.classList.add("superset-details")
 
-    weightContainer.appendChild(supersetExerciseAndWeight)
-    weightContainer.appendChild(supersetDetails)
+        let supersetReps = document.createElement("p")
+        supersetReps.classList.add("set-reps")
+        supersetReps.textContent = `Reps: ${superset_reps}`
+        supersetDetails.appendChild(supersetReps)
+
+        weightContainer.appendChild(supersetExerciseAndWeight)
+        weightContainer.appendChild(supersetDetails)
     }
 
     /*
@@ -284,9 +285,9 @@ const populateweightContainers = (set, weightContainer) => {
         // Only the set count (no other info was input)
         weightContainer.insertAdjacentText("afterbegin", `${sets}`)
     }
-    */   
-    
-    
-    
-    
+    */
+
+
+
+
 }
