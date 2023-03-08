@@ -183,6 +183,9 @@ app.route("/")
         ]))[0]
 
         if (!existingWorkout) {
+            if (newWorkout.exercises[0].sets[0].comments != "") {
+                newWorkout.exercises[0].sets[0].comments[0] = `Set 1: ${set_comment}`
+            }
             User.findByIdAndUpdate(id, { $push: { workouts: newWorkout } }, { new: true, _id: 0 }, (err, data) => {
                 if (err) {
                     res.status(400).send({ error: "Something went wrong" })
@@ -198,6 +201,9 @@ app.route("/")
             const existingExercise = existingWorkout.workouts.exercises.find(exercise => exercise.exercise_name == exercise_name)
 
             if (!existingExercise) {
+                if (newExercise.sets[0].comments != "") {
+                    newExercise.sets[0].comments[0] = `Set 1: ${set_comment}`
+                }
                 User.findOneAndUpdate(query, { $push: { "workouts.$.exercises": newExercise } }, { new: true }, (err, data) => {
                     if (err) {
                         console.log(err)
@@ -216,23 +222,15 @@ app.route("/")
                     set.superset_weight == superset_weight
                 )
 
-                if (!existingWeight && !set_comment) {
+                if (!existingWeight) {
+                    if (set_comment) {
+                        newSet.comments[0] = `Set 1: ${set_comment}`
+                    }
                     User.findOneAndUpdate(query, { $push: { [`workouts.$.exercises.${exerciseIndex}.sets`]: newSet, [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment } }, { new: true }, (err, data) => {
                         if (err) {
                             console.log(err)
                         } else {
-                            console.log("Added new weight and comment!")
-                            return
-                        }
-                    })
-                } else if (!existingWeight) {
-                    console.log("here!")
-                    newSet.comments[0] = `Set 1: ${set_comment}`
-                    User.findOneAndUpdate(query, { $push: { [`workouts.$.exercises.${exerciseIndex}.sets`]: newSet, [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment } }, { new: true }, (err, data) => {
-                        if (err) {
-                            console.log(err)
-                        } else {
-                            console.log("Added new weight and comment!")
+                            console.log("Added new weight!")
                             return
                         }
                     })
