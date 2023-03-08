@@ -68,10 +68,10 @@ const renderWorkout = (data, reset, date) => {
         if (!exerciseContainer) {
             createExerciseContainer(exercise)
             addExerciseComments(exercise)
-            createSetContainers(exercise)
+            createweightContainers(exercise)
         } else {
             addExerciseComments(exercise)
-            createSetContainers(exercise)
+            createweightContainers(exercise)
         }
     })
 }
@@ -112,32 +112,35 @@ const addExerciseComments = (exercise) => {
     }
 }
 
-const createSetContainers = (exercise) => {
+const createweightContainers = (exercise) => {
     exerciseContainer = document.getElementById(exercise._id)
     exercise.sets.forEach(set => {
-        let setContainer = document.getElementById(set._id)
-        if (!setContainer) {
-            setContainer = document.createElement("div")
-            setContainer.classList.add("set-container")
-            setContainer.setAttribute("id", set._id)
-            exerciseContainer.appendChild(setContainer)
-            populateSetContainers(set, setContainer)
+        let weightContainer = document.getElementById(set._id)
+        if (!weightContainer) {
+            weightContainer = document.createElement("div")
+            weightContainer.classList.add("weight-container")
+            weightContainer.setAttribute("id", set._id)
+            exerciseContainer.appendChild(weightContainer)
+            populateweightContainers(set, weightContainer)
         } else {
-            let existingDetails = setContainer.firstChild
-            let existingComments = setContainer.lastChild
-            setContainer.removeChild(existingDetails)
-            setContainer.removeChild(existingComments)
-            populateSetContainers(set, setContainer)
+            weightContainer.remove()
+            weightContainer = document.createElement("div")
+            weightContainer.classList.add("weight-container")
+            weightContainer.setAttribute("id", set._id)
+            exerciseContainer.appendChild(weightContainer)
+            //let existingComments = weightContainer.lastChild
+            //weightContainer.removeChild(existingDetails)
+            //weightContainer.removeChild(existingComments)
+            populateweightContainers(set, weightContainer)
         }
     })
     
 }
 
-const populateSetContainers = (set, setContainer) => {
+const populateweightContainers = (set, weightContainer) => {
     // Create the element that holds that set data
-    let setDescription = document.createElement("div")
-    setDescription.classList.add("set-description")
-    setDescription.setAttribute("id", set._id+"-description")
+    let setWeightAndCount = document.createElement("div")
+    setWeightAndCount.classList.add("set-weight-and-count")
 
     // Descructure all possible set variables
     let {
@@ -149,89 +152,140 @@ const populateSetContainers = (set, setContainer) => {
         sets_count
     } = set
 
+    let setWeight = document.createElement("h3")
+    setWeight.classList.add("set-weight")
+    setWeight.textContent = set_weight
+    setWeightAndCount.appendChild(setWeight)
+
+    let setCount = document.createElement("h3")
+    setCount.classList.add("set-count")
     // Get the sets count so that grammar is correct when displaying set data
     if (sets_count == 1) {
-        var sets = "1 set"
+        setCount.textContent = "1 set"
     } else if (sets_count > 1) {
-        var sets = `${sets_count} sets`
+        setCount.textContent = `${sets_count} sets`
+    }
+    setWeightAndCount.appendChild(setCount)
+
+    let setDetails = document.createElement("div")
+    setDetails.classList.add("set-details")
+    
+    let setReps = document.createElement("p")
+    setReps.classList.add("set-reps")
+    setReps.textContent = `Reps: ${set_reps}`
+    setDetails.appendChild(setReps)
+
+    if (set.comments != "") {
+        let setComments = document.createElement("ul")
+        setComments.classList.add("set-comments")
+        set.comments.forEach(comment => {
+            let newComment = document.createElement("li")
+            newComment.textContent = comment
+            setComments.appendChild(newComment)
+        })
+        setDetails.appendChild(setComments)
     }
 
+    weightContainer.appendChild(setWeightAndCount)
+    weightContainer.appendChild(setDetails)
+
+    ////////////////////////////////////
+
+    if (superset_exercise) {
+        setDetails.insertAdjacentText("afterend", "~ Superset with ~")
+    
+
+    let supersetExerciseAndWeight = document.createElement("div")
+    supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
+
+    let supersetExercise = document.createElement("h3")
+    supersetExercise.classList.add("superset-exercise")
+    supersetExercise.textContent = superset_exercise
+    supersetExerciseAndWeight.appendChild(supersetExercise)
+
+    let supersetWeight = document.createElement("h3")
+    supersetWeight.classList.add("superset-weight")
+    supersetWeight.textContent = superset_weight
+    supersetExerciseAndWeight.appendChild(supersetWeight)
+
+    let supersetDetails = document.createElement("div")
+    supersetDetails.classList.add("superset-details")
+    
+    let supersetReps = document.createElement("p")
+    supersetReps.classList.add("set-reps")
+    supersetReps.textContent = `Reps: ${superset_reps}`
+    supersetDetails.appendChild(supersetReps)
+
+    weightContainer.appendChild(supersetExerciseAndWeight)
+    weightContainer.appendChild(supersetDetails)
+    }
+
+    /*
     // MAYBE ADD A RADIO OPTION FOR SIMPLE VS DESCRIPTIVE DISPLAY (SIMPLE WOULD BE <WEIGHT: XX, REPS: XX, ETC.>)
 
     if (set_weight && set_reps && superset_weight && superset_reps) {
         // All form inputs
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
     } else if (set_weight && set_reps && superset_weight) {
         // Weight, reps, and superset weight (anywhere with superset weight/reps will have the exercise name)
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for unspecified reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for unspecified reps`)
     } else if (set_weight && set_reps && superset_reps) {
         // Weight, reps, and superset reps
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using unspecified weight for ${superset_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise} using unspecified weight for ${superset_reps} reps`)
     } else if (set_weight && superset_weight && superset_reps) {
         // Weight, superset weight, and superset reps
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for unspecified reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for unspecified reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
     } else if (set_reps && superset_weight && superset_reps) {
         // Reps, superset weight, and superset reps
-        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
     } else if (set_weight && set_reps && superset_exercise) {
         // Weight, reps, and only superset exercise name
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise}`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps, superset with ${superset_exercise}`)
     } else if (set_weight && set_reps) {
         // Only weight and reps
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight} for ${set_reps} reps`)
     } else if (set_weight && superset_weight) {
         // Weight and superset weight
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}, superset with ${superset_exercise} using ${superset_weight}`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}, superset with ${superset_exercise} using ${superset_weight}`)
     } else if (set_weight && superset_reps) {
         // Weight and superset reps
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}, superset with ${superset_exercise} for ${superset_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}, superset with ${superset_exercise} for ${superset_reps} reps`)
     } else if (set_reps && superset_weight) {
         // Reps and superset weight
-        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight}`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise} using ${superset_weight}`)
     } else if (set_reps && superset_reps) {
         // Reps and superset reps
-        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise} for ${superset_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise} for ${superset_reps} reps`)
     } else if (set_weight && superset_exercise) {
         // Weight and only superset exercise name
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}, superset with ${superset_exercise}`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}, superset with ${superset_exercise}`)
     } else if (set_reps && superset_exercise) {
         // Weight and superset exercise name
-        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise}`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps, superset with ${superset_exercise}`)
     } else if (superset_weight && superset_reps) {
         // Only superset weight and reps
-        setContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise} using ${superset_weight} for ${superset_reps} reps`)
     } else if (superset_weight) {
         // Only superset weight
-        setContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise} using ${superset_weight}`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise} using ${superset_weight}`)
     } else if (superset_reps) {
         // Only superset rep
-        setContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise} for ${superset_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise} for ${superset_reps} reps`)
     } else if (set_weight) {
         // Only weight
-        setContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} using ${set_weight}`)
     } else if (set_reps) {
         // Only reps
-        setContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} of ${set_reps} reps`)
     } else if (superset_exercise) {
         // Only superset exercise name
-        setContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise}`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets} superset with ${superset_exercise}`)
     } else {
         // Only the set count (no other info was input)
-        setContainer.insertAdjacentText("afterbegin", `${sets}`)
+        weightContainer.insertAdjacentText("afterbegin", `${sets}`)
     }
-        
+    */   
     
-    setContainer.appendChild(setDescription)
-
-    let setComments = document.createElement("div")
-    setComments.classList.add("set-comments")
-    setComments.setAttribute("id", set._id+"-comments")
-    set.comments.forEach(comment => {
-        let newComment = document.createElement("li")
-        newComment.textContent = comment
-        setComments.appendChild(newComment)
-    })
-    setContainer.appendChild(setComments)
     
     
     
