@@ -216,12 +216,23 @@ app.route("/")
                     set.superset_weight == superset_weight
                 )
 
-                if (!existingWeight) {
+                if (!existingWeight && !set_comment) {
                     User.findOneAndUpdate(query, { $push: { [`workouts.$.exercises.${exerciseIndex}.sets`]: newSet, [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment } }, { new: true }, (err, data) => {
                         if (err) {
                             console.log(err)
                         } else {
-                            console.log("Added new weight!")
+                            console.log("Added new weight and comment!")
+                            return
+                        }
+                    })
+                } else if (!existingWeight) {
+                    console.log("here!")
+                    newSet.comments[0] = `Set 1: ${set_comment}`
+                    User.findOneAndUpdate(query, { $push: { [`workouts.$.exercises.${exerciseIndex}.sets`]: newSet, [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment } }, { new: true }, (err, data) => {
+                        if (err) {
+                            console.log(err)
+                        } else {
+                            console.log("Added new weight and comment!")
                             return
                         }
                     })
@@ -231,15 +242,27 @@ app.route("/")
                         set.superset_exercise == superset_exercise &&
                         set.superset_weight == superset_weight
                     )
-
-                    User.findOneAndUpdate(query, { $inc: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.sets_count`]: 1 }, $push: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps`]: set_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps`]: superset_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: set_comment } }, { new: true }, (err, data) => {
-                        if (err) {
-                            console.log(err)
-                        } else {
-                            console.log("Added new set of reps!")
-                            return
-                        }
-                    })
+                    if (!set_comment) {
+                        User.findOneAndUpdate(query, { $inc: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.sets_count`]: 1 }, $push: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps`]: set_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps`]: superset_reps } }, { new: true }, (err, data) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log("Added new set of reps!")
+                                return
+                            }
+                        })
+                    } else {
+                        let count = existingWeight.sets_count + 1
+                        User.findOneAndUpdate(query, { $inc: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.sets_count`]: 1 }, $push: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps`]: set_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps`]: superset_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: `Set ${count}: ${set_comment}` } }, { new: true }, (err, data) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log("Added new set of reps and comment!")
+                                return
+                            }
+                        })
+                    }
+                    
                 }
             }
         }
