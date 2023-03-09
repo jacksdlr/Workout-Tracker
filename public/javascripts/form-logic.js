@@ -35,6 +35,9 @@ const toggleVisibility = () => {
 
 const populate = () => {
     inputDate.value = sessionStorage.getItem("date")
+    if (inputDate.value == "") {
+        inputDate.value = new Date().toISOString().split("T")[0]
+    }
     inputExercise.value = sessionStorage.getItem("exercise_name")
     inputWeight.value = sessionStorage.getItem("set_weight")
     if (sessionStorage.getItem("set_weight_unit") == "kg") {
