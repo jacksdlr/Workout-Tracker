@@ -43,7 +43,7 @@ const populate = () => {
     if (sessionStorage.getItem("set_weight_unit") == "kg") {
         inputWeightKg.setAttribute("selected", "selected")
         inputWeightLbs.removeAttribute("selected")
-    } else {
+    } else if (sessionStorage.getItem("set_weight_unit") == "lbs") {
         inputWeightKg.removeAttribute("selected")
         inputWeightLbs.setAttribute("selected", "selected")
     }
