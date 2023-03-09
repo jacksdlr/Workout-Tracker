@@ -54,7 +54,6 @@ const checkNotAuthenticated = (req, res, next) => {
 
 // Routes
 
-
 // LOGIN/SIGNUP PAGE ROUTES
 app.route("/login")
     .get(checkNotAuthenticated, (req, res) => {
@@ -115,13 +114,8 @@ app.route("/logout")
 // WORKOUT CREATION ROUTES
 app.route("/")
     .get(checkAuthenticated, (req, res) => {
-        const { id, username } = req.user
-        
-        let date = new Date().toISOString().split("T")[0]
-        res.render("index", {
-            date,
-            username
-        })
+        const { username } = req.user
+        res.render("index", { username })
     })
     .post(checkAuthenticated, async (req, res) => {
         // Get user's MongoDB _id from passport
