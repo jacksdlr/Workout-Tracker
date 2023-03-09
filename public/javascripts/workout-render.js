@@ -13,6 +13,7 @@ const submitRequest = (date, reset) => {
             console.log(JSON.stringify(JSON.parse(this.response), null, 4))
             renderWorkout(JSON.parse(this.response), reset, date)
             toggleVisibility()
+            populate()
             return
         } else {
             renderWorkout("not found", reset, date)
@@ -34,7 +35,9 @@ form.addEventListener("submit", () => {
         // Get the date and submit a GET request to return the user's workout for that date
         const inputDate = document.getElementById("workout-input").value
         submitRequest(inputDate, true)
+        
     }, 250);
+    
 })
 
 displayDate.addEventListener("change", () => {
