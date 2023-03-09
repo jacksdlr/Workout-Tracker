@@ -13,7 +13,7 @@ block content
             form#exercise-form.form(action='/' method='POST')
                 .input-container
                     label(for='workout-input') Workout date:
-                    input#workout-input(type='date' name='date' required='true' value=date)
+                    input#workout-input(type='date' name='date' required='true')
                 .input-container
                     label(for='exercise-input') Exercise:
                     input#exercise-input(type='text' name='exercise_name' required='true' )
@@ -47,4 +47,4 @@ block content
         .workout-container
             .workout-title
                 h1#workout-name Workout for:
-                input#display-date(type='date' value=date)
+                input#display-date(type='date')
