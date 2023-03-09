@@ -1,3 +1,4 @@
+const inputDate = document.getElementById("workout-input")
 const inputExercise = document.getElementById("exercise-input")
 const inputWeight = document.getElementById("weight-input")
 const inputWeightUnit = document.getElementById("weight-unit")
@@ -11,8 +12,6 @@ const inputSupersetWeightUnit = document.getElementById("superset-weight-unit")
 const inputSupersetWeightKg = document.getElementById("superset-weight-kg")
 const inputSupersetWeightLbs = document.getElementById("superset-weight-lbs")
 const inputSupersetReps = document.getElementById("superset-reps-input")
-// Checks for changes in the superset checkbox
-
 
 const toggleVisibility = () => {
     const supersetInputContainers = document.querySelectorAll(".superset-input-container")
@@ -35,66 +34,70 @@ const toggleVisibility = () => {
 }
 
 const populate = () => {
-    inputExercise.value = localStorage.getItem("exercise_name")
-    inputWeight.value = localStorage.getItem("set_weight")
-    if (localStorage.getItem("set_weight_unit") == "kg") {
+    inputDate.value = sessionStorage.getItem("date")
+    inputExercise.value = sessionStorage.getItem("exercise_name")
+    inputWeight.value = sessionStorage.getItem("set_weight")
+    if (sessionStorage.getItem("set_weight_unit") == "kg") {
         inputWeightKg.setAttribute("selected", "selected")
         inputWeightLbs.removeAttribute("selected")
     } else {
         inputWeightKg.removeAttribute("selected")
         inputWeightLbs.setAttribute("selected", "selected")
     }
-    inputReps.value = localStorage.getItem("set_reps")
-    if (localStorage.getItem("superset") == "true") {
+    inputReps.value = sessionStorage.getItem("set_reps")
+    if (sessionStorage.getItem("superset") == "true") {
         supersetCheckbox.checked = "on"
     } else {
         supersetCheckbox.removeAttribute("checked")
-        localStorage.setItem("superset_exercise", "")
-        localStorage.setItem("superset_weight", "")
-        localStorage.setItem("superset_weight_unit", "kg")
-        localStorage.setItem("superset_reps", "")
+        sessionStorage.setItem("superset_exercise", "")
+        sessionStorage.setItem("superset_weight", "")
+        sessionStorage.setItem("superset_weight_unit", "kg")
+        sessionStorage.setItem("superset_reps", "")
     }
-    inputSupersetExercise.value = localStorage.getItem("superset_exercise")
-    inputSupersetWeight.value = localStorage.getItem("superset_weight")
-    if (localStorage.getItem("superset_weight_unit") == "kg") {
+    inputSupersetExercise.value = sessionStorage.getItem("superset_exercise")
+    inputSupersetWeight.value = sessionStorage.getItem("superset_weight")
+    if (sessionStorage.getItem("superset_weight_unit") == "kg") {
         inputSupersetWeightKg.setAttribute("selected", "selected")
         inputSupersetWeightLbs.removeAttribute("selected")
     } else {
         inputSupersetWeightKg.removeAttribute("selected")
         inputSupersetWeightLbs.setAttribute("selected", "selected")
     }
-    inputSupersetReps.value = localStorage.getItem("superset_reps")
+    inputSupersetReps.value = sessionStorage.getItem("superset_reps")
 
-    console.log(localStorage)
-    console.log("at least I made it here")
     toggleVisibility()
 }
 
+populate()
+
+inputDate.addEventListener("change", () => {
+    sessionStorage.setItem("date", inputDate.value)
+})
 inputExercise.addEventListener("change", () => {
-    localStorage.setItem("exercise_name", inputExercise.value)
+    sessionStorage.setItem("exercise_name", inputExercise.value)
 })
 inputWeight.addEventListener("change", () => {
-    localStorage.setItem("set_weight", inputWeight.value)
+    sessionStorage.setItem("set_weight", inputWeight.value)
 })
 inputWeightUnit.addEventListener("change", () => {
-    localStorage.setItem("set_weight_unit", inputWeightUnit.value)
+    sessionStorage.setItem("set_weight_unit", inputWeightUnit.value)
 })
 inputReps.addEventListener("change", () => {
-    localStorage.setItem("set_reps", inputReps.value)
+    sessionStorage.setItem("set_reps", inputReps.value)
 })
 supersetCheckbox.addEventListener("change", () => {
     toggleVisibility()
-    localStorage.setItem("superset", supersetCheckbox.checked)
+    sessionStorage.setItem("superset", supersetCheckbox.checked)
 })
 inputSupersetExercise.addEventListener("change", () => {
-    localStorage.setItem("superset_exercise", inputSupersetExercise.value)
+    sessionStorage.setItem("superset_exercise", inputSupersetExercise.value)
 })
 inputSupersetWeight.addEventListener("change", () => {
-    localStorage.setItem("superset_weight", inputSupersetWeight.value)
+    sessionStorage.setItem("superset_weight", inputSupersetWeight.value)
 })
 inputSupersetWeightUnit.addEventListener("change", () => {
-    localStorage.setItem("superset_weight_unit", inputSupersetWeightUnit.value)
+    sessionStorage.setItem("superset_weight_unit", inputSupersetWeightUnit.value)
 })
 inputSupersetReps.addEventListener("change", () => {
-    localStorage.setItem("superset_reps", inputSupersetReps.value)
+    sessionStorage.setItem("superset_reps", inputSupersetReps.value)
 })
