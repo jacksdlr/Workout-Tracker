@@ -34,25 +34,6 @@ const toggleVisibility = () => {
     }
 }
 
-
-
-/*
-const store = () => {
-    //var inputWeightUnit
-    // do the superset stuff too
-    localStorage.setItem("exercise_name", inputExercise.value)
-    localStorage.setItem("set_weight", inputWeight.value)
-    localStorage.setItem("set_weight_unit", inputWeightUnit.value)
-    localStorage.setItem("set_reps", inputReps.value)
-    localStorage.setItem("superset", supersetCheckbox.checked)
-    localStorage.setItem("superset_exercise", inputSupersetExercise.value)
-    localStorage.setItem("superset_weight", inputSupersetWeight.value)
-    localStorage.setItem("superset_weight_unit", inputSupersetWeightUnit.value)
-    localStorage.setItem("superset_reps", inputSupersetReps.value)
-
-    console.log(localStorage)
-}*/
-
 const populate = () => {
     inputExercise.value = localStorage.getItem("exercise_name")
     inputWeight.value = localStorage.getItem("set_weight")
