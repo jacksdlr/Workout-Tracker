@@ -2,8 +2,8 @@ const xhttp = new XMLHttpRequest()
 
 const form = document.getElementById("exercise-form")
 const workoutContainer = document.querySelector(".workout-container")
-const displayDate = document.getElementById("display-date")
-document.getElementById("workout-input").value = new Date().toISOString().split("T")[0]
+let displayDate = document.getElementById("display-date")
+let inputDate = document.getElementById("workout-input")
 
 const submitRequest = (date, reset) => {
     xhttp.open("GET", "/workouts/" + date)
@@ -11,31 +11,35 @@ const submitRequest = (date, reset) => {
     xhttp.onload = function () {
         if (this.response) {
             console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-            renderWorkout(JSON.parse(this.response), reset)
+            renderWorkout(JSON.parse(this.response), reset, date)
+            toggleVisibility()
             return
         } else {
-            renderWorkout("not found", true, date)
+            renderWorkout("not found", reset, date)
+            toggleVisibility()
             return
         }
     }
 }
 
-submitRequest(new Date().toISOString().split("T")[0])
+let dateToSend = inputDate.value
+if (dateToSend == "") {
+    dateToSend = new Date().toISOString().split("T")[0]
+}
+
+submitRequest(dateToSend)
 
 form.addEventListener("submit", () => {
     setTimeout(() => {
         // Get the date and submit a GET request to return the user's workout for that date
         const inputDate = document.getElementById("workout-input").value
-        submitRequest(inputDate)
-        resetComments()
+        submitRequest(inputDate, true)
     }, 250);
-
 })
 
 displayDate.addEventListener("change", () => {
     setTimeout(() => {
         const inputDate = displayDate.value
-
         submitRequest(inputDate, true)
     }, 250);
 
@@ -61,6 +65,7 @@ const renderWorkout = (data, reset, date) => {
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
         existingContainers.forEach(container => container.remove())
     }
+    inputDate.value = dateToSend
     displayDate.value = data.date
     data.exercises.forEach(exercise => {
         let exerciseContainer = document.getElementById(exercise._id)

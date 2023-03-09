@@ -26,7 +26,7 @@ const app = express();
 app.set("view engine", "pug")
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use("/", bodyParser.json())
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use("/public", express.static(process.cwd() + "/public"))
 app.use(flash())
@@ -53,10 +53,7 @@ const checkNotAuthenticated = (req, res, next) => {
 } // PUT THIS ANYWHERE THAT A LOGGED IN USER SHOULD NOT BE VISITING (login page, etc.)
 
 // Routes
-app.route("/")
-    .get(checkAuthenticated, (req, res) => {
-        res.render("index", { username: req.user.username })
-    })
+
 
 // LOGIN/SIGNUP PAGE ROUTES
 app.route("/login")
@@ -117,10 +114,40 @@ app.route("/logout")
 
 // WORKOUT CREATION ROUTES
 app.route("/")
-    /*.get(checkAuthenticated, (req, res) => {
-        const {id} = req.user
-    }) <-- GET ALL USER WORKOUTS??? */
-    .post(checkAuthenticated, async (req, res) => {
+    .get(checkAuthenticated, (req, res) => {
+        const { id, username } = req.user
+        let {
+            date,
+            exercise_name,
+            set_weight,
+            kg,
+            lbs,
+            set_reps,
+            superset,
+            superset_exercise,
+            superset_weight,
+            sskg,
+            sslbs,
+            superset_reps
+        } = inputs
+        res.render("index", {
+            date,
+            username,
+            exercise_name,
+            set_weight,
+            kg,
+            lbs,
+            set_reps,
+            superset,
+            superset_exercise,
+            superset_weight,
+            sskg,
+            sslbs,
+            superset_reps
+        })
+        resetInputs()
+    })
+    .post(checkAuthenticated, async (req, res, next) => {
         // Get user's MongoDB _id from passport
         const { id, username } = req.user
         // Get form inputs
@@ -149,12 +176,37 @@ app.route("/")
             superset_reps
         } = variables
 
+        if (set_weight_unit == "kg") {
+            var kg = "selected"
+        } else {
+            var lbs = "selected"
+        }
+
+        if (superset_weight_unit == "kg") {
+            var sskg = "selected"
+        } else {
+            var sslbs = "selected"
+        }
+
         // Suffix the weight unit from form if exercise weight has been given
         if (set_weight) {
             set_weight = `${set_weight}${set_weight_unit}`
         }
         if (superset_weight) {
             superset_weight = `${superset_weight}${superset_weight_unit}`
+        }
+
+        if (!set_reps) {
+            set_reps = "?"
+        }
+
+        if (req.body.superset == "on") {
+            var superset = true
+            if (!superset_reps) {
+                superset_reps = "?"
+            }
+        } else {
+            var superset = false
         }
 
         // Define set, exercise, and workout objects for database
@@ -191,7 +243,19 @@ app.route("/")
                     res.status(400).send({ error: "Something went wrong" })
                 } else {
                     console.log("Added new workout!") // !!! ENDS HERE !!!
-                    return
+                    inputs.date = date
+                    inputs.exercise_name = exercise_name
+                    inputs.set_weight = req.body.set_weight
+                    inputs.kg = kg
+                    inputs.lbs = lbs
+                    inputs.set_reps = set_reps
+                    inputs.superset = superset
+                    inputs.superset_exercise = superset_exercise
+                    inputs.superset_weight = req.body.superset_weight
+                    inputs.sskg = sskg
+                    inputs.sslbs = sslbs
+                    inputs.superset_reps = superset_reps
+                    res.redirect("/")
                 }
             })
         } else {
@@ -209,7 +273,19 @@ app.route("/")
                         console.log(err)
                     } else {
                         console.log("Added new exercise!")
-                        return
+                        inputs.date = date
+                        inputs.exercise_name = exercise_name
+                        inputs.set_weight = req.body.set_weight
+                        inputs.kg = kg
+                        inputs.lbs = lbs
+                        inputs.set_reps = set_reps
+                        inputs.superset = superset
+                        inputs.superset_exercise = superset_exercise
+                        inputs.superset_weight = req.body.superset_weight
+                        inputs.sskg = sskg
+                        inputs.sslbs = sslbs
+                        inputs.superset_reps = superset_reps
+                        res.redirect("/")
                     }
                 })
             } else {
@@ -231,7 +307,19 @@ app.route("/")
                             console.log(err)
                         } else {
                             console.log("Added new weight!")
-                            return
+                            inputs.date = date
+                            inputs.exercise_name = exercise_name
+                            inputs.set_weight = req.body.set_weight
+                            inputs.kg = kg
+                            inputs.lbs = lbs
+                            inputs.set_reps = set_reps
+                            inputs.superset = superset
+                            inputs.superset_exercise = superset_exercise
+                            inputs.superset_weight = req.body.superset_weight
+                            inputs.sskg = sskg
+                            inputs.sslbs = sslbs
+                            inputs.superset_reps = superset_reps
+                            res.redirect("/")
                         }
                     })
                 } else {
@@ -246,7 +334,19 @@ app.route("/")
                                 console.log(err)
                             } else {
                                 console.log("Added new set of reps!")
-                                return
+                                inputs.date = date
+                                inputs.exercise_name = exercise_name
+                                inputs.set_weight = req.body.set_weight
+                                inputs.kg = kg
+                                inputs.lbs = lbs
+                                inputs.set_reps = set_reps
+                                inputs.superset = superset
+                                inputs.superset_exercise = superset_exercise
+                                inputs.superset_weight = req.body.superset_weight
+                                inputs.sskg = sskg
+                                inputs.sslbs = sslbs
+                                inputs.superset_reps = superset_reps
+                                res.redirect("/")
                             }
                         })
                     } else {
@@ -256,7 +356,19 @@ app.route("/")
                                 console.log(err)
                             } else {
                                 console.log("Added new set of reps and comment!")
-                                return
+                                inputs.date = date
+                                inputs.exercise_name = exercise_name
+                                inputs.set_weight = req.body.set_weight
+                                inputs.kg = kg
+                                inputs.lbs = lbs
+                                inputs.set_reps = set_reps
+                                inputs.superset = superset
+                                inputs.superset_exercise = superset_exercise
+                                inputs.superset_weight = req.body.superset_weight
+                                inputs.sskg = sskg
+                                inputs.sslbs = sslbs
+                                inputs.superset_reps = superset_reps
+                                res.redirect("/")
                             }
                         })
                     }
@@ -277,3 +389,34 @@ app.route("/workouts/:date")
 const port = 3000
 
 app.listen(port, console.log(`App is listening on port ${port}...`))
+
+// COULD THIS CAUSE AN ISSUE WHEN MULTIPLE USERS ARE USING AT THE SAME TIME?
+let inputs = {
+    date: "",
+    exercise_name: "",
+    set_weight: "",
+    kg: "selected",
+    lbs: undefined,
+    set_reps: "",
+    superset: false,
+    superset_exercise: "",
+    superset_weight: "",
+    sskg: "selected",
+    sslbs: undefined,
+    superset_reps: null
+}
+
+const resetInputs = () => {
+    inputs.date = new Date().toISOString().split("T")[0]
+    inputs.exercise_name = ""
+    inputs.set_weight = ""
+    inputs.kg = "selected"
+    inputs.lbs = undefined
+    inputs.set_reps = ""
+    inputs.superset = false
+    inputs.superset_exercise = ""
+    inputs.superset_weight = ""
+    inputs.sskg = "selected"
+    inputs.sslbs = undefined
+    inputs.superset_reps = null
+}
