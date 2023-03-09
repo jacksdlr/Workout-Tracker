@@ -2,8 +2,11 @@ const xhttp = new XMLHttpRequest()
 
 const form = document.getElementById("exercise-form")
 const workoutContainer = document.querySelector(".workout-container")
-let displayDate = document.getElementById("display-date")
-let inputDate = document.getElementById("workout-input")
+const displayDate = document.getElementById("display-date")
+
+if (inputDate.value == "") {
+    inputDate.value = new Date().toISOString().split("T")[0]
+}
 
 const submitRequest = (date, reset) => {
     xhttp.open("GET", "/workouts/" + date)
@@ -23,27 +26,20 @@ const submitRequest = (date, reset) => {
     }
 }
 
-let dateToSend = inputDate.value
-if (dateToSend == "") {
-    dateToSend = new Date().toISOString().split("T")[0]
-}
-
-submitRequest(dateToSend)
+submitRequest(inputDate.value)
 
 form.addEventListener("submit", () => {
     setTimeout(() => {
         // Get the date and submit a GET request to return the user's workout for that date
-        const inputDate = document.getElementById("workout-input").value
-        submitRequest(inputDate, true)
-        
+        console.log(inputDate.value)
+        submitRequest(inputDate.value, true)
     }, 250);
     
 })
 
 displayDate.addEventListener("change", () => {
     setTimeout(() => {
-        const inputDate = displayDate.value
-        submitRequest(inputDate, true)
+        submitRequest(displayDate.value, true)
     }, 250);
 
 })
@@ -68,8 +64,7 @@ const renderWorkout = (data, reset, date) => {
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
         existingContainers.forEach(container => container.remove())
     }
-    inputDate.value = dateToSend
-    displayDate.value = data.date
+    displayDate.value = date
     data.exercises.forEach(exercise => {
         let exerciseContainer = document.getElementById(exercise._id)
         if (!exerciseContainer) {
