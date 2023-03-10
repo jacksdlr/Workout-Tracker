@@ -2,6 +2,7 @@ const xhttp = new XMLHttpRequest()
 
 const form = document.getElementById("exercise-form")
 const workoutContainer = document.querySelector(".workout-exercises")
+const workoutTitle = document.getElementById("workout-name")
 const displayDate = document.getElementById("display-date")
 
 if (inputDate.value == "") {
@@ -46,8 +47,13 @@ displayDate.addEventListener("change", () => {
 
 const renderWorkout = (data, reset, date) => {
     let notFound = document.getElementById("not-found")
+    let dateToRemove = document.getElementById("date")
+    workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString()}</p>`)
     if (notFound) {
         notFound.remove()
+    }
+    if (dateToRemove) {
+        dateToRemove.remove()
     }
     if (data == "not found") {
         notFound = document.createElement("p")
