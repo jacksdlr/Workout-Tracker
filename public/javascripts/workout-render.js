@@ -1,7 +1,7 @@
 const xhttp = new XMLHttpRequest()
 
 const form = document.getElementById("exercise-form")
-const workoutContainer = document.querySelector(".workout-container")
+const workoutContainer = document.querySelector(".workout-exercises")
 const displayDate = document.getElementById("display-date")
 
 if (inputDate.value == "") {
@@ -34,7 +34,7 @@ form.addEventListener("submit", () => {
         console.log(inputDate.value)
         submitRequest(inputDate.value, true)
     }, 250);
-    
+
 })
 
 displayDate.addEventListener("change", () => {
