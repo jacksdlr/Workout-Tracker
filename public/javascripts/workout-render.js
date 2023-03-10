@@ -192,7 +192,7 @@ const populateweightContainers = (set, weightContainer) => {
     weightContainer.appendChild(setDetails)
 
     if (superset_exercise) {
-        setDetails.insertAdjacentText("afterend", "~ Superset with ~")
+        setDetails.insertAdjacentHTML("afterend", "<p id='superset-text'>~ Superset with ~</p>")
 
         let supersetExerciseAndWeight = document.createElement("div")
         supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
