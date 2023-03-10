@@ -5,17 +5,17 @@ head
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   block scripts
   block styles
-    link(rel='stylesheet' href='/public/styles/layout.css')
+  link(rel='stylesheet' href='/public/styles/layout.css')
   title Workout Tracker
 body
     header
-        .header
-            .login-container
-                if !username
-                    a(href='/login' value='login') Login / Signup
-                else
-                    p Hi, #{username}
-                    a(href='/logout' value='logout') Logout
+        h1#logo Logo
+        .login-container
+            if !username
+                a(href='/login' value='login') Login / Signup
+            else
+                p Hi, #{username} |
+                a(href='/logout' value='logout') Logout
     block content
 
     footer
