@@ -84,10 +84,12 @@ const createExerciseContainer = (exercise) => {
     exerciseContainer.setAttribute("id", exercise._id)
     workoutContainer.appendChild(exerciseContainer)
 
+    if (exercise.comments != "") {
     let exerciseComments = document.createElement("div")
     exerciseComments.classList.add("exercise-comments")
     exerciseComments.setAttribute("id", exercise._id + "-comments")
     exerciseContainer.appendChild(exerciseComments)
+    }
 
     let exerciseName = document.createElement("h2")
     exerciseName.classList.add("exercise-name")
