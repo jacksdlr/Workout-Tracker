@@ -28,10 +28,42 @@
     .workout-exercises {
         display: flex;
         overflow-x: scroll;
+        height: 100%;
     }
         .exercise-container {
+            display: flex;
+            flex-direction: column;
+            width: 250px;
             min-width: 250px;
+            margin: 5px;
         }
+            .exercise-name {
+                padding: 5px;
+                border-bottom: 1px solid black;
+            }
+            .weight-container {
+                margin: 5px;
+                text-align: center;
+            }
+                .set-weight-and-count {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 5px;
+                }
+                .set-details {
+                    margin: 0 5px 0 5px;
+                    text-align: left;
+                }
+                .superset-exercise-and-weight {
+                    margin: 0 5px 0 5px;
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 5px;
+                }
+                .superset-details {
+                    margin: 0 10px 0 10px;
+                    text-align: left;
+                }
 
 #main-section .form {
     display: flex;
