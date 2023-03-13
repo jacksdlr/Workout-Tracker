@@ -179,7 +179,14 @@ const populateweightContainers = (set, weightContainer) => {
     if (set_reps != "") {
         let setReps = document.createElement("p")
         setReps.classList.add("set-reps")
-        setReps.textContent = `Reps: ${set_reps}`
+        setReps.textContent = `Reps: `
+        set_reps.forEach((set, index) => {
+            if (index != set_reps.length-1) {
+                setReps.insertAdjacentText("beforeend", `${set}, `)
+            } else {
+                setReps.insertAdjacentText("beforeend", set)
+            }
+        })
         setDetails.appendChild(setReps)
     }
 
@@ -203,12 +210,12 @@ const populateweightContainers = (set, weightContainer) => {
         let supersetExerciseAndWeight = document.createElement("div")
         supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
 
-        let supersetExercise = document.createElement("h3")
+        let supersetExercise = document.createElement("h4")
         supersetExercise.classList.add("superset-exercise")
         supersetExercise.textContent = superset_exercise
         supersetExerciseAndWeight.appendChild(supersetExercise)
 
-        let supersetWeight = document.createElement("h3")
+        let supersetWeight = document.createElement("h4")
         supersetWeight.classList.add("superset-weight")
         supersetWeight.textContent = superset_weight
         supersetExerciseAndWeight.appendChild(supersetWeight)
@@ -218,10 +225,18 @@ const populateweightContainers = (set, weightContainer) => {
 
         let supersetReps = document.createElement("p")
         supersetReps.classList.add("set-reps")
-        supersetReps.textContent = `Reps: ${superset_reps}`
+        supersetReps.textContent = `Reps: `
+        superset_reps.forEach((set, index) => {
+            if (index != superset_reps.length-1) {
+                supersetReps.insertAdjacentText("beforeend", `${set}, `)
+            } else {
+                supersetReps.insertAdjacentText("beforeend", set)
+            }
+        })
         supersetDetails.appendChild(supersetReps)
 
         weightContainer.appendChild(supersetExerciseAndWeight)
         weightContainer.appendChild(supersetDetails)
     }
 }
+
