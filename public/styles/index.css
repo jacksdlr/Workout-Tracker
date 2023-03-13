@@ -4,7 +4,6 @@
     gap: 10px;
     align-content: stretch;
     height: 100%;
-    background-color:grey;
 }
 
 .form-container {
@@ -14,6 +13,7 @@
 }
 
 .workout-container {
+    border: 1px solid black;
     display: flex;
     flex-direction: column;
     flex: 7 1 auto;
@@ -21,16 +21,25 @@
     
 }
     .workout-title {
+        border: 1px solid black;
         display: flex;
         justify-content: space-between;
-        padding: 5px;
+        padding: 10px;
     }
+        #workout-name {
+            display: flex;
+            gap: 5px;
+        }
     .workout-exercises {
         display: flex;
         overflow-x: scroll;
         height: 100%;
     }
+        #not-found {
+            padding: 10px;
+        }
         .exercise-container {
+            border: 1px solid black;
             display: flex;
             flex-direction: column;
             width: 250px;
@@ -41,49 +50,68 @@
                 padding: 5px;
                 border-bottom: 1px solid black;
             }
+            .exercise-comments {
+                border: 1px solid black;
+                margin: 0 5px 0 5px;
+                list-style-type: square;
+                padding: 5px;
+            }
             .weight-container {
                 margin: 5px;
                 text-align: center;
             }
                 .set-weight-and-count {
+                    border: 1px solid black;
                     display: flex;
                     justify-content: space-between;
                     padding: 5px;
                 }
                 .set-details {
+                    border: 1px solid black;
                     margin: 0 5px 0 5px;
                     text-align: left;
+                    padding: 5px;
+                }
+                    .set-comments {
+                        border: 1px solid black;
+                        margin-top: 5px;
+                        padding: 5px;
+                        list-style-type: none;
+                    }
+                #superset-text {
+                    border-left: 1px dashed green;
+                    border-right: 1px dashed green;
+                    margin: 0 5px 0 5px;
                 }
                 .superset-exercise-and-weight {
+                    border: 1px solid black;
                     margin: 0 5px 0 5px;
                     display: flex;
                     justify-content: space-between;
                     padding: 5px;
                 }
                 .superset-details {
+                    border: 1px solid black;
                     margin: 0 10px 0 10px;
                     text-align: left;
+                    padding: 5px;
                 }
 
-#main-section .form {
+.form {
     display: flex;
     flex-direction: column;
     gap: 10px;
     border: 1px solid black;
 }
 
-#main-section .form .input-container {
+.input-container {
     display: flex;
 }
 
-#main-section .form #superset-check {
+#superset-check {
     display: inline;
 }
 
-#main-section .form .superset-input-container {
+.superset-input-container {
     padding: 5px 0px 5px 25px;
-}
-
-.workout-container div {
-    border: 1px solid black;
 }
