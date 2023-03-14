@@ -82,11 +82,19 @@ const renderWorkout = (data, reset, date) => {
             createweightContainers(exercise)
         }
     })
-    $(".set-weight-and-count").click(function () {
+    $(".set-weight-and-count").click(() => {
         $header = $(this)
         $content = $header.next()
         $content.slideToggle(500)
     })
+    // Collapsible exercise containers for mobile (probably change 960)
+    if ($(window).width < 960) {
+        $(".exercise-name").click(() => {
+            $header = $(this)
+            $content = $header.nextAll()
+            $content.slideToggle(500)
+        })
+    }
 }
 
 const createExerciseContainer = (exercise) => {
@@ -127,6 +135,8 @@ const addExerciseComments = (exercise) => {
 
 const createweightContainers = (exercise) => {
     exerciseContainer = document.getElementById(exercise._id)
+    //let allWeightsContainer = document.createElement("div")
+    //allWeightsContainer.
     exercise.sets.forEach(set => {
         let weightContainer = document.getElementById(set._id)
         if (!weightContainer) {
@@ -195,16 +205,7 @@ const populateweightContainers = (set, weightContainer) => {
         setDetails.appendChild(setReps)
     }
 
-    if (set.comments != "") {
-        let setComments = document.createElement("ul")
-        setComments.classList.add("set-comments")
-        set.comments.forEach(comment => {
-            let newComment = document.createElement("li")
-            newComment.textContent = comment
-            setComments.appendChild(newComment)
-        })
-        setDetails.appendChild(setComments)
-    }
+    
 
     weightContainer.appendChild(setWeightAndCount)
     weightContainer.appendChild(setDetails)
@@ -246,6 +247,17 @@ const populateweightContainers = (set, weightContainer) => {
 
         setDetails.appendChild(supersetExerciseAndWeight)
         setDetails.appendChild(supersetDetails)
+    }
+
+    if (set.comments != "") {
+        let setComments = document.createElement("ul")
+        setComments.classList.add("set-comments")
+        set.comments.forEach(comment => {
+            let newComment = document.createElement("li")
+            newComment.textContent = comment
+            setComments.appendChild(newComment)
+        })
+        setDetails.appendChild(setComments)
     }
 }
 
