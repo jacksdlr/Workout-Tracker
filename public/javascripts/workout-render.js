@@ -82,14 +82,14 @@ const renderWorkout = (data, reset, date) => {
             createweightContainers(exercise)
         }
     })
-    $(".set-weight-and-count").click(() => {
+    $(".set-weight-and-count").click(function () {
         $header = $(this)
         $content = $header.next()
         $content.slideToggle(500)
     })
     // Collapsible exercise containers for mobile (probably change 960)
-    if ($(window).width < 960) {
-        $(".exercise-name").click(() => {
+    if ($(window).width() < 960) {
+        $(".exercise-name").click(function () {
             $header = $(this)
             $content = $header.nextAll()
             $content.slideToggle(500)
