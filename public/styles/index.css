@@ -46,13 +46,16 @@
             width: 250px;
             min-width: 250px;
             margin: 5px;
+            /*height: fit-content*/
         }
             .exercise-name {
                 padding: 5px;
                 border-bottom: 1px solid black;
             }
             .exercise-comments {
+                border-radius: 0 0 5px 5px;
                 border: 1px solid black;
+                border-top: 0;
                 margin: 0 5px 0 5px;
                 list-style-type: square;
                 padding: 5px;
@@ -93,14 +96,14 @@
                     #superset-text {
                         border-left: 1px dashed green;
                         border-right: 1px dashed green;
-                        margin: 0 5px 0 5px;
+                        
                         text-align: center;
                         padding: 2px;
                     }
                     .superset-exercise-and-weight {
                         border-radius: 5px 5px 0 0;
                         border: 1px solid black;
-                        margin: 0 5px 0 5px;
+                        
                         display: flex;
                         justify-content: space-between;
                         padding: 5px;
@@ -109,7 +112,7 @@
                         border-radius: 0 0 5px 5px;
                         border: 1px solid black;
                         border-top: 0;
-                        margin: 0 10px 0 10px;
+                        margin: 0 5px 0 5px;
                         text-align: left;
                         padding: 5px;
                     }
