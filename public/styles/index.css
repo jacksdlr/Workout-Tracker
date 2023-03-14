@@ -39,6 +39,7 @@
             padding: 10px;
         }
         .exercise-container {
+            border-radius: 10px 10px 0 0;
             border: 1px solid black;
             display: flex;
             flex-direction: column;
@@ -61,41 +62,57 @@
                 text-align: center;
             }
                 .set-weight-and-count {
+                    border-radius: 5px 5px 0 0;
                     border: 1px solid black;
                     display: flex;
                     justify-content: space-between;
                     padding: 5px;
                 }
                 .set-details {
+                    border-radius: 0 0 5px 5px;
                     border: 1px solid black;
+                    border-top: 0;
                     margin: 0 5px 0 5px;
                     text-align: left;
                     padding: 5px;
+                    padding-top: 0;
                 }
+                    .set-reps {
+                        border-radius: 0 0 5px 5px;
+                        border: 1px solid black;
+                        border-top: 0;
+                        padding: 5px;
+                    }
                     .set-comments {
+                        border-radius: 2px;
                         border: 1px solid black;
                         margin-top: 5px;
                         padding: 5px;
                         list-style-type: none;
                     }
-                #superset-text {
-                    border-left: 1px dashed green;
-                    border-right: 1px dashed green;
-                    margin: 0 5px 0 5px;
-                }
-                .superset-exercise-and-weight {
-                    border: 1px solid black;
-                    margin: 0 5px 0 5px;
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 5px;
-                }
-                .superset-details {
-                    border: 1px solid black;
-                    margin: 0 10px 0 10px;
-                    text-align: left;
-                    padding: 5px;
-                }
+                    #superset-text {
+                        border-left: 1px dashed green;
+                        border-right: 1px dashed green;
+                        margin: 0 5px 0 5px;
+                        text-align: center;
+                        padding: 2px;
+                    }
+                    .superset-exercise-and-weight {
+                        border-radius: 5px 5px 0 0;
+                        border: 1px solid black;
+                        margin: 0 5px 0 5px;
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 5px;
+                    }
+                    .superset-details {
+                        border-radius: 0 0 5px 5px;
+                        border: 1px solid black;
+                        border-top: 0;
+                        margin: 0 10px 0 10px;
+                        text-align: left;
+                        padding: 5px;
+                    }
 
 .form {
     display: flex;

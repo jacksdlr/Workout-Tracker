@@ -82,6 +82,11 @@ const renderWorkout = (data, reset, date) => {
             createweightContainers(exercise)
         }
     })
+    $(".set-weight-and-count").click(function () {
+        $header = $(this)
+        $content = $header.next()
+        $content.slideToggle(500)
+    })
 }
 
 const createExerciseContainer = (exercise) => {
@@ -205,7 +210,11 @@ const populateweightContainers = (set, weightContainer) => {
     weightContainer.appendChild(setDetails)
 
     if (superset_exercise) {
-        setDetails.insertAdjacentHTML("afterend", "<p id='superset-text'>~ Superset with ~</p>")
+        let supersetText = document.createElement("p")
+        supersetText.setAttribute("id", "superset-text")
+        supersetText.textContent = "~ Superset with ~"
+        setDetails.appendChild(supersetText)
+        //setDetails.insertAdjacentHTML("afterend", "<p id='superset-text'>~ Superset with ~</p>")
 
         let supersetExerciseAndWeight = document.createElement("div")
         supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
@@ -224,7 +233,7 @@ const populateweightContainers = (set, weightContainer) => {
         supersetDetails.classList.add("superset-details")
 
         let supersetReps = document.createElement("p")
-        supersetReps.classList.add("set-reps")
+        supersetReps.classList.add("superset-reps")
         supersetReps.textContent = `Reps: `
         superset_reps.forEach((set, index) => {
             if (index != superset_reps.length-1) {
@@ -235,8 +244,8 @@ const populateweightContainers = (set, weightContainer) => {
         })
         supersetDetails.appendChild(supersetReps)
 
-        weightContainer.appendChild(supersetExerciseAndWeight)
-        weightContainer.appendChild(supersetDetails)
+        setDetails.appendChild(supersetExerciseAndWeight)
+        setDetails.appendChild(supersetDetails)
     }
 }
 

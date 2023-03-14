@@ -158,8 +158,14 @@ app.route("/")
             set_reps = "?"
         }
 
-        if (req.body.superset == "on" && !superset_reps) {
+        if (req.body.superset == "on") {
+            if (!superset_reps) {
                 superset_reps = "?"
+            }
+        } else {
+            superset_exercise = ""
+            superset_weight = ""
+            superset_reps = ""
         }
 
         // Define set, exercise, and workout objects for database
@@ -252,7 +258,7 @@ app.route("/")
                             } else {
                                 console.log("Added new set of reps!")
                                 res.redirect("/")
-                                
+
                             }
                         })
                     } else {
