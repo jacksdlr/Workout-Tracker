@@ -14,7 +14,8 @@ const submitRequest = (date, reset) => {
     xhttp.send()
     xhttp.onload = function () {
         if (this.response) {
-            console.log(JSON.stringify(JSON.parse(this.response), null, 4))
+            console.log(sessionStorage)
+            //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
             renderWorkout(JSON.parse(this.response), reset, date)
             toggleVisibility()
             populate()
@@ -32,7 +33,6 @@ submitRequest(inputDate.value)
 form.addEventListener("submit", () => {
     setTimeout(() => {
         // Get the date and submit a GET request to return the user's workout for that date
-        console.log(inputDate.value)
         submitRequest(inputDate.value, true)
     }, 250);
 
@@ -88,11 +88,20 @@ const renderWorkout = (data, reset, date) => {
         $content.slideToggle(500)
     })
     // Collapsible exercise containers for mobile (probably change 960)
-    if ($(window).width() < 960) {
+    if ($(window).width() <= 1000) {
         $(".exercise-name").click(function () {
             $header = $(this)
             $content = $header.nextAll()
             $content.slideToggle(500)
+        })
+        let exerciseContainers = document.querySelectorAll(".exercise-container")
+        exerciseContainers.forEach(container => {
+            if (container.firstChild.textContent == sessionStorage.exercise_name) {
+                console.log("test")
+                container.childNodes.forEach(node => {
+                    node.setAttribute("style","display: flex; flex-direction: column;")
+                })
+            }
         })
     }
 }
