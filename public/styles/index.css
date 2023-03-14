@@ -5,7 +5,6 @@
     align-content: stretch;
     height: 100%;
 }
-
 .form-container {
     flex: 1 1 auto;
     max-width: 400px;
@@ -56,7 +55,7 @@
                 height: 24px;
             }
             #reps-input {
-                width: 30px;
+                width: 40px;
                 height: 20px;
             }
         #superset-check {
@@ -77,7 +76,7 @@
                     height: 24px;
                 }
                 #superset-reps-input {
-                    width: 30px;
+                    width: 40px;
                     height: 20px;
                 }
         #submit-button {
@@ -85,12 +84,10 @@
         }
     
 .workout-container {
-    border: 1px solid black;
     display: flex;
     flex-direction: column;
     flex: 7 1 auto;
     width: 74%;
-    
 }
     .workout-title {
         border: 1px solid black;
@@ -106,6 +103,7 @@
         display: flex;
         overflow-x: scroll;
         height: 100%;
+        border: 1px solid black;
     }
         #not-found {
             padding: 10px;
@@ -122,6 +120,8 @@
             .exercise-name {
                 padding: 5px;
                 border-bottom: 1px solid black;
+                text-align: center;
+                border-radius: 10px 10px 0 0;
             }
             .exercise-comments {
                 border-radius: 0 0 5px 5px;
@@ -131,12 +131,15 @@
                 list-style-type: square;
                 padding: 5px;
             }
+                .exercise-comments li {
+                    margin-left: 25px;
+                }
             .weight-container {
                 margin: 5px;
                 text-align: center;
             }
                 .set-weight-and-count {
-                    border-radius: 5px 5px 0 0;
+                    border-radius: 5px;
                     border: 1px solid black;
                     display: flex;
                     justify-content: space-between;
@@ -165,7 +168,7 @@
                         padding: 2px;
                     }
                     .superset-exercise-and-weight {
-                        border-radius: 5px 5px 0 0;
+                        border-radius: 5px;
                         border: 1px solid black;
                         
                         display: flex;
@@ -194,6 +197,7 @@
         width: 100%;
         padding: 10px 0 0 0;
         justify-content: flex-start;
+        align-content: flex-end;
         gap: 10px;
     }
         .form-container {
@@ -206,13 +210,14 @@
             max-width: 100%;
             width: 100%;
             flex: 0;
-            font-size:larger;
+            font-size: larger;
         }
             .workout-exercises {
                 flex-direction: column;
                 overflow-x: hidden;
-                padding: 0 5px 0 5px;
+                padding: 0 10px 0 10px;
                 height: fit-content;
+                align-items: center;
             }
             .exercise-container {
                 width: 100%;
@@ -224,5 +229,18 @@
             }
             .exercise-comments {
                 display: none;
+                padding: 10px;
+            }
+            .set-weight-and-count {
+                padding: 10px;
+            }
+            .set-reps {
+                padding: 10px;
+            }
+            .superset-exercise-and-weight {
+                padding: 10px;
+            }
+            .superset-reps {
+                padding: 10px;
             }
 }
