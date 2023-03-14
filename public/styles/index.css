@@ -11,7 +11,79 @@
     max-width: 400px;
     width: 24%
 }
-
+    .form-title {
+        border: 1px solid black;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+    }
+    .form {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        padding: 5px;
+    }
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+            input {
+                margin-left: 5px;
+            }
+            textarea {
+                padding: 2px;
+                margin-bottom: 5px;
+            }
+            #workout-input {
+                height: 20px;
+            }
+            #exercise-input {
+                width: 100%;
+                height: 20px;
+            }
+            #weight-and-reps {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            #weight-input {
+                width: 50px;
+                height: 20px;
+            }
+            #weight-unit {
+                height: 24px;
+            }
+            #reps-input {
+                width: 30px;
+                height: 20px;
+            }
+        #superset-check {
+            display: inline;
+        }
+            .superset-input-container {
+                margin-left: 25px;
+            }
+                #superset-exercise-input {
+                    width: 100%;
+                    height: 20px;
+                }
+                #superset-weight-input {
+                    width: 50px;
+                    height: 20px;
+                }
+                #superset-weight-unit {
+                    height: 24px;
+                }
+                #superset-reps-input {
+                    width: 30px;
+                    height: 20px;
+                }
+        #submit-button {
+            height: 30px;
+        }
+    
 .workout-container {
     border: 1px solid black;
     display: flex;
@@ -86,13 +158,6 @@
                         border-top: 0;
                         padding: 5px;
                     }
-                    .set-comments {
-                        border-radius: 2px;
-                        border: 1px solid black;
-                        margin-top: 5px;
-                        padding: 5px;
-                        list-style-type: none;
-                    }
                     #superset-text {
                         border-left: 1px dashed green;
                         border-right: 1px dashed green;
@@ -116,22 +181,10 @@
                         text-align: left;
                         padding: 5px;
                     }
-
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border: 1px solid black;
-}
-
-.input-container {
-    display: flex;
-}
-
-#superset-check {
-    display: inline;
-}
-
-.superset-input-container {
-    padding: 5px 0px 5px 25px;
-}
+                    .set-comments {
+                        border-radius: 2px;
+                        border: 1px solid black;
+                        margin-top: 5px;
+                        padding: 5px;
+                        list-style-type: none;
+                    }
