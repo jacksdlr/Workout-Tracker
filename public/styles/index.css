@@ -1,3 +1,7 @@
+div {
+    background-color: white;
+}
+
 #main-section {
     display: flex;
     padding: 10px;
@@ -116,6 +120,7 @@
             width: 250px;
             min-width: 250px;
             margin: 5px;
+            background: linear-gradient(0deg, rgba(0,159,255,1) 0%, rgba(255,255,255,1) 90%);
         }
             .exercise-name {
                 padding: 5px;
@@ -125,6 +130,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                background-color: white;
             }
             .exercise-comments {
                 border-radius: 0 0 5px 5px;
@@ -138,8 +144,9 @@
                     margin-left: 25px;
                 }
             .weight-container {
-                margin: 5px;
+                padding: 5px;
                 text-align: center;
+                background: none;
             }
                 .set-weight-and-count {
                     border-radius: 5px;
@@ -194,7 +201,13 @@
                         list-style-type: none;
                     }
 
-@media only screen and (max-width: 1000px) /*and (orientation: portrait)*/ {
+@media only screen and (max-width: 800px) /*and (orientation: portrait)*/ {
+    h1 {
+        font-size: 1.5rem;
+    }
+    h2 {
+        font-size: 1.3rem;
+    }
     #main-section {
         flex-direction: column;
         width: 100%;
