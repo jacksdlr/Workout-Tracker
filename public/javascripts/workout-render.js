@@ -92,10 +92,19 @@ const renderWorkout = (data, reset, date) => {
         $(".exercise-name").click(function () {
             $header = $(this)
             $content = $header.nextAll()
-            $content.slideToggle(500)
+            $content.slideToggle(500, function () {
+                $chevron = $header.prev()
+                if ($content.is(":visible")) {
+                    $chevron.replaceWith("<i class='fa-solid fa-chevron-down'></i>")
+                } else {
+                    
+                    $chevron.replaceWith("<i class='fa-solid fa-chevron-right'></i>")
+                }
+            })
         })
         let exerciseContainers = document.querySelectorAll(".exercise-container")
         exerciseContainers.forEach(container => {
+            container.insertAdjacentHTML("afterbegin", "<i class='fa-solid fa-chevron-right'></i>")
             if (container.firstChild.textContent == sessionStorage.exercise_name) {
                 console.log("test")
                 container.childNodes.forEach(node => {
