@@ -92,19 +92,22 @@ const renderWorkout = (data, reset, date) => {
         $(".exercise-name").click(function () {
             $header = $(this)
             $content = $header.nextAll()
-            $content.slideToggle(500, function () {
-                $chevron = $header.prev()
-                if ($content.is(":visible")) {
-                    $chevron.replaceWith("<i class='fa-solid fa-chevron-down'></i>")
+            //$chevron = $header.prev()
+            $chevron = $header.children(".exercise-collapse")
+                if (!$content.is(":visible")) {
+                    $chevron.remove()
+                    $("<i class='fa-solid fa-chevron-down exercise-collapse'></i>").appendTo($header)
+                    //$chevron.replaceWith("<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
                 } else {
-                    
-                    $chevron.replaceWith("<i class='fa-solid fa-chevron-right'></i>")
+                    $chevron.remove()
+                    $("<i class='fa-solid fa-chevron-right exercise-collapse'></i>").appendTo($header)
+                    //$chevron.replaceWith("<i class='fa-solid fa-chevron-right exercise-collapse'></i>")
                 }
-            })
+            $content.slideToggle(500)
         })
         let exerciseContainers = document.querySelectorAll(".exercise-container")
         exerciseContainers.forEach(container => {
-            container.insertAdjacentHTML("afterbegin", "<i class='fa-solid fa-chevron-right'></i>")
+            container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-right exercise-collapse'></i>")
             if (container.firstChild.textContent == sessionStorage.exercise_name) {
                 console.log("test")
                 container.childNodes.forEach(node => {
