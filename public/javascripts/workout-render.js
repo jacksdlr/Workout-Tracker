@@ -322,6 +322,7 @@ const mobileRender = () => {
         let exerciseCollapsers = document.querySelectorAll(".exercise-collapse")
         exerciseCollapsers.forEach(item => item.remove())
         $(".exercise-name").off("click")
+        
     }
 }
 
