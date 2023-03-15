@@ -87,8 +87,10 @@ const renderWorkout = (data, reset, date) => {
         $content = $header.next()
         $content.slideToggle(500)
     })
+    mobileRender()
     // Collapsible exercise containers for mobile (probably change 960)
-    if ($(window).width() <= 1000) {
+    /*
+    if ($(window).width() <= 800) {
         $(".exercise-name").click(function () {
             $header = $(this)
             $content = $header.nextAll()
@@ -115,7 +117,7 @@ const renderWorkout = (data, reset, date) => {
                 })
             }
         })
-    }
+    }*/
 }
 
 const createExerciseContainer = (exercise) => {
@@ -282,3 +284,40 @@ const populateweightContainers = (set, weightContainer) => {
     }
 }
 
+const mobileRender = () => {
+    if ($(window).width() <= 800) {
+        $(".exercise-name").click(function () {
+            $header = $(this)
+            $content = $header.nextAll()
+            //$chevron = $header.prev()
+            $chevron = $header.children(".exercise-collapse")
+                if (!$content.is(":visible")) {
+                    $chevron.remove()
+                    $("<i class='fa-solid fa-chevron-down exercise-collapse'></i>").appendTo($header)
+                    //$chevron.replaceWith("<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
+                } else {
+                    $chevron.remove()
+                    $("<i class='fa-solid fa-chevron-right exercise-collapse'></i>").appendTo($header)
+                    //$chevron.replaceWith("<i class='fa-solid fa-chevron-right exercise-collapse'></i>")
+                }
+            $content.slideToggle(500)
+        })
+        let exerciseContainers = document.querySelectorAll(".exercise-container")
+        exerciseContainers.forEach(container => {
+            container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-right exercise-collapse'></i>")
+            if (container.firstChild.textContent == sessionStorage.exercise_name) {
+                container.childNodes.forEach(node => {
+                    node.setAttribute("style","display: flex; flex-direction: column;")
+                })
+            }
+        })
+    } else {
+        let exerciseCollapsers = document.querySelectorAll(".exercise-collapse")
+        exerciseCollapsers.forEach(item => item.remove())
+        $(".exercise-name").off("click")
+    }
+}
+
+onresize = () => {
+    mobileRender()
+}
