@@ -122,6 +122,9 @@
                 border-bottom: 1px solid black;
                 text-align: center;
                 border-radius: 10px 10px 0 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             .exercise-comments {
                 border-radius: 0 0 5px 5px;
@@ -215,7 +218,7 @@
             .workout-exercises {
                 flex-direction: column;
                 overflow-x: hidden;
-                padding: 0 10px 0 10px;
+                padding: 0 10px 10px 10px;
                 height: fit-content;
                 align-items: center;
             }
@@ -223,6 +226,11 @@
                 width: 100%;
                 margin: 0;
                 margin-top: 10px;
+            }
+            .exercise-collapse {
+                position: absolute;
+                left: 20px;
+                font-size: large;
             }
             .weight-container {
                 display: none;
