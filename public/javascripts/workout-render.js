@@ -318,6 +318,8 @@ const mobileRender = () => {
     }
 }
 
-onresize = () => {
-    mobileRender()
+document.onresize = () => {
+    setTimeout(() => {
+        mobileRender()
+    }, 250);
 }
