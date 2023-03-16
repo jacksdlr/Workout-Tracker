@@ -16,6 +16,7 @@ const inputSupersetReps = document.getElementById("superset-reps-input")
 const clearButton = document.getElementById("clear-form")
 clearButton.addEventListener("click", () => {
     form.reset()
+    sessionStorage.clear()
 })
 
 const toggleVisibility = () => {
