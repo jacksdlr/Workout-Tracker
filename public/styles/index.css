@@ -149,9 +149,12 @@ div {
                 margin: 0 5px 5px 5px;
                 list-style-type: square;
                 padding: 5px;
+                font-size: .8rem;
             }
                 .exercise-comments li {
-                    margin-left: 25px;
+                    background: rgba(46, 153, 240, 0.1);
+                    color:rgba(0, 0, 0, 0.8);
+
                 }
             .weight-container {
                 padding: 5px;
@@ -213,6 +216,7 @@ div {
                         margin-top: 5px;
                         padding: 5px;
                         list-style-type: none;
+                        font-size: .8rem;
                     }
 
 @media only screen and (max-width: 800px) /*and (orientation: portrait)*/ {
@@ -269,6 +273,7 @@ div {
             .exercise-comments {
                 display: none;
                 padding: 10px;
+                font-size: 1rem;
             }
             .set-weight-and-count {
                 padding: 10px;
@@ -277,10 +282,16 @@ div {
             .set-reps {
                 padding: 10px;
             }
+            .set-comments {
+                font-size: .9rem;
+            }
+                .set-comments li {
+                    padding: 5px;
+                }
             .superset-exercise-and-weight {
                 padding: 10px;
             }
             .superset-reps {
-                padding: 10px;
+                padding: 5px;
             }
 }
