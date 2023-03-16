@@ -131,6 +131,7 @@ div {
                 justify-content: center;
                 align-items: center;
                 background-color: white;
+                user-select: none;
             }
             .exercise-comments {
                 border-radius: 0 0 5px 5px;
@@ -154,6 +155,7 @@ div {
                     display: flex;
                     justify-content: space-between;
                     padding: 5px;
+                    user-select: none;
                 }
                 .set-details {
                     border-radius: 0 0 5px 5px;
@@ -173,17 +175,17 @@ div {
                     #superset-text {
                         border-left: 1px dashed green;
                         border-right: 1px dashed green;
-                        
                         text-align: center;
                         padding: 2px;
+                        user-select: none;
                     }
                     .superset-exercise-and-weight {
                         border-radius: 5px;
                         border: 1px solid black;
-                        
                         display: flex;
                         justify-content: space-between;
                         padding: 5px;
+                        user-select: none;
                     }
                     .superset-details {
                         border-radius: 0 0 5px 5px;
