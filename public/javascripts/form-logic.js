@@ -13,6 +13,11 @@ const inputSupersetWeightKg = document.getElementById("superset-weight-kg")
 const inputSupersetWeightLbs = document.getElementById("superset-weight-lbs")
 const inputSupersetReps = document.getElementById("superset-reps-input")
 
+const clearButton = document.getElementById("clear-form")
+clearButton.addEventListener("click", () => {
+    form.reset()
+})
+
 const toggleVisibility = () => {
     const supersetInputContainers = document.querySelectorAll(".superset-input-container")
     const supersetExercise = document.getElementById("superset-exercise-input")

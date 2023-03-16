@@ -3,6 +3,7 @@ extends layout.pug
 block scripts
     script(src='/public/javascripts/form-logic.js' defer='')
     script(src='/public/javascripts/workout-render.js' defer='')
+    <!-- jQuery library used for some container collapsing animations -->
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js')
     
 block styles
@@ -13,7 +14,8 @@ block content
         .form-container
             .form-title
                 h1#form-name Set Input
-                button#clear-form !!!
+                button#clear-form
+                    i.fa-solid.fa-arrows-rotate
                 <!-- button here -->
             form#exercise-form.form(action='/' method='POST')
                 .input-container
