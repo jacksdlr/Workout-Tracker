@@ -48,7 +48,7 @@ displayDate.addEventListener("change", () => {
 const renderWorkout = (data, reset, date) => {
     let notFound = document.getElementById("not-found")
     let dateToRemove = document.getElementById("date")
-    workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString()}</p>`)
+    workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0,-5)}</p>`)
     if (notFound) {
         notFound.remove()
     }
