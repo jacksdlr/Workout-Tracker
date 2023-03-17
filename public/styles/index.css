@@ -102,18 +102,24 @@ div {
         border: 1px solid black;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         padding: 10px;
     }
         #workout-name {
             display: flex;
             gap: 5px;
+            user-select: none;
+        }
+        #display-date {
+            height: 25px;
+            width: 100px;
+            margin: 0;
         }
     .workout-exercises {
         display: flex;
         overflow-x: scroll;
         height: 100%;
         border: 1px solid lightgray;
-        
     }
         #not-found {
             padding: 10px;
@@ -246,12 +252,22 @@ div {
             flex: 0;
             font-size: larger;
         }
+            .workout-title {
+                padding: 10px 0 10px 0;
+                margin: 0 10px 0 10px;
+                border: none;
+                border-bottom: 2px solid rgba(46, 153, 240, 1);
+            }
+                #workout-name {
+                    font-size: 1.2rem;
+                }
             .workout-exercises {
                 flex-direction: column;
                 overflow-x: hidden;
                 padding: 0 10px 10px 10px;
                 height: fit-content;
                 align-items: center;
+                border: none;
             }
             .exercise-container {
                 width: 100%;
