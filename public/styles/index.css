@@ -178,7 +178,6 @@ div {
                     padding: 5px;
                     user-select: none;
                     box-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px
-
                 }
                 .set-details {
                     border-radius: 0 0 5px 5px;
@@ -196,10 +195,11 @@ div {
                         padding: 5px;
                     }
                     #superset-text {
-                        border-left: 1px dashed green;
-                        border-right: 1px dashed green;
+                        border-left: 1px solid rgba(0, 0, 0, 0.2);
+                        border-right: 1px solid rgba(0, 0, 0, 0.2);
+                        background: linear-gradient(0deg, rgba(46, 153, 240, 0.1) 0%, rgba(255, 255, 255) 33%, rgba(255, 255, 255) 66%, rgba(46, 153, 240, 0.1) 100%);
                         text-align: center;
-                        padding: 2px;
+                        padding: 5px 2px 5px 2px;
                         user-select: none;
                     }
                     .superset-exercise-and-weight {
@@ -242,6 +242,12 @@ div {
     h2 {
         font-size: 1.3rem;
     }
+    h3 {
+        font-size: 1.1rem;
+    }
+    h4 {
+        font-size: 1.1rem;
+    }
     #main-section {
         flex-direction: column;
         width: 100%;
@@ -254,14 +260,16 @@ div {
             max-width: 100%;
             width: 100%;
             flex: 0;
-            font-size:larger;
+            font-size: larger;
+            background: none;
         }
             .form-title {
                 padding: 10px 0 10px 0;
                 margin: 0 10px 0 10px;
                 border: none;
                 border-bottom: 2px solid rgba(46, 153, 240, 1);
-            }
+                background: none;
+        }
                 #form-name {
                     font-size: 1.2rem;
                 }
@@ -290,8 +298,6 @@ div {
                 #submit-button {
                     margin: 10px 0 10px 0;
                 }
-                
-                
         .workout-container {
             max-width: 100%;
             width: 100%;
@@ -339,7 +345,7 @@ div {
             }
             .set-weight-and-count {
                 padding: 10px;
-                box-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px
+                box-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
             }
             .set-reps {
                 padding: 10px;
@@ -355,5 +361,16 @@ div {
             }
             .superset-reps {
                 padding: 5px;
+            }
+            .set-details p {
+                font-size: 1rem;
+            }
+            .superset-details p {
+                font-size: 1rem;
+            }
+            #superset-text {
+                margin: 0 5px 0 5px;
+                background: linear-gradient(0deg, rgba(46, 153, 240, 0.1) 0%, rgba(255, 255, 255) 33%, rgba(255, 255, 255) 66%, rgba(46, 153, 240, 0.1) 100%);
+                font-size: 0.9rem;
             }
 }
