@@ -153,14 +153,17 @@ div {
                 color:rgba(0, 0, 0, 0.8);
                 border-top: 0;
                 margin: 0 5px 5px 5px;
-                list-style-type: square;
-                padding: 5px;
+                list-style-type: none;
                 font-size: .8rem;
+                background: rgba(160, 204, 240, 0.1);
+                padding: 2px;
             }
                 .exercise-comments li {
-                    background: rgba(46, 153, 240, 0.1);
-                    color:rgba(0, 0, 0, 0.8);
-
+                    padding: 5px;
+                    border-bottom: 1px solid white;
+                }
+                .exercise-comments li:last-of-type {
+                    border-bottom: none;
                 }
             .weight-container {
                 padding: 5px;
@@ -224,6 +227,13 @@ div {
                         list-style-type: none;
                         font-size: .8rem;
                     }
+                        .set-comments li {
+                            padding: 5px;
+                            border-bottom: 1px solid white;
+                        }
+                        .set-comments li:last-of-type {
+                            border-bottom: none
+                        }
 
 @media only screen and (max-width: 800px) /*and (orientation: portrait)*/ {
     h1 {
@@ -246,6 +256,42 @@ div {
             flex: 0;
             font-size:larger;
         }
+            .form-title {
+                padding: 10px 0 10px 0;
+                margin: 0 10px 0 10px;
+                border: none;
+                border-bottom: 2px solid rgba(46, 153, 240, 1);
+            }
+                #form-name {
+                    font-size: 1.2rem;
+                }
+            .form {
+                border: none;
+                border-radius: 5px;
+                margin: 10px 20px 20px;
+                padding-top: 10px;
+                box-shadow: rgba(0, 0, 0, 0.2) -1px -1px 5px, rgba(46, 153, 240, 0.4) 5px 5px, rgba(46, 153, 240, 0.3) 10px 10px, rgba(46, 153, 240, 0.2) 15px 15px, rgba(46, 153, 240, 0.1) 20px 20px, rgba(46, 153, 240, 0.05) 25px 25px;
+            }
+                .form div {
+                    background: none;
+                }
+                .input-container {
+                    margin-bottom: 10px;
+                }
+                #exercise-comment-input {
+                    margin-bottom: 10px;
+                }
+                .superset-input-container:first-of-type {
+                    margin-top: 10px;
+                }
+                #weight-and-reps .superset-input-container {
+                    margin-top: 0;
+                }
+                #submit-button {
+                    margin: 10px 0 10px 0;
+                }
+                
+                
         .workout-container {
             max-width: 100%;
             width: 100%;
@@ -288,7 +334,7 @@ div {
             }
             .exercise-comments {
                 display: none;
-                padding: 10px;
+                padding: 5px;
                 font-size: 1rem;
             }
             .set-weight-and-count {
