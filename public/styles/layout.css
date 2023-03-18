@@ -14,7 +14,8 @@ header {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    border: 1px solid black;
+    border-bottom: 3px solid black;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
     .login-container {
         display: flex;
