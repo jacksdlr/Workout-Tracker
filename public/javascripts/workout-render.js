@@ -17,12 +17,12 @@ const submitRequest = (date, reset) => {
             console.log(sessionStorage)
             //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
             renderWorkout(JSON.parse(this.response), reset, date)
-            toggleVisibility()
+            toggleRequired()
             populate()
             return
         } else {
             renderWorkout("not found", reset, date)
-            toggleVisibility()
+            toggleRequired()
             return
         }
     }

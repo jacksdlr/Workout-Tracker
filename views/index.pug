@@ -39,18 +39,18 @@ block content
                 #superset-check.input-container
                     label(for='superset-input') Superset?
                     input#superset-input(type='checkbox' name='superset')
-                    .superset-input-container.input-container(style='visibility: hidden; display: none')
+                    .superset-input-container.input-container
                         label(for='superset-exercise-input') Exercise:
                         input(type='text' name='superset_exercise' id='superset-exercise-input')
                     #weight-and-reps
-                        .superset-input-container.input-container(style='visibility: hidden; display: none')
+                        .superset-input-container.input-container
                             label(for='superset-weight-input') Weight used:
                             .weight
                                 input(type='number' name='superset_weight' id='superset-weight-input' min='0' step='0.01')
                                 select#superset-weight-unit(name='superset_weight_unit')
                                     option#superset-weight-kg(value='kg') kg
                                     option#superset-weight-lbs(value='lbs') lbs
-                        .superset-input-container.input-container(style='visibility: hidden; display: none')
+                        .superset-input-container.input-container
                             label(for='superset-reps-input') Repetitions:
                             input(type='number' name='superset_reps' id='superset-reps-input' min='0')
                 textarea#set-comment-input(name='set_comment' placeholder='Set comments (e.g. reps in reserve)')

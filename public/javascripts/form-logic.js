@@ -13,25 +13,42 @@ const inputSupersetWeightKg = document.getElementById("superset-weight-kg")
 const inputSupersetWeightLbs = document.getElementById("superset-weight-lbs")
 const inputSupersetReps = document.getElementById("superset-reps-input")
 
-const toggleVisibility = () => {
+
+$("#superset-input").click(function () {
+    $header = $(this)
+    $content = $header.nextAll()
+    $content.slideToggle(500, toggleRequired())
+})
+const toggleRequired = () => {
     const supersetInputContainers = document.querySelectorAll(".superset-input-container")
     const supersetExercise = document.getElementById("superset-exercise-input")
+    
     // If superset is selected, the respective inputs are marked as visible and the exercise name is now required
     if (supersetCheckbox.checked) {
-        supersetInputContainers.forEach((container) => {
+        /*supersetInputContainers.forEach((container) => {
             container.style.visibility = "visible"
             container.style.display = "flex"
-        })
+        })*/
+        //$("#superset-input").nextAll().slideDown(0)
         supersetExercise.setAttribute("required", "true")
         // If it is unselected it resets the inputs to again be hidden, and exercise name is no longer required to submit the form
     } else {
-        supersetInputContainers.forEach((container) => {
+        /*supersetInputContainers.forEach((container) => {
             container.style.visibility = "hidden"
             container.style.display = "none"
-        })
+        })*/
+        //$("#superset-input").nextAll().slideUp(0)
         supersetExercise.removeAttribute("required")
     }
 }
+const toggleVisibility = () => {
+    if (supersetCheckbox.checked) {
+        $("#superset-input").nextAll().slideDown(0)
+    } else {
+        $("#superset-input").nextAll().slideUp(0)
+    }
+}
+toggleVisibility()
 
 const populate = () => {
     inputDate.value = sessionStorage.getItem("date")
@@ -68,7 +85,7 @@ const populate = () => {
     }
     inputSupersetReps.value = sessionStorage.getItem("superset_reps")
 
-    toggleVisibility()
+    toggleRequired()
 }
 
 populate()
@@ -89,7 +106,7 @@ inputReps.addEventListener("change", () => {
     sessionStorage.setItem("set_reps", inputReps.value)
 })
 supersetCheckbox.addEventListener("change", () => {
-    toggleVisibility()
+    toggleRequired()
     sessionStorage.setItem("superset", supersetCheckbox.checked)
 })
 inputSupersetExercise.addEventListener("change", () => {
@@ -104,3 +121,5 @@ inputSupersetWeightUnit.addEventListener("change", () => {
 inputSupersetReps.addEventListener("change", () => {
     sessionStorage.setItem("superset_reps", inputSupersetReps.value)
 })
+
+toggleVisibility()
