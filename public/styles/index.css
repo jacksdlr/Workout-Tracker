@@ -155,12 +155,14 @@ div {
                 margin: 0 5px 5px 5px;
                 list-style-type: none;
                 font-size: .8rem;
-                background: rgba(160, 204, 240, 0.1);
+                background: white;
                 padding: 2px;
             }
                 .exercise-comments li {
                     padding: 5px;
+                    background: rgba(46, 153, 240, 0.1);
                     border-bottom: 1px solid white;
+                    border-radius: 2px;
                 }
                 .exercise-comments li:last-of-type {
                     border-bottom: none;
@@ -302,6 +304,7 @@ div {
             max-width: 100%;
             width: 100%;
             flex: 0;
+            background: none;
             font-size: larger;
         }
             .workout-title {
@@ -309,7 +312,8 @@ div {
                 margin: 0 10px 0 10px;
                 border: none;
                 border-bottom: 2px solid rgba(46, 153, 240, 1);
-            }
+                background: none;
+        }
                 #workout-name {
                     font-size: 1.2rem;
                 }
