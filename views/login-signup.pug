@@ -16,9 +16,9 @@ block content
         p= signupError
         form(action='/signup' method='POST')
             label(for='signup-username') Username
-            input(type='text' name='username' id='signup-username' required)
+            input(type='text' name='username' id='signup-username' minlength='3' required)
             label(for='login-email') Email
             input(type='email' name='email' id='login-email' required)
             label(for='signup-password') Password
-            input(type='password' name='password' id='signup-password' required)
+            input(type='password' name='password' id='signup-password' minlength='8' required)
             button(type='submit') Signup
