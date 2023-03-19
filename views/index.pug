@@ -14,7 +14,7 @@ block content
         .form-container
             .form-title
                 h1#form-name Set Input
-                button#clear-form(onclick='document.getElementById("exercise-form").reset(); sessionStorage.clear()')
+                button#clear-form(onclick='document.getElementById("exercise-form").reset(); toggleVisibility(); toggleRequired(); sessionStorage.clear()')
                     i.fa-solid.fa-arrows-rotate
                 <!-- button here -->
             form#exercise-form.form(action='/' method='POST')
