@@ -77,8 +77,9 @@ app.route("/signup")
                 if (existingEmail) {
                     res.render("login-signup", { signupError: "Email already in use" })
                 } else {
-                    User.findOne({ username }, (err, existingUsername) => {
+                    User.findOne({ username: new RegExp(`^${username}$`, "i") }, (err, existingUsername) => {
                         if (existingUsername) {
+                            console.log(existingUsername)
                             res.render("login-signup", { signupError: "Username already in use" })
                         } else {
                             User.create({
