@@ -54,7 +54,10 @@ block content
                             label(for='superset-reps-input') Repetitions:
                             input(type='number' name='superset_reps' id='superset-reps-input' min='0')
                 textarea#set-comment-input(name='set_comment' placeholder='Set comments (e.g. reps in reserve)')
-                button#submit-button(type='submit') Submit
+                if !username
+                    button#submit-button-false(type='submit') Submit
+                else
+                    button#submit-button(type='submit') Submit
         .workout-container
             .workout-title
                 h1#workout-name Workout for:
