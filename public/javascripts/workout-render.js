@@ -46,7 +46,15 @@ displayDate.addEventListener("change", () => {
 const renderWorkout = (data, reset, date) => {
     let notFound = document.getElementById("not-found")
     let dateToRemove = document.getElementById("date")
-    workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0,-5)}</p>`)
+    console.log(date)
+    if (date == "example") {
+        workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">Example date</p>`)
+        displayDate.value = inputDate.value
+        
+    } else {
+        workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0,-5)}</p>`)
+        displayDate.value = date
+    }
     if (notFound) {
         notFound.remove()
     }
@@ -69,7 +77,7 @@ const renderWorkout = (data, reset, date) => {
         existingContainers.forEach(container => container.remove())
     }
     if (date != "example") {
-        displayDate.value = date
+        
     }
     data.exercises.forEach(exercise => {
         let exerciseContainer = document.getElementById(exercise._id)
