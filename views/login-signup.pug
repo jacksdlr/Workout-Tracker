@@ -1,19 +1,26 @@
 extends layout
 
+block styles
+    link(rel='stylesheet' href='/public/styles/login-signup.css')
+
 block content 
     if message
-        p= message
-    h1 Login Form 
-        if messages.error
-            p= messages.error
+        p.message= message
+    if messages.error
+        p.message= messages.error
+    if signupError
+        p.message= signupError
+
+    .login-signup-form
+        h1 Login
         form(action='/login' method='POST')
             label(for='login-username') Username
             input(type='text' name='username' id='login-username' required)
             label(for='login-password') Password
             input(type='password' name='password' id='login-password' required)
             button(type='submit') Login
-    h1 Signup Form 
-        p= signupError
+    .login-signup-form
+        h1 Signup
         form(action='/signup' method='POST')
             label(for='signup-username') Username
             input(type='text' name='username' id='signup-username' minlength='3' required)
