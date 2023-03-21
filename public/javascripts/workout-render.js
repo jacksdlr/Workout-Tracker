@@ -15,10 +15,14 @@ const submitRequest = (date, reset) => {
     xhttp.onload = function () {
         if (this.response) {
             console.log(sessionStorage)
-            //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-            renderWorkout(JSON.parse(this.response), reset, date)
-            toggleRequired()
-            populate()
+            if (this.response.match(/^</)) {
+                renderWorkout("not found", true, date)
+            } else {
+                //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
+                renderWorkout(JSON.parse(this.response), reset, date)
+                toggleRequired()
+                populate()
+            }
             return
         } else {
             renderWorkout("not found", reset, date)
@@ -32,15 +36,13 @@ form.addEventListener("submit", () => {
     setTimeout(() => {
         // Get the date and submit a GET request to return the user's workout for that date
         submitRequest(inputDate.value, true)
-    }, 250);
-
+    }, 250)
 })
 
 displayDate.addEventListener("change", () => {
     setTimeout(() => {
         submitRequest(displayDate.value, true)
-    }, 250);
-
+    }, 250)
 })
 
 const renderWorkout = (data, reset, date) => {
@@ -49,10 +51,8 @@ const renderWorkout = (data, reset, date) => {
     console.log(date)
     if (date == "example") {
         workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">Example date</p>`)
-        displayDate.value = inputDate.value
-        
     } else {
-        workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0,-5)}</p>`)
+        workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0, -5)}</p>`)
         displayDate.value = date
     }
     if (notFound) {
@@ -77,7 +77,7 @@ const renderWorkout = (data, reset, date) => {
         existingContainers.forEach(container => container.remove())
     }
     if (date != "example") {
-        
+
     }
     data.exercises.forEach(exercise => {
         let exerciseContainer = document.getElementById(exercise._id)
