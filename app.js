@@ -24,12 +24,10 @@ const app = express();
 
 // Middleware
 app.set("view engine", "pug")
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+//app.use(express.json())
+//app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use("/public", express.static(process.cwd() + "/public"))
-app.use(flash())
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -37,6 +35,8 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use("/public", express.static(process.cwd() + "/public"))
+app.use(flash())
 
 const checkAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
