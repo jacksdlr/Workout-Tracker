@@ -16,6 +16,7 @@ const submitRequest = (date, reset) => {
         if (this.response) {
             console.log(sessionStorage)
             //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
+            console.log(JSON.parse(this.response).date)
             renderWorkout(JSON.parse(this.response), reset, date)
             toggleRequired()
             populate()
@@ -27,8 +28,6 @@ const submitRequest = (date, reset) => {
         }
     }
 }
-
-submitRequest(inputDate.value)
 
 form.addEventListener("submit", () => {
     setTimeout(() => {
@@ -70,7 +69,9 @@ const renderWorkout = (data, reset, date) => {
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
         existingContainers.forEach(container => container.remove())
     }
-    displayDate.value = date
+    if (date != "example") {
+        displayDate.value = date
+    }
     data.exercises.forEach(exercise => {
         let exerciseContainer = document.getElementById(exercise._id)
         if (!exerciseContainer) {
@@ -296,4 +297,15 @@ const mobileRender = () => {
 
 window.onresize = () => {
     mobileRender()
+}
+
+const falseSubmit = document.getElementById("submit-button-false")
+if (falseSubmit) {
+    falseSubmit.addEventListener("click", (e) => {
+        e.preventDefault()
+        alert("Please log in to save your workout.")
+    })
+    submitRequest("example")
+} else {
+    submitRequest(inputDate.value)
 }
