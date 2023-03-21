@@ -16,7 +16,6 @@ const submitRequest = (date, reset) => {
         if (this.response) {
             console.log(sessionStorage)
             //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-            console.log(JSON.parse(this.response).date)
             renderWorkout(JSON.parse(this.response), reset, date)
             toggleRequired()
             populate()
