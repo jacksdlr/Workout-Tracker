@@ -42,7 +42,7 @@ const checkAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next()
     }
-    res.redirect("/login")
+    res.render("index")
 } // PUT THIS ANYWHERE THE USER NEEDS TO BE LOGGED IN (viewing all workouts, etc.)
 
 const checkNotAuthenticated = (req, res, next) => {
@@ -276,6 +276,13 @@ app.route("/")
                 }
             }
         }
+    })
+
+app.route("/workouts/example")
+    .get((req, res) => {
+        Workout.findById("6419d3af67816706c9a419f2", (err, data) => {
+            res.send(data)
+        })
     })
 
 app.route("/workouts/:date")
