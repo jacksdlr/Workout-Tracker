@@ -1,0 +1,55 @@
+header {
+    margin-bottom: 25px;
+}
+
+.login-signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: larger;
+    background: white;
+    width: 50%;
+    max-width: 500px;
+    border: none;
+    border-radius: 5px;
+    margin: 25px auto;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) -1px -1px 5px, rgba(46, 153, 240, 0.4) 5px 5px, rgba(46, 153, 240, 0.3) 10px 10px, rgba(46, 153, 240, 0.2) 15px 15px, rgba(46, 153, 240, 0.1) 20px 20px, rgba(46, 153, 240, 0.05) 25px 25px;
+}
+    h1 {
+        border-bottom: 2px solid rgba(46, 153, 240, 1);
+        width: 80%;
+        text-align: center;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        padding: 25px;
+    }
+        input {
+            padding: 5px;
+            text-align: center;
+        }
+        #login-email {
+            width: 232px;
+        }
+        button {
+            margin-top: 15px;
+            height: 25px;
+            width: 75px;
+        }
+
+.message {
+    font-size: larger;
+    text-align: center;
+    background: white;
+    width: 75%;
+    max-width: 800px;
+    border: none;
+    border-radius: 5px;
+    margin: 25px auto;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) -1px -1px 5px, rgba(240, 140, 46, 0.4) 3px 3px, rgba(240, 140, 46, 0.3) 6px 6px, rgba(240, 140, 46, 0.2) 9px 9px, rgba(240, 140, 46, 0.1) 12px 12px, rgba(240, 140, 46, 0.05) 15px 15px;
+}
