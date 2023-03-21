@@ -92,6 +92,9 @@ div {
         #submit-button {
             height: 30px;
         }
+        #submit-button-false {
+            height: 30px;
+        }
     
 .workout-container {
     display: flex;
@@ -299,6 +302,9 @@ div {
                     margin-top: 0;
                 }
                 #submit-button {
+                    margin: 10px 0 10px 0;
+                }
+                #submit-button-false {
                     margin: 10px 0 10px 0;
                 }
         .workout-container {
