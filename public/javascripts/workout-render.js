@@ -115,6 +115,23 @@ const createExerciseContainer = (exercise) => {
     exerciseName.classList.add("exercise-name")
     exerciseName.setAttribute("id", exercise._id + "-name")
     exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
+    exerciseName.addEventListener("contextmenu", (e) => {
+        e.preventDefault()
+        let newName = prompt("New exercise name: ")
+
+        if (newName != null && !newName.match(/^\s+$/) && newName != "") {
+            console.log("made it here")
+            xhttp.open("POST", "/update/")
+            xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+            xhttp.send(JSON.stringify({ oldName: exerciseName.textContent, newName, date: displayDate.value }))
+            sessionStorage.exercise_name = newName
+            xhttp.onload(() => {
+                renderWorkout(JSON.parse(this.response), reset, date)
+                toggleRequired()
+                populate()
+            })
+        }
+    })
     exerciseContainer.appendChild(exerciseName)
 
     // EXERCISE COMMENTS SHOULD BE A LIGHT SHADED BOX BELOW THE EXERCISE NAME, ITALIC STYLING, NOT TOO MUCH SCREEN SPACE TAKEN
