@@ -79,7 +79,6 @@ app.route("/signup")
                 } else {
                     User.findOne({ username: new RegExp(`^${username}$`, "i") }, (err, existingUsername) => {
                         if (existingUsername) {
-                            console.log(existingUsername)
                             res.render("login-signup", { signupError: "Username already in use" })
                         } else {
                             User.create({
@@ -290,6 +289,22 @@ app.route("/workouts/:date")
     .get(checkAuthenticated, (req, res) => {
         User.findById(req.user._id, (err, data) => {
             const workout = data.workouts.find(workout => workout.date == req.params.date)
+            res.send(workout)
+        })
+    })
+app.route("/update/")
+    .post(checkAuthenticated, async (req, res) => {
+        const {id} = req.user
+        const {oldName, newName, date} = req.body
+
+        const existingWorkout = await User.findById(id)
+        
+        const dateIndex = existingWorkout.workouts.findIndex(workout => workout.date == date)
+
+        const exerciseIndex = existingWorkout.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == oldName)
+
+        User.findByIdAndUpdate(id, {$set: {[`workouts.${dateIndex}.exercises.${exerciseIndex}.exercise_name`]: newName}}, {new: true}, (err, data) => {
+            const workout = data.workouts.find(workout => workout.date == date)
             res.send(workout)
         })
     })
