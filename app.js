@@ -107,7 +107,7 @@ app.route("/logout")
             if (err) {
                 return next(err)
             }
-            res.redirect("/login")
+            res.redirect("/")
         })
     })
 
