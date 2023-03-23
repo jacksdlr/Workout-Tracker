@@ -222,6 +222,10 @@ div {
                         padding: 5px;
                         user-select: none;
                     }
+                        .superset-weight {
+                            min-width: 50px;
+                            text-align: right;
+                        }
                     .superset-details {
                         border-radius: 0 0 5px 5px;
                         border: 1px solid lightgray;
