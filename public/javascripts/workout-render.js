@@ -115,13 +115,14 @@ const createExerciseContainer = (exercise) => {
     exerciseName.classList.add("exercise-name")
     exerciseName.setAttribute("id", exercise._id + "-name")
     exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
+    // Right click opens a prompt to change the exercise name
     exerciseName.addEventListener("contextmenu", (e) => {
         e.preventDefault()
         let newName = prompt("New exercise name: ")
 
         if (newName != null && !newName.match(/^\s+$/) && newName != "") {
             console.log("made it here")
-            xhttp.open("POST", "/update/")
+            xhttp.open("POST", "/update/exercise")
             xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
             xhttp.send(JSON.stringify({ oldName: exerciseName.textContent, newName, date: displayDate.value }))
             sessionStorage.exercise_name = newName
@@ -162,20 +163,20 @@ const createweightContainers = (exercise) => {
             weightContainer.classList.add("weight-container")
             weightContainer.setAttribute("id", set._id)
             exerciseContainer.appendChild(weightContainer)
-            populateweightContainers(set, weightContainer)
+            populateweightContainers(exercise, set, weightContainer)
         } else {
             weightContainer.remove()
             weightContainer = document.createElement("div")
             weightContainer.classList.add("weight-container")
             weightContainer.setAttribute("id", set._id)
             exerciseContainer.appendChild(weightContainer)
-            populateweightContainers(set, weightContainer)
+            populateweightContainers(exercise, set, weightContainer)
         }
     })
 
 }
 
-const populateweightContainers = (set, weightContainer) => {
+const populateweightContainers = (exercise, set, weightContainer) => {
     // Create the element that holds that set data
     let setWeightAndCount = document.createElement("div")
     setWeightAndCount.classList.add("set-weight-and-count")
@@ -193,6 +194,31 @@ const populateweightContainers = (set, weightContainer) => {
     let setWeight = document.createElement("h3")
     setWeight.classList.add("set-weight")
     setWeight.textContent = set_weight
+    setWeight.addEventListener("contextmenu", (e) => {
+        e.preventDefault()
+        let newWeight = prompt("New weight used: ")
+        if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$/gm)) {
+            alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
+            return
+        } else {
+            if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "") {
+                console.log(newWeight.split(/(\d+\.\d{0,2}|\d+)/))
+                xhttp.open("POST", "/update/weight")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, newWeight, date: displayDate.value }))
+                sessionStorage.exercise_name = exercise.exercise_name
+                sessionStorage.set_weight = newWeight.split(/(\d+\.\d{0,2}|\d+)/)[1]
+                sessionStorage.set_weight_unit = newWeight.split(/(\d+\.\d{0,2}|\d+)/)[2]
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), reset, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
+        }
+
+        
+    })
     setWeightAndCount.appendChild(setWeight)
 
     let setCount = document.createElement("h3")
