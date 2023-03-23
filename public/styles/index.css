@@ -199,7 +199,13 @@ div {
                         border: 1px solid lightgray;
                         border-top: 0;
                         padding: 5px;
+                        display: flex;
+                        gap: 10px;
                     }
+                        .set-rep {
+                            background: rgba(46, 153, 240, 0.1);
+                            border-radius: 3px;
+                        }
                     #superset-text {
                         border-left: 1px solid rgba(0, 0, 0, 0.2);
                         border-right: 1px solid rgba(0, 0, 0, 0.2);
