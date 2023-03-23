@@ -294,34 +294,53 @@ app.route("/workouts/:date")
     })
 app.route("/update/exercise")
     .post(checkAuthenticated, async (req, res) => {
-        const {id} = req.user
-        const {oldName, newName, date} = req.body
+        const { id } = req.user
+        const { oldName, newName, date } = req.body
 
         const user = await User.findById(id)
-        
+
         const dateIndex = user.workouts.findIndex(workout => workout.date == date)
 
         const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == oldName)
 
-        User.findByIdAndUpdate(id, {$set: {[`workouts.${dateIndex}.exercises.${exerciseIndex}.exercise_name`]: newName}}, {new: true}, (err, data) => {
+        User.findByIdAndUpdate(id, { $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.exercise_name`]: newName } }, { new: true }, (err, data) => {
             const workout = data.workouts.find(workout => workout.date == date)
             res.send(workout)
         })
     })
 app.route("/update/weight")
     .post(checkAuthenticated, async (req, res) => {
-        const {id} = req.user
-        const {exercise_name, set_id, newWeight, date} = req.body
+        const { id } = req.user
+        const { exercise_name, set_id, newWeight, date } = req.body
 
         const user = await User.findById(id)
-        
+
         const dateIndex = user.workouts.findIndex(workout => workout.date == date)
 
         const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
         const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
 
-        User.findByIdAndUpdate(id, {$set: {[`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.set_weight`]: newWeight}}, {new: true}, (err, data) => {
+        User.findByIdAndUpdate(id, { $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.set_weight`]: newWeight } }, { new: true }, (err, data) => {
+            const workout = data.workouts.find(workout => workout.date == date)
+            res.send(workout)
+        })
+    })
+
+app.route("/update/reps")
+    .post(checkAuthenticated, async (req, res) => {
+        const { id } = req.user
+        const { exercise_name, set_id, repsIndex, newReps, date } = req.body
+
+        const user = await User.findById(id)
+
+        const dateIndex = user.workouts.findIndex(workout => workout.date == date)
+
+        const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
+
+        const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
+
+        User.findByIdAndUpdate(id, { $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps.${repsIndex}`]: newReps } }, { new: true }, (err, data) => {
             const workout = data.workouts.find(workout => workout.date == date)
             res.send(workout)
         })
