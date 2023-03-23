@@ -293,6 +293,25 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         let supersetExercise = document.createElement("h4")
         supersetExercise.classList.add("superset-exercise")
         supersetExercise.textContent = superset_exercise
+        supersetExercise.addEventListener("contextmenu", (e) => {
+            e.preventDefault()
+            let newName = prompt("New superset exercise name: ")
+
+            if (newName != null && !newName.match(/^\s+$/) && newName != "") {
+                xhttp.open("POST", "/update/superset_name")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, newName, date: displayDate.value }))
+                sessionStorage.exercise_name = exercise.exercise_name
+                sessionStorage.set_weight = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[1]
+                sessionStorage.set_weight_unit = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[2]
+                sessionStorage.superset_exercise = newName
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                    toggleRequired()
+                    populate()
+                })
+            }
+        })
         supersetExerciseAndWeight.appendChild(supersetExercise)
 
         let supersetWeight = document.createElement("h4")

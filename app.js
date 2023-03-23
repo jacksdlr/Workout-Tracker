@@ -346,6 +346,25 @@ app.route("/update/reps")
         })
     })
 
+app.route("/update/superset_name")
+    .post(checkAuthenticated, async (req, res) => {
+        const { id } = req.user
+        const { exercise_name, newName, set_id, date } = req.body
+
+        const user = await User.findById(id)
+
+        const dateIndex = user.workouts.findIndex(workout => workout.date == date)
+
+        const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
+
+        const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
+
+        User.findByIdAndUpdate(id, { $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_exercise`]: newName } }, { new: true }, (err, data) => {
+            const workout = data.workouts.find(workout => workout.date == date)
+            res.send(workout)
+        })
+    })
+
 const port = 3000
 
 app.listen(port, console.log(`App is listening on port ${port}...`))
