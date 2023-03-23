@@ -126,6 +126,7 @@ const createExerciseContainer = (exercise) => {
             xhttp.send(JSON.stringify({ oldName: exerciseName.textContent, newName, date: displayDate.value }))
             sessionStorage.exercise_name = newName
             xhttp.onload(() => {
+                console.log("im here")
                 renderWorkout(JSON.parse(this.response), true, displayDate.value)
                 toggleRequired()
                 populate()
@@ -153,8 +154,6 @@ const addExerciseComments = (exercise) => {
 
 const createweightContainers = (exercise) => {
     exerciseContainer = document.getElementById(exercise._id)
-    //let allWeightsContainer = document.createElement("div")
-    //allWeightsContainer.
     exercise.sets.forEach(set => {
         let weightContainer = document.getElementById(set._id)
         if (!weightContainer) {
@@ -193,7 +192,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
     let setWeight = document.createElement("h3")
     setWeight.classList.add("set-weight")
     setWeight.textContent = set_weight
-    setWeight.addEventListener("contextmenu", (e) => {
+    setWeightAndCount.addEventListener("contextmenu", (e) => {
         e.preventDefault()
         let newWeight = prompt("New weight used: ")
 
@@ -206,8 +205,10 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, newWeight, date: displayDate.value }))
                 sessionStorage.exercise_name = exercise.exercise_name
+                /*
                 sessionStorage.set_weight = newWeight.split(/(\d+\.\d{0,2}|\d+)/)[1]
                 sessionStorage.set_weight_unit = newWeight.split(/(\d+\.\d{0,2}|\d+)/)[2]
+                */
                 xhttp.onload(() => {
                     renderWorkout(JSON.parse(this.response), true, displayDate.value)
                     toggleRequired()
@@ -215,8 +216,6 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 })
             }
         }
-
-
     })
     setWeightAndCount.appendChild(setWeight)
 
@@ -261,9 +260,11 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                         xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                         xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, repsIndex: index, newReps, date: displayDate.value }))
                         sessionStorage.exercise_name = exercise.exercise_name
+                        /*
                         sessionStorage.set_weight = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[1]
                         sessionStorage.set_weight_unit = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[2]
                         sessionStorage.set_reps = newReps
+                        */
                         xhttp.onload(() => {
                             renderWorkout(JSON.parse(this.response), true, displayDate.value)
                             toggleRequired()
@@ -302,9 +303,12 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, newName, date: displayDate.value }))
                 sessionStorage.exercise_name = exercise.exercise_name
+                /*
                 sessionStorage.set_weight = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[1]
                 sessionStorage.set_weight_unit = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[2]
+                sessionStorage.superset = true
                 sessionStorage.superset_exercise = newName
+                */
                 xhttp.onload(() => {
                     renderWorkout(JSON.parse(this.response), true, displayDate.value)
                     toggleRequired()
@@ -316,7 +320,35 @@ const populateweightContainers = (exercise, set, weightContainer) => {
 
         let supersetWeight = document.createElement("h4")
         supersetWeight.classList.add("superset-weight")
-        supersetWeight.textContent = superset_weight
+        supersetWeight.textContent = superset_weight || ""
+        supersetWeight.addEventListener("contextmenu", (e) => {
+            e.preventDefault()
+            let newWeight = prompt("New superset weight used: ")
+    
+            if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "") {
+                if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$/)) {
+                    alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
+                    return
+                } else {
+                    xhttp.open("POST", "/update/superset_weight")
+                    xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                    xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, newWeight, date: displayDate.value }))
+                    sessionStorage.exercise_name = exercise.exercise_name
+                    /*
+                    sessionStorage.set_weight = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[1]
+                    sessionStorage.set_weight_unit = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[2]
+                    sessionStorage.superset_exercise = set.superset_exercise
+                    sessionStorage.superset_weight = newWeight.split(/(\d+\.\d{0,2}|\d+)/)[1]
+                    sessionStorage.superset_weight_unit = newWeight.split(/(\d+\.\d{0,2}|\d+)/)[2]
+                    */
+                    xhttp.onload(() => {
+                        renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                        toggleRequired()
+                        populate()
+                    })
+                }
+            }
+        })
         supersetExerciseAndWeight.appendChild(supersetWeight)
 
         let supersetDetails = document.createElement("div")
