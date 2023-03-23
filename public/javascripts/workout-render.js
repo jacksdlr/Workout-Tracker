@@ -121,13 +121,12 @@ const createExerciseContainer = (exercise) => {
         let newName = prompt("New exercise name: ")
 
         if (newName != null && !newName.match(/^\s+$/) && newName != "") {
-            console.log("made it here")
             xhttp.open("POST", "/update/exercise")
             xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
             xhttp.send(JSON.stringify({ oldName: exerciseName.textContent, newName, date: displayDate.value }))
             sessionStorage.exercise_name = newName
             xhttp.onload(() => {
-                renderWorkout(JSON.parse(this.response), reset, date)
+                renderWorkout(JSON.parse(this.response), true, displayDate.value)
                 toggleRequired()
                 populate()
             })
@@ -197,12 +196,12 @@ const populateweightContainers = (exercise, set, weightContainer) => {
     setWeight.addEventListener("contextmenu", (e) => {
         e.preventDefault()
         let newWeight = prompt("New weight used: ")
-        if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$/gm)) {
-            alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
-            return
-        } else {
-            if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "") {
-                console.log(newWeight.split(/(\d+\.\d{0,2}|\d+)/))
+
+        if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "") {
+            if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$/)) {
+                alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
+                return
+            } else {
                 xhttp.open("POST", "/update/weight")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, newWeight, date: displayDate.value }))
@@ -210,14 +209,14 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 sessionStorage.set_weight = newWeight.split(/(\d+\.\d{0,2}|\d+)/)[1]
                 sessionStorage.set_weight_unit = newWeight.split(/(\d+\.\d{0,2}|\d+)/)[2]
                 xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), reset, date)
+                    renderWorkout(JSON.parse(this.response), true, displayDate.value)
                     toggleRequired()
                     populate()
                 })
             }
         }
 
-        
+
     })
     setWeightAndCount.appendChild(setWeight)
 
@@ -239,17 +238,44 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         let setReps = document.createElement("p")
         setReps.classList.add("set-reps")
         setReps.textContent = `Reps: `
-        set_reps.forEach((set, index) => {
+        set_reps.forEach((reps, index) => {
+            let setRep = document.createElement("p")
+            setRep.classList.add("set-rep")
             if (index != set_reps.length - 1) {
-                setReps.insertAdjacentText("beforeend", `${set}, `)
+                setRep.textContent = `${reps}, `
+                //setReps.insertAdjacentHTML("beforeend", `<p class="set-rep">${set}, </p>`)
             } else {
-                setReps.insertAdjacentText("beforeend", set)
+                setRep.textContent = reps
+                //setReps.insertAdjacentHTML("beforeend", `<p class="set-rep">${set}</p>`)
             }
+            setRep.addEventListener("contextmenu", (e) => {
+                e.preventDefault()
+                let newReps = prompt("New reps count: ")
+
+                if (newReps != null && !newReps.match(/^\s+$/) && newReps != "") {
+                    if (!newReps.match(/^\d+$/)) {
+                        alert("Please enter a valid number for reps performed.")
+                        return
+                    } else {
+                        xhttp.open("POST", "/update/reps")
+                        xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                        xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, repsIndex: index, newReps, date: displayDate.value }))
+                        sessionStorage.exercise_name = exercise.exercise_name
+                        sessionStorage.set_weight = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[1]
+                        sessionStorage.set_weight_unit = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[2]
+                        sessionStorage.set_reps = newReps
+                        xhttp.onload(() => {
+                            renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                            toggleRequired()
+                            populate()
+                        })
+                    }
+                }
+            })
+            setReps.append(setRep)
         })
         setDetails.appendChild(setReps)
     }
-
-
 
     weightContainer.appendChild(setWeightAndCount)
     weightContainer.appendChild(setDetails)
