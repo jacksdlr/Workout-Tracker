@@ -2,6 +2,12 @@ div {
     background-color: white;
 }
 
+.context-menu {
+    visibility: hidden;
+    position: absolute;
+    background: lightcoral
+}
+
 #main-section {
     display: flex;
     padding: 10px;
