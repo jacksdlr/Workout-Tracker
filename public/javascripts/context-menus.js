@@ -17,6 +17,8 @@ const hideOnClick = (menu) => {
     menu.style.visibility = "hidden"
 }
 
+// Exercise options
+
 // New exercise name
 const editExerciseName = (exercise_name, date) => {
     $("#exercise-edit").off()
@@ -38,6 +40,91 @@ const editExerciseName = (exercise_name, date) => {
             })
         }
     })
+}
+
+const addExerciseComment = (exercise_name, date) => {
+
+}
+
+const deleteExercise = (exercise_name, date) => {
+
+}
+
+// Comment options
+
+// Edit comment
+const editExerciseComment = (exercise_name, date, index, comment) => {
+
+}
+
+// Delete comment
+const  = (exercise_name, date, ) => {
+
+}
+
+// Weight options
+
+// Edit weight
+const  = (exercise_name, date, ) => {
+
+}
+
+// Delete weight
+const  = (exercise_name, date, ) => {
+
+}
+
+// Set options
+
+// Edit reps
+const  = (exercise_name, date, ) => {
+
+}
+
+// New set comment
+const  = (exercise_name, date, ) => {
+
+}
+
+// Delete set
+const  = (exercise_name, date, ) => {
+
+}
+
+// Set comments options
+
+// Edit set comment
+const  = (exercise_name, date, ) => {
+
+}
+
+// Delete set comment
+const  = (exercise_name, date, ) => {
+
+}
+
+// Superset options
+
+// Edit superset exercise
+const  = (exercise_name, date, ) => {
+
+}
+
+// Edit superset weight
+const  = (exercise_name, date, ) => {
+
+}
+
+// Delete superset
+const  = (exercise_name, date, ) => {
+
+}
+
+// Superset reps options
+
+// Edit superset reps
+const  = (exercise_name, date, ) => {
+
 }
 
 
