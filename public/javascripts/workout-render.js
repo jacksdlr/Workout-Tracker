@@ -143,9 +143,25 @@ const addExerciseComments = (exercise) => {
     if (exercise.comments != "") {
         let existingComments = exerciseComments.querySelectorAll("li")
         existingComments.forEach(comment => comment.remove())
-        exercise.comments.forEach(comment => {
+        exercise.comments.forEach((comment, index) => {
             let exerciseComment = document.createElement("li")
             exerciseComment.textContent = comment
+            exerciseComment.addEventListener("contextmenu", (e) => {
+                e.preventDefault()
+                let editedComment = prompt("New comment: ", comment)
+                if (editedComment != null && !editedComment.match(/^\s+$/) && editedComment != "" && editedComment != comment) {
+                    xhttp.open("POST", "/update/exercise_comments")
+                    xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                    xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, commentIndex: index, editedComment, date: displayDate.value }))
+                    sessionStorage.exercise_name = exercise.exercise_name
+                    xhttp.onload(() => {
+                        renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                        toggleRequired()
+                        populate()
+                    })
+                }
+
+            })
             exerciseComments.appendChild(exerciseComment)
         })
         document.getElementById(exercise._id + "-name").insertAdjacentElement("afterend", exerciseComments)
@@ -405,9 +421,27 @@ const populateweightContainers = (exercise, set, weightContainer) => {
     if (set.comments != "") {
         let setComments = document.createElement("ul")
         setComments.classList.add("set-comments")
-        set.comments.forEach(comment => {
+        set.comments.forEach((comment, index) => {
             let newComment = document.createElement("li")
             newComment.textContent = comment
+            newComment.addEventListener("contextmenu", (e) => {
+                e.preventDefault()
+                let setIndex = comment.split(": ")[0]
+                let editedComment = prompt(`New comment for set ${setIndex.split(" ")[1]}: `, comment.split(": ")[1])
+                if (editedComment != null && !editedComment.match(/^\s+$/) && editedComment != "" && editedComment != comment) {
+                    editedComment = `${setIndex}: ` + editedComment
+                    xhttp.open("POST", "/update/set_comments")
+                    xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                    xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, commentIndex: index, editedComment, date: displayDate.value }))
+                    sessionStorage.exercise_name = exercise.exercise_name
+                    xhttp.onload(() => {
+                        renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                        toggleRequired()
+                        populate()
+                    })
+                }
+
+            })
             setComments.appendChild(newComment)
         })
         setDetails.appendChild(setComments)
