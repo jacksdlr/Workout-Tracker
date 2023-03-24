@@ -119,15 +119,34 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
 // Delete weight
 const  = (exercise_name, date, ) => {
 
-}
+}*/
 
 // Set options
 
 // Edit reps
-const  = (exercise_name, date, ) => {
-
+const editReps = (exercise_name, date, set_id, repsIndex, reps) => {
+    $("#reps-edit").off()
+    $("#reps-edit").click(() => {
+        let newReps = prompt(`New reps count for set ${repsIndex + 1}: `, reps)
+        if (newReps != null && !newReps.match(/^\s+$/) && newReps != "" && newReps != reps) {
+            if (!newReps.match(/^\d+$/)) {
+                alert("Please enter a valid number for reps performed.")
+                return
+            } else {
+                xhttp.open("POST", "/update/reps")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, set_id, repsIndex, newReps, date }))
+                sessionStorage.exercise_name = exercise_name
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
+        }
+    })
 }
-
+/*
 // New set comment
 const  = (exercise_name, date, ) => {
 

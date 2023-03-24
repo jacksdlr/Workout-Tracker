@@ -245,6 +245,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 hideAllMenus()
                 
                 $("#set-menu").show().offset({top: e.pageY, left: e.pageX})
+
+                editReps(exercise.exercise_name, displayDate.value, _id, index, reps)
             })
             setReps.append(setRep)
         })
