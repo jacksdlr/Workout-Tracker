@@ -307,6 +307,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 hideAllMenus()
 
                 $("#superset-reps-menu").show().offset({ top: e.pageY, left: e.pageX })
+
+                editSupersetReps(exercise.exercise_name, displayDate.value, _id, index, reps)
             })
             supersetReps.append(supersetRep)
         })
