@@ -184,12 +184,30 @@ const editSupersetExercise = (exercise_name, date, set_id, superset_exercise) =>
         }
     })
 }
-/*
+
 // Edit superset weight
-const  = (exercise_name, date, ) => {
-
+const editSupersetWeight = (exercise_name, date, set_id, superset_weight) => {
+    $("#superset-weight-edit").off()
+    $("#superset-weight-edit").click(() => {
+        let newWeight = prompt("New superset weight used: ", superset_weight)
+        if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != superset_weight) {
+            if (!newWeight.match(/(^(\d+\.\d{0,2}|\d+)(kg|lbs)$)|(^$)/)) {
+                alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
+                return
+            } else {
+                xhttp.open("POST", "/update/superset_weight")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, set_id, newWeight, date }))
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
+        }
+    })
 }
-
+/*
 // Delete superset
 const  = (exercise_name, date, ) => {
 
