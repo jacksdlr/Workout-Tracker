@@ -152,14 +152,30 @@ const  = (exercise_name, date, ) => {
 const  = (exercise_name, date, ) => {
 
 }
-
+*/
 // Set comments options
 
 // Edit set comment
-const  = (exercise_name, date, ) => {
+const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
+    $("#set-comment-edit").off()
+    $("#set-comment-edit").click(() => {
+        let setIndex = comment.split(": ")[0]
+let editedComment = prompt(`New comment for set ${setIndex.split(" ")[1]}: `, comment.split(": ")[1])
+if (editedComment != null && !editedComment.match(/^\s+$/) && editedComment != "" && editedComment != comment) {
+    editedComment = `${setIndex}: ` + editedComment
+    xhttp.open("POST", "/update/set_comments")
+    xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+    xhttp.send(JSON.stringify({ exercise_name, set_id, commentIndex, editedComment, date }))
 
+    xhttp.onload(() => {
+        renderWorkout(JSON.parse(this.response), true, displayDate.value)
+        toggleRequired()
+        populate()
+    })
 }
-
+    })
+}
+/*
 // Delete set comment
 const  = (exercise_name, date, ) => {
 
