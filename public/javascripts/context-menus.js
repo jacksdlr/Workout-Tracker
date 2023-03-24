@@ -1,7 +1,29 @@
+// Hides context menus if clicked outside
+document.addEventListener("click", (e) => {
+    const contextMenus = document.querySelectorAll(".context-menu")
+    contextMenus.forEach(menu => {
+        if (e.target.offsetParent != menu) {
+            menu.style.top = "0px"
+            menu.style.left = "0px"
+            menu.style.visibility = "hidden"
+        }
+    })
+    
+})
+
+const hideOnClick = (menu) => {
+    menu.style.top = "0px"
+    menu.style.left = "0px"
+    menu.style.visibility = "hidden"
+}
+
 // New exercise name
 const editExerciseName = (exercise_name, date) => {
     $("#exercise-edit").off()
     $("#exercise-edit").click(() => {
+        // Hide exercise context menu
+        hideOnClick(exerciseMenu)
+
         let newName = prompt("New exercise name: ", exercise_name)
         if (newName != null && !newName.match(/^\s+$/) && newName != "" && newName != exercise_name) {
             xhttp.open("POST", "/update/exercise")
