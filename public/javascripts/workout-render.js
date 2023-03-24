@@ -195,7 +195,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         superset_exercise,
         superset_weight,
         superset_reps,
-        sets_count
+        sets_count,
+        _id
     } = set
 
     let setWeight = document.createElement("h3")
@@ -206,6 +207,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         hideAllMenus()
 
         $("#weight-menu").show().offset({top: e.pageY, left: e.pageX})
+
+        editWeight(exercise.exercise_name, displayDate.value, _id, set_weight)
     })
     setWeightAndCount.appendChild(setWeight)
 

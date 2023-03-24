@@ -1,12 +1,12 @@
 // Hides context menus if clicked outside
 const hideAllMenus = () => {
-    $("#exercise-menu").hide().offset({top: 0, left: 0})
-    $("#exercise-comments-menu").hide().offset({top: 0, left: 0})
-    $("#weight-menu").hide().offset({top: 0, left: 0})
-    $("#set-menu").hide().offset({top: 0, left: 0})
-    $("#set-comments-menu").hide().offset({top: 0, left: 0})
-    $("#superset-menu").hide().offset({top: 0, left: 0})
-    $("#superset-reps-menu").hide().offset({top: 0, left: 0})
+    $("#exercise-menu").hide().offset({ top: 0, left: 0 })
+    $("#exercise-comments-menu").hide().offset({ top: 0, left: 0 })
+    $("#weight-menu").hide().offset({ top: 0, left: 0 })
+    $("#set-menu").hide().offset({ top: 0, left: 0 })
+    $("#set-comments-menu").hide().offset({ top: 0, left: 0 })
+    $("#superset-menu").hide().offset({ top: 0, left: 0 })
+    $("#superset-reps-menu").hide().offset({ top: 0, left: 0 })
 }
 hideAllMenus()
 
@@ -43,7 +43,7 @@ const editExerciseName = (exercise_name, date) => {
             sessionStorage.exercise_name = newName
             xhttp.onload(() => {
                 console.log("im here")
-                renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                renderWorkout(JSON.parse(this.response), true, date)
                 toggleRequired()
                 populate()
             })
@@ -66,7 +66,7 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
     $("#exercise-comment-edit").off()
     $("#exercise-comment-edit").click(() => {
         hideAllMenus()
-        
+
         let editedComment = prompt("New comment: ", comment)
         if (editedComment != null && !editedComment.match(/^\s+$/) && editedComment != "" && editedComment != comment) {
             xhttp.open("POST", "/update/exercise_comments")
@@ -74,7 +74,7 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
             xhttp.send(JSON.stringify({ exercise_name, commentIndex: index, editedComment, date }))
             sessionStorage.exercise_name = exercise_name
             xhttp.onload(() => {
-                renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                renderWorkout(JSON.parse(this.response), true, date)
                 toggleRequired()
                 populate()
             })
@@ -86,13 +86,35 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
 const  = (exercise_name, date, ) => {
 
 }
-
+*/
 // Weight options
 
 // Edit weight
-const  = (exercise_name, date, ) => {
+const editWeight = (exercise_name, date, set_id, set_weight) => {
+    $("#weight-edit").off()
+    $("#weight-edit").click(() => {
+        hideAllMenus()
 
-}
+        let newWeight = prompt("New weight used: ", set_weight)
+        if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != set_weight) {
+            if (!newWeight.match(/(^(\d+\.\d{0,2}|\d+)(kg|lbs)$)|(^$)/)) {
+                console.log(newWeight)
+                alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
+                return
+            } else {
+                xhttp.open("POST", "/update/weight")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, set_id, newWeight, date }))
+                sessionStorage.exercise_name = exercise_name
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
+        }
+    })
+}/*
 
 // Delete weight
 const  = (exercise_name, date, ) => {
