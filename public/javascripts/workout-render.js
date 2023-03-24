@@ -118,9 +118,9 @@ const createExerciseContainer = (exercise) => {
     // Right click opens a prompt to change the exercise name
     exerciseName.addEventListener("contextmenu", (e) => {
         e.preventDefault()
-        let newName = prompt("New exercise name: ")
+        let newName = prompt("New exercise name: ", exercise.exercise_name)
 
-        if (newName != null && !newName.match(/^\s+$/) && newName != "") {
+        if (newName != null && !newName.match(/^\s+$/) && newName != "" && newName != exercise.exercise_name) {
             xhttp.open("POST", "/update/exercise")
             xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
             xhttp.send(JSON.stringify({ oldName: exerciseName.textContent, newName, date: displayDate.value }))
@@ -194,9 +194,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
     setWeight.textContent = set_weight
     setWeightAndCount.addEventListener("contextmenu", (e) => {
         e.preventDefault()
-        let newWeight = prompt("New weight used: ")
+        let newWeight = prompt("New weight used: ", set_weight)
 
-        if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "") {
+        if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "" && newWeight != set_weight) {
             if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$/)) {
                 alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
                 return
@@ -249,9 +249,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             }
             setRep.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
-                let newReps = prompt("New reps count: ")
+                let newReps = prompt(`New reps count for set ${index+1}: `, reps)
 
-                if (newReps != null && !newReps.match(/^\s+$/) && newReps != "") {
+                if (newReps != null && !newReps.match(/^\s+$/) && newReps != "" && newReps != reps) {
                     if (!newReps.match(/^\d+$/)) {
                         alert("Please enter a valid number for reps performed.")
                         return
@@ -296,9 +296,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         supersetExercise.textContent = superset_exercise
         supersetExercise.addEventListener("contextmenu", (e) => {
             e.preventDefault()
-            let newName = prompt("New superset exercise name: ")
+            let newName = prompt("New superset exercise name: ", superset_exercise)
 
-            if (newName != null && !newName.match(/^\s+$/) && newName != "") {
+            if (newName != null && !newName.match(/^\s+$/) && newName != "" && newName != superset_exercise) {
                 xhttp.open("POST", "/update/superset_name")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, newName, date: displayDate.value }))
@@ -320,12 +320,12 @@ const populateweightContainers = (exercise, set, weightContainer) => {
 
         let supersetWeight = document.createElement("h4")
         supersetWeight.classList.add("superset-weight")
-        supersetWeight.textContent = superset_weight || ""
+        supersetWeight.textContent = superset_weight
         supersetWeight.addEventListener("contextmenu", (e) => {
             e.preventDefault()
-            let newWeight = prompt("New superset weight used: ")
+            let newWeight = prompt("New superset weight used: ", superset_weight)
     
-            if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "") {
+            if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "" && newWeight != superset_weight) {
                 if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$/)) {
                     alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
                     return
