@@ -125,12 +125,10 @@ const createExerciseContainer = (exercise) => {
     // Right click opens a prompt to change the exercise name
     exerciseName.addEventListener("contextmenu", (e) => {
         e.preventDefault()
+        hideAllMenus()
 
         // Position custom context menu at cursor
-        const {clientX, clientY} = e
-        exerciseMenu.style.top = `${clientY}px`
-        exerciseMenu.style.left = `${clientX}px`
-        exerciseMenu.style.visibility = "visible"
+        $("#exercise-menu").show().offset({top: e.clientY, left: e.clientX})
 
         // Custom right click menu to edit or delete exercise
         editExerciseName(exercise.exercise_name, displayDate.value)
@@ -150,13 +148,10 @@ const addExerciseComments = (exercise) => {
             exerciseComment.textContent = comment
             exerciseComment.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
+                hideAllMenus()
                 
-                const {clientX, clientY} = e
-                exerciseCommentsMenu.style.top = `${clientY}px`
-                exerciseCommentsMenu.style.left = `${clientX}px`
-                exerciseCommentsMenu.style.visibility = "visible"
-        
-                // Custom right click menu to edit or delete exercise
+                $("#exercise-comments-menu").show().offset({top: e.clientY, left: e.clientX})
+
                 editExerciseComment(exercise.exercise_name, displayDate.value, index, comment)
             })
             exerciseComments.appendChild(exerciseComment)
@@ -207,7 +202,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
     setWeight.textContent = set_weight
     setWeightAndCount.addEventListener("contextmenu", (e) => {
         e.preventDefault()
-        
+        hideAllMenus()
+
+        $("#weight-menu").show().offset({top: e.clientY, left: e.clientX})
     })
     setWeightAndCount.appendChild(setWeight)
 
@@ -241,7 +238,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             }
             setRep.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
+                hideAllMenus()
                 
+                $("#set-menu").show().offset({top: e.clientY, left: e.clientX})
             })
             setReps.append(setRep)
         })
@@ -260,23 +259,22 @@ const populateweightContainers = (exercise, set, weightContainer) => {
 
         let supersetExerciseAndWeight = document.createElement("div")
         supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
+        supersetExerciseAndWeight.addEventListener("contextmenu", (e) => {
+            e.preventDefault()
+            hideAllMenus()
+                
+            $("#superset-menu").show().offset({top: e.clientY, left: e.clientX})
+        })
 
         let supersetExercise = document.createElement("h4")
         supersetExercise.classList.add("superset-exercise")
         supersetExercise.textContent = superset_exercise
-        supersetExercise.addEventListener("contextmenu", (e) => {
-            e.preventDefault()
-            
-        })
         supersetExerciseAndWeight.appendChild(supersetExercise)
 
         let supersetWeight = document.createElement("h4")
         supersetWeight.classList.add("superset-weight")
         supersetWeight.textContent = superset_weight
-        supersetWeight.addEventListener("contextmenu", (e) => {
-            e.preventDefault()
-            
-        })
+
         supersetExerciseAndWeight.appendChild(supersetWeight)
 
         let supersetDetails = document.createElement("div")
@@ -297,6 +295,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             }
             supersetRep.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
+                hideAllMenus()
+                
+                $("#superset-reps-menu").show().offset({top: e.clientY, left: e.clientX})
                 
             })
             supersetReps.append(supersetRep)
@@ -315,8 +316,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             newComment.textContent = comment
             newComment.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
+                hideAllMenus()
                 
-
+                $("#set-comments-menu").show().offset({top: e.clientY, left: e.clientX})
             })
             setComments.appendChild(newComment)
         })
