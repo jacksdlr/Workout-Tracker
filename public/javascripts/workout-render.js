@@ -129,7 +129,7 @@ const createExerciseContainer = (exercise) => {
         hideAllMenus()
 
         // Position custom context menu at cursor
-        $("#exercise-menu").show().offset({top: e.pageY, left: e.pageX})
+        $("#exercise-menu").show().offset({ top: e.pageY, left: e.pageX })
 
         // Custom right click menu to edit or delete exercise
         editExerciseName(exercise.exercise_name, displayDate.value)
@@ -150,8 +150,8 @@ const addExerciseComments = (exercise) => {
             exerciseComment.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 hideAllMenus()
-                
-                $("#exercise-comments-menu").show().offset({top: e.pageY, left: e.pageX})
+
+                $("#exercise-comments-menu").show().offset({ top: e.pageY, left: e.pageX })
 
                 editExerciseComment(exercise.exercise_name, displayDate.value, index, comment)
             })
@@ -206,7 +206,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         e.preventDefault()
         hideAllMenus()
 
-        $("#weight-menu").show().offset({top: e.pageY, left: e.pageX})
+        $("#weight-menu").show().offset({ top: e.pageY, left: e.pageX })
 
         editWeight(exercise.exercise_name, displayDate.value, _id, set_weight)
     })
@@ -243,8 +243,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             setRep.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 hideAllMenus()
-                
-                $("#set-menu").show().offset({top: e.pageY, left: e.pageX})
+
+                $("#set-menu").show().offset({ top: e.pageY, left: e.pageX })
 
                 editReps(exercise.exercise_name, displayDate.value, _id, index, reps)
             })
@@ -268,8 +268,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         supersetExerciseAndWeight.addEventListener("contextmenu", (e) => {
             e.preventDefault()
             hideAllMenus()
-                
-            $("#superset-menu").show().offset({top: e.pageY, left: e.pageX})
+
+            $("#superset-menu").show().offset({ top: e.pageY, left: e.pageX })
 
             editSupersetExercise(exercise.exercise_name, displayDate.value, _id, superset_exercise)
         })
@@ -304,8 +304,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             supersetRep.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 hideAllMenus()
-                
-                $("#superset-reps-menu").show().offset({top: e.pageY, left: e.pageX})
+
+                $("#superset-reps-menu").show().offset({ top: e.pageY, left: e.pageX })
             })
             supersetReps.append(supersetRep)
         })
@@ -324,8 +324,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             newComment.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 hideAllMenus()
-                
-                $("#set-comments-menu").show().offset({top: e.pageY, left: e.pageX})
+
+                $("#set-comments-menu").show().offset({ top: e.pageY, left: e.pageX })
             })
             setComments.appendChild(newComment)
         })
@@ -355,6 +355,10 @@ const mobileRender = () => {
             })
             let exerciseContainers = document.querySelectorAll(".exercise-container")
             exerciseContainers.forEach(container => {
+                container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
+                container.childNodes.forEach(node => {
+                    node.setAttribute("style", "display: flex; flex-direction: column;")
+                })/*
                 if (container.firstChild.textContent == sessionStorage.exercise_name) {
                     container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
                     container.childNodes.forEach(node => {
@@ -362,7 +366,7 @@ const mobileRender = () => {
                     })
                 } else {
                     container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-right exercise-collapse'></i>")
-                }
+                }*/
             })
         }
     } else {
