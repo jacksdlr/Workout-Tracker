@@ -205,6 +205,7 @@ div {
                         .set-rep {
                             background: rgba(46, 153, 240, 0.1);
                             border-radius: 3px;
+                            padding: 0 3px 0 3px;
                         }
                     #superset-text {
                         border-left: 1px solid rgba(0, 0, 0, 0.2);
@@ -234,6 +235,10 @@ div {
                         text-align: left;
                         padding: 5px;
                     }
+                        .superset-reps {
+                            display: flex;
+                            gap: 10px;
+                        }
                     .set-comments {
                         border-radius: 2px;
                         background: rgba(46, 153, 240, 0.1);
