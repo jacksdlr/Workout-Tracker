@@ -8,7 +8,6 @@ document.addEventListener("click", (e) => {
             menu.style.visibility = "hidden"
         }
     })
-    
 })
 
 const hideOnClick = (menu) => {
@@ -54,8 +53,23 @@ const deleteExercise = (exercise_name, date) => {
 
 // Edit comment
 const editExerciseComment = (exercise_name, date, index, comment) => {
-
-}
+    $("#exercise-comment-edit").off()
+    $("#exercise-comment-edit").click(() => {
+        hideOnClick(exerciseCommentsMenu)
+        let editedComment = prompt("New comment: ", comment)
+        if (editedComment != null && !editedComment.match(/^\s+$/) && editedComment != "" && editedComment != comment) {
+            xhttp.open("POST", "/update/exercise_comments")
+            xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+            xhttp.send(JSON.stringify({ exercise_name, commentIndex: index, editedComment, date}))
+            sessionStorage.exercise_name = exercise_name
+            xhttp.onload(() => {
+                renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                toggleRequired()
+                populate()
+            })
+        }
+    })
+}/*
 
 // Delete comment
 const  = (exercise_name, date, ) => {

@@ -6,6 +6,7 @@ const workoutTitle = document.getElementById("workout-name")
 const displayDate = document.getElementById("display-date")
 
 const exerciseMenu = document.getElementById("exercise-menu")
+const exerciseCommentsMenu = document.getElementById("exercise-comments-menu")
 const weightMenu = document.getElementById("weight-menu")
 const setMenu = document.getElementById("set-menu")
 const supersetMenu = document.getElementById("superset-menu")
@@ -125,16 +126,14 @@ const createExerciseContainer = (exercise) => {
     exerciseName.addEventListener("contextmenu", (e) => {
         e.preventDefault()
 
-        // Custom right click menu to edit or delete exercise
+        // Position custom context menu at cursor
         const {clientX, clientY} = e
-        console.log(exerciseMenu)
         exerciseMenu.style.top = `${clientY}px`
         exerciseMenu.style.left = `${clientX}px`
         exerciseMenu.style.visibility = "visible"
 
+        // Custom right click menu to edit or delete exercise
         editExerciseName(exercise.exercise_name, displayDate.value)
-
-        
     })
     exerciseContainer.appendChild(exerciseName)
 
@@ -152,7 +151,13 @@ const addExerciseComments = (exercise) => {
             exerciseComment.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 
-
+                const {clientX, clientY} = e
+                exerciseCommentsMenu.style.top = `${clientY}px`
+                exerciseCommentsMenu.style.left = `${clientX}px`
+                exerciseCommentsMenu.style.visibility = "visible"
+        
+                // Custom right click menu to edit or delete exercise
+                editExerciseComment(exercise.exercise_name, displayDate.value, index, comment)
             })
             exerciseComments.appendChild(exerciseComment)
         })
