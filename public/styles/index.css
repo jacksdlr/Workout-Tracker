@@ -3,7 +3,6 @@ div {
 }
 
 .context-menu {
-    visibility: hidden;
     position: absolute;
     background: lightcoral
 }
