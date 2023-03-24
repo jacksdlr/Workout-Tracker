@@ -358,12 +358,43 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         let supersetReps = document.createElement("p")
         supersetReps.classList.add("superset-reps")
         supersetReps.textContent = `Reps: `
-        superset_reps.forEach((set, index) => {
+        superset_reps.forEach((reps, index) => {
+            let supersetRep = document.createElement("p")
+            supersetRep.classList.add("set-rep")
             if (index != superset_reps.length - 1) {
-                supersetReps.insertAdjacentText("beforeend", `${set}, `)
+                supersetRep.textContent = `${reps}, `
+                //setReps.insertAdjacentHTML("beforeend", `<p class="set-rep">${set}, </p>`)
             } else {
-                supersetReps.insertAdjacentText("beforeend", set)
+                supersetRep.textContent = reps
+                //setReps.insertAdjacentHTML("beforeend", `<p class="set-rep">${set}</p>`)
             }
+            supersetRep.addEventListener("contextmenu", (e) => {
+                e.preventDefault()
+                let newReps = prompt(`New superset reps count for set ${index+1}: `, reps)
+
+                if (newReps != null && !newReps.match(/^\s+$/) && newReps != "" && newReps != reps) {
+                    if (!newReps.match(/^\d+$/)) {
+                        alert("Please enter a valid number for reps performed.")
+                        return
+                    } else {
+                        xhttp.open("POST", "/update/superset_reps")
+                        xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                        xhttp.send(JSON.stringify({ exercise_name: exercise.exercise_name, set_id: set._id, repsIndex: index, newReps, date: displayDate.value }))
+                        sessionStorage.exercise_name = exercise.exercise_name
+                        /*
+                        sessionStorage.set_weight = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[1]
+                        sessionStorage.set_weight_unit = set.set_weight.split(/(\d+\.\d{0,2}|\d+)/)[2]
+                        sessionStorage.set_reps = newReps
+                        */
+                        xhttp.onload(() => {
+                            renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                            toggleRequired()
+                            populate()
+                        })
+                    }
+                }
+            })
+            supersetReps.append(supersetRep)
         })
         supersetDetails.appendChild(supersetReps)
 
