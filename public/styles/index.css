@@ -3,6 +3,7 @@ div {
 }
 
 .context-menu {
+    z-index: 10000;
     position: absolute;
     background: lightcoral
 }

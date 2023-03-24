@@ -124,11 +124,12 @@ const createExerciseContainer = (exercise) => {
     exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
     // Right click opens a prompt to change the exercise name
     exerciseName.addEventListener("contextmenu", (e) => {
+        console.log(e)
         e.preventDefault()
         hideAllMenus()
 
         // Position custom context menu at cursor
-        $("#exercise-menu").show().offset({top: e.clientY, left: e.clientX})
+        $("#exercise-menu").show().offset({top: e.pageY, left: e.pageX})
 
         // Custom right click menu to edit or delete exercise
         editExerciseName(exercise.exercise_name, displayDate.value)
@@ -150,7 +151,7 @@ const addExerciseComments = (exercise) => {
                 e.preventDefault()
                 hideAllMenus()
                 
-                $("#exercise-comments-menu").show().offset({top: e.clientY, left: e.clientX})
+                $("#exercise-comments-menu").show().offset({top: e.pageY, left: e.pageX})
 
                 editExerciseComment(exercise.exercise_name, displayDate.value, index, comment)
             })
@@ -204,7 +205,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         e.preventDefault()
         hideAllMenus()
 
-        $("#weight-menu").show().offset({top: e.clientY, left: e.clientX})
+        $("#weight-menu").show().offset({top: e.pageY, left: e.pageX})
     })
     setWeightAndCount.appendChild(setWeight)
 
@@ -240,7 +241,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 e.preventDefault()
                 hideAllMenus()
                 
-                $("#set-menu").show().offset({top: e.clientY, left: e.clientX})
+                $("#set-menu").show().offset({top: e.pageY, left: e.pageX})
             })
             setReps.append(setRep)
         })
@@ -263,7 +264,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             e.preventDefault()
             hideAllMenus()
                 
-            $("#superset-menu").show().offset({top: e.clientY, left: e.clientX})
+            $("#superset-menu").show().offset({top: e.pageY, left: e.pageX})
         })
 
         let supersetExercise = document.createElement("h4")
@@ -297,8 +298,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 e.preventDefault()
                 hideAllMenus()
                 
-                $("#superset-reps-menu").show().offset({top: e.clientY, left: e.clientX})
-                
+                $("#superset-reps-menu").show().offset({top: e.pageY, left: e.pageX})
             })
             supersetReps.append(supersetRep)
         })
@@ -318,7 +318,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 e.preventDefault()
                 hideAllMenus()
                 
-                $("#set-comments-menu").show().offset({top: e.clientY, left: e.clientX})
+                $("#set-comments-menu").show().offset({top: e.pageY, left: e.pageX})
             })
             setComments.appendChild(newComment)
         })
