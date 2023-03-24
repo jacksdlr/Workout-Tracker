@@ -295,13 +295,13 @@ app.route("/workouts/:date")
 app.route("/update/exercise")
     .post(checkAuthenticated, async (req, res) => {
         const { id } = req.user
-        const { oldName, newName, date } = req.body
+        const { exercise_name, newName, date } = req.body
 
         const user = await User.findById(id)
 
         const dateIndex = user.workouts.findIndex(workout => workout.date == date)
 
-        const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == oldName)
+        const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
         User.findByIdAndUpdate(id, { $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.exercise_name`]: newName } }, { new: true }, (err, data) => {
             const workout = data.workouts.find(workout => workout.date == date)
