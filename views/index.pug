@@ -3,6 +3,7 @@ extends layout.pug
 block scripts
     script(src='/public/javascripts/form-logic.js' defer='')
     script(src='/public/javascripts/workout-render.js' defer='')
+    script(src='/public/javascripts/context-menus.js' defer='')
     <!-- jQuery library used for some container collapsing animations -->
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js')
     
@@ -10,6 +11,24 @@ block styles
     link(rel='stylesheet' href='/public/styles/index.css')
 
 block content
+    .context-menu#exercise-menu
+        p#exercise-edit Edit exercise name
+        p#exercise-comment New exercise comment
+        p#exercise-delete Delete exercise
+    .context-menu#weight-menu
+        p#weight-edit Edit weight used
+        p#weight-delete Delete weight
+    .context-menu#set-menu
+        p#reps-edit Edit repetitions
+        p#reps-comment New set comment
+        p#reps-delete Delete set
+    .context-menu#superset-menu
+        p#superset-exercise-edit Edit exercise name
+        p#superset-weight-edit Edit weight used
+        p#superset-delete Delete superset
+    .context-menu#superset-reps-menu 
+        p#superset-reps-edit Edit repetitions
+
     section#main-section
         .form-container
             .form-title
