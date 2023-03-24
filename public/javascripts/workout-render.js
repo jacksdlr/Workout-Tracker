@@ -270,6 +270,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             hideAllMenus()
                 
             $("#superset-menu").show().offset({top: e.pageY, left: e.pageX})
+
+            editSupersetExercise(exercise.exercise_name, displayDate.value, _id, superset_exercise)
         })
 
         let supersetExercise = document.createElement("h4")

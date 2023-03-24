@@ -40,7 +40,6 @@ const editExerciseName = (exercise_name, date) => {
             xhttp.open("POST", "/update/exercise")
             xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
             xhttp.send(JSON.stringify({ exercise_name, newName, date }))
-            sessionStorage.exercise_name = newName
             xhttp.onload(() => {
                 console.log("im here")
                 renderWorkout(JSON.parse(this.response), true, date)
@@ -72,7 +71,6 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
             xhttp.open("POST", "/update/exercise_comments")
             xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
             xhttp.send(JSON.stringify({ exercise_name, commentIndex: index, editedComment, date }))
-            sessionStorage.exercise_name = exercise_name
             xhttp.onload(() => {
                 renderWorkout(JSON.parse(this.response), true, date)
                 toggleRequired()
@@ -105,7 +103,6 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
                 xhttp.open("POST", "/update/weight")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, set_id, newWeight, date }))
-                sessionStorage.exercise_name = exercise_name
                 xhttp.onload(() => {
                     renderWorkout(JSON.parse(this.response), true, date)
                     toggleRequired()
@@ -136,7 +133,6 @@ const editReps = (exercise_name, date, set_id, repsIndex, reps) => {
                 xhttp.open("POST", "/update/reps")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, set_id, repsIndex, newReps, date }))
-                sessionStorage.exercise_name = exercise_name
                 xhttp.onload(() => {
                     renderWorkout(JSON.parse(this.response), true, date)
                     toggleRequired()
@@ -168,14 +164,27 @@ const  = (exercise_name, date, ) => {
 const  = (exercise_name, date, ) => {
 
 }
-
+*/
 // Superset options
 
 // Edit superset exercise
-const  = (exercise_name, date, ) => {
-
+const editSupersetExercise = (exercise_name, date, set_id, superset_exercise) => {
+    $("#superset-exercise-edit").off()
+    $("#superset-exercise-edit").click(() => {
+        let newName = prompt("New superset exercise name: ", superset_exercise)
+        if (newName != null && !newName.match(/^\s+$/) && newName != "" && newName != superset_exercise) {
+            xhttp.open("POST", "/update/superset_name")
+            xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+            xhttp.send(JSON.stringify({ exercise_name, set_id, newName, date }))
+            xhttp.onload(() => {
+                renderWorkout(JSON.parse(this.response), true, date)
+                toggleRequired()
+                populate()
+            })
+        }
+    })
 }
-
+/*
 // Edit superset weight
 const  = (exercise_name, date, ) => {
 
