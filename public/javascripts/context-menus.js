@@ -1,20 +1,30 @@
 // Hides context menus if clicked outside
+const hideAllMenus = () => {
+    $("#exercise-menu").hide().offset({top: 0, left: 0})
+    $("#exercise-comments-menu").hide().offset({top: 0, left: 0})
+    $("#weight-menu").hide().offset({top: 0, left: 0})
+    $("#set-menu").hide().offset({top: 0, left: 0})
+    $("#set-comments-menu").hide().offset({top: 0, left: 0})
+    $("#superset-menu").hide().offset({top: 0, left: 0})
+    $("#superset-reps-menu").hide().offset({top: 0, left: 0})
+}
+hideAllMenus()
+
 document.addEventListener("click", (e) => {
-    const contextMenus = document.querySelectorAll(".context-menu")
-    contextMenus.forEach(menu => {
+    const allMenus = document.querySelectorAll(".context-menu")
+    allMenus.forEach(menu => {
         if (e.target.offsetParent != menu) {
-            menu.style.top = "0px"
-            menu.style.left = "0px"
-            menu.style.visibility = "hidden"
+            hideAllMenus()
         }
     })
 })
 
+/*
 const hideOnClick = (menu) => {
     menu.style.top = "0px"
     menu.style.left = "0px"
     menu.style.visibility = "hidden"
-}
+}*/
 
 // Exercise options
 
@@ -23,7 +33,7 @@ const editExerciseName = (exercise_name, date) => {
     $("#exercise-edit").off()
     $("#exercise-edit").click(() => {
         // Hide exercise context menu
-        hideOnClick(exerciseMenu)
+        hideAllMenus()
 
         let newName = prompt("New exercise name: ", exercise_name)
         if (newName != null && !newName.match(/^\s+$/) && newName != "" && newName != exercise_name) {
@@ -55,12 +65,13 @@ const deleteExercise = (exercise_name, date) => {
 const editExerciseComment = (exercise_name, date, index, comment) => {
     $("#exercise-comment-edit").off()
     $("#exercise-comment-edit").click(() => {
-        hideOnClick(exerciseCommentsMenu)
+        hideAllMenus()
+        
         let editedComment = prompt("New comment: ", comment)
         if (editedComment != null && !editedComment.match(/^\s+$/) && editedComment != "" && editedComment != comment) {
             xhttp.open("POST", "/update/exercise_comments")
             xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
-            xhttp.send(JSON.stringify({ exercise_name, commentIndex: index, editedComment, date}))
+            xhttp.send(JSON.stringify({ exercise_name, commentIndex: index, editedComment, date }))
             sessionStorage.exercise_name = exercise_name
             xhttp.onload(() => {
                 renderWorkout(JSON.parse(this.response), true, displayDate.value)
