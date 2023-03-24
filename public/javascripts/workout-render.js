@@ -196,8 +196,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         e.preventDefault()
         let newWeight = prompt("New weight used: ", set_weight)
 
-        if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "" && newWeight != set_weight) {
-            if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$/)) {
+        if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != set_weight) {
+            if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$|^$/)) {
+                console.log(newWeight)
                 alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
                 return
             } else {
@@ -325,8 +326,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             e.preventDefault()
             let newWeight = prompt("New superset weight used: ", superset_weight)
     
-            if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != "" && newWeight != superset_weight) {
-                if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$/)) {
+            if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != superset_weight) {
+                if (!newWeight.match(/^(\d+\.\d{0,2}|\d+)(kg|lbs)$|^$/)) {
                     alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
                     return
                 } else {
