@@ -167,11 +167,20 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
 }
 
 // Delete weight
-const deleteWeight = (exercise_name, date,) => {
-    $("#").off()
-    $("#").click(() => {
+const deleteWeight = (exercise_name, date, set_id) => {
+    $("#weight-delete").off()
+    $("#weight-delete").click(() => {
         if (username) {
-
+            if (confirm("Are you sure you want to delete this comment?") == true) {
+                xhttp.open("POST", "/delete/weight")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
         } else {
             alert("You need to be logged in to edit workouts.")
         }

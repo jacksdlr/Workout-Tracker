@@ -209,6 +209,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         $("#weight-menu").show().offset({ top: e.pageY, left: e.pageX })
 
         editWeight(exercise.exercise_name, displayDate.value, _id, set_weight)
+        deleteWeight(exercise.exercise_name, displayDate.value, _id)
     })
     setWeightAndCount.appendChild(setWeight)
 
