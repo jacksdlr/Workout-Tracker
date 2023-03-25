@@ -440,6 +440,27 @@ app.route("/update/superset_reps")
         })
     })
 
+app.route("/delete/exercise")
+    .post(checkAuthenticated, async (req, res) => {
+        const { id } = req.user
+        const { exercise_name, date } = req.body
+
+        const user = await User.findById(id)
+
+        const dateIndex = user.workouts.findIndex(workout => workout.date == date)
+
+        if (user.workouts[dateIndex].exercises.length == 1) {
+            User.findByIdAndUpdate(id, { $pull: { "workouts": { date } } }, { new: true }, (err, data) => {
+                res.redirect("/")
+            })
+        } else {
+            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises`]: { exercise_name } } }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        }
+    })
+
 const port = 3000
 
 app.listen(port, console.log(`App is listening on port ${port}...`))

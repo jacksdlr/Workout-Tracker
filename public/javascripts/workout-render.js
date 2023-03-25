@@ -21,7 +21,6 @@ const submitRequest = (date, reset) => {
     xhttp.send()
     xhttp.onload = function () {
         if (this.response) {
-            console.log(sessionStorage)
             if (this.response.match(/^</)) {
                 renderWorkout("not found", true, date)
             } else {
@@ -133,6 +132,7 @@ const createExerciseContainer = (exercise) => {
 
         // Custom right click menu to edit or delete exercise
         editExerciseName(exercise.exercise_name, displayDate.value)
+        deleteExercise(exercise.exercise_name, displayDate.value)
     })
     exerciseContainer.appendChild(exerciseName)
 

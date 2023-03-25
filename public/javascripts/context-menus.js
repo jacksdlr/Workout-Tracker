@@ -45,7 +45,19 @@ const editExerciseName = (exercise_name, date) => {
 }
 
 const deleteExercise = (exercise_name, date) => {
-
+    $("#exercise-delete").off()
+    $("#exercise-delete").click(() => {
+        if (confirm("Are you sure you want to delete this exercise?") == true) {
+            xhttp.open("POST", "/delete/exercise")
+            xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+            xhttp.send(JSON.stringify({ exercise_name, date }))
+            xhttp.onload(() => {
+                renderWorkout(JSON.parse(this.response), true, date)
+                toggleRequired()
+                populate()
+            })
+        }
+    })
 }
 
 ////////////////////////////////
@@ -73,12 +85,18 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
 }
 
 const addExerciseComment = (exercise_name, date) => {
+    $("#").off()
+    $("#").click(() => {
 
+    })
 }
 
 // Delete exercise comment
-const deleteExerciseComment = (exercise_name, date, ) => {
+const deleteExerciseComment = (exercise_name, date,) => {
+    $("#").off()
+    $("#").click(() => {
 
+    })
 }
 
 //////////////////////
@@ -112,8 +130,11 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
 }
 
 // Delete weight
-const deleteWeight = (exercise_name, date, ) => {
+const deleteWeight = (exercise_name, date,) => {
+    $("#").off()
+    $("#").click(() => {
 
+    })
 }
 
 ///////////////////
@@ -144,8 +165,11 @@ const editReps = (exercise_name, date, set_id, repsIndex, reps) => {
 }
 
 // Delete set
-const deleteSet = (exercise_name, date, ) => {
+const deleteSet = (exercise_name, date,) => {
+    $("#").off()
+    $("#").click(() => {
 
+    })
 }
 
 ///////////////////////////
@@ -174,13 +198,19 @@ const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
 }
 
 // New set comment
-const newSetComment = (exercise_name, date, ) => {
+const newSetComment = (exercise_name, date,) => {
+    $("#").off()
+    $("#").click(() => {
 
+    })
 }
 
 // Delete set comment
-const deleteSetComment = (exercise_name, date, ) => {
+const deleteSetComment = (exercise_name, date,) => {
+    $("#").off()
+    $("#").click(() => {
 
+    })
 }
 
 ////////////////////////
@@ -229,8 +259,11 @@ const editSupersetWeight = (exercise_name, date, set_id, superset_weight) => {
 }
 
 // Delete superset
-const deleteSuperset = (exercise_name, date, ) => {
+const deleteSuperset = (exercise_name, date,) => {
+    $("#").off()
+    $("#").click(() => {
 
+    })
 }
 
 /////////////////////////////
