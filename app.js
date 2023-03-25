@@ -479,6 +479,7 @@ app.route("/delete/exercise_comments")
         })
     })
 
+// Might need to change how workouts render if the last weight is deleted and there are no comments either
 app.route("/delete/weight")
     .post(checkAuthenticated, async (req, res) => {
         const { id } = req.user
@@ -508,6 +509,25 @@ app.route("/add/exercise_comments")
         const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
         User.findByIdAndUpdate(id, { $push: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.comments`]: newComment } }, { new: true }, (err, data) => {
+            const workout = data.workouts.find(workout => workout.date == date)
+            res.send(workout)
+        })
+    })
+
+app.route("/add/set_comments")
+    .post(checkAuthenticated, async (req, res) => {
+        const { id } = req.user
+        const { exercise_name, date, newComment, set_id } = req.body
+
+        const user = await User.findById(id)
+
+        const dateIndex = user.workouts.findIndex(workout => workout.date == date)
+
+        const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
+
+        const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
+
+        User.findByIdAndUpdate(id, { $push: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: newComment } }, { new: true }, (err, data) => {
             const workout = data.workouts.find(workout => workout.date == date)
             res.send(workout)
         })

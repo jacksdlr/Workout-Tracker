@@ -242,11 +242,10 @@ const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
             let setIndex = comment.split(": ")[0]
             let editedComment = prompt(`New comment for set ${setIndex.split(" ")[1]}: `, comment.split(": ")[1])
             if (editedComment != null && !editedComment.match(/^\s+$/) && editedComment != "" && editedComment != comment) {
-                editedComment = `${setIndex}: ` + editedComment
+                editedComment = `${setIndex}: ${editedComment}`
                 xhttp.open("POST", "/update/set_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, set_id, commentIndex, editedComment, date }))
-
                 xhttp.onload(() => {
                     renderWorkout(JSON.parse(this.response), true, date)
                     toggleRequired()
@@ -260,11 +259,22 @@ const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
 }
 
 // New set comment
-const newSetComment = (exercise_name, date,) => {
-    $("#").off()
-    $("#").click(() => {
+const addSetComment = (exercise_name, date, set_id, setIndex) => {
+    $("#reps-comment").off()
+    $("#reps-comment").click(() => {
         if (username) {
-
+            let newComment = prompt(`New comment for set ${setIndex+1}: `)
+            if (newComment != null && !newComment.match(/^\s+$/) && newComment != "") {
+                newComment = `Set ${setIndex+1}: ${newComment}`
+                xhttp.open("POST", "/add/set_comments")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, newComment, date, set_id }))
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
         } else {
             alert("You need to be logged in to edit workouts.")
         }

@@ -248,6 +248,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 $("#set-menu").show().offset({ top: e.pageY, left: e.pageX })
 
                 editReps(exercise.exercise_name, displayDate.value, _id, index, reps)
+                addSetComment(exercise.exercise_name, displayDate.value, _id, index)
             })
             setReps.append(setRep)
         })
