@@ -153,6 +153,7 @@ const addExerciseComments = (exercise) => {
                 $("#exercise-comments-menu").show().offset({ top: e.pageY, left: e.pageX })
 
                 editExerciseComment(exercise.exercise_name, displayDate.value, index, comment)
+                deleteExerciseComment(exercise.exercise_name, displayDate.value, comment)
             })
             exerciseComments.appendChild(exerciseComment)
         })

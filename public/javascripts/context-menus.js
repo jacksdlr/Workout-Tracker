@@ -115,11 +115,20 @@ const addExerciseComment = (exercise_name, date) => {
 }
 
 // Delete exercise comment
-const deleteExerciseComment = (exercise_name, date,) => {
-    $("#").off()
-    $("#").click(() => {
+const deleteExerciseComment = (exercise_name, date, comment) => {
+    $("#exercise-comment-delete").off()
+    $("#exercise-comment-delete").click(() => {
         if (username) {
-
+            if (confirm("Are you sure you want to delete this comment?") == true) {
+                xhttp.open("POST", "/delete/exercise_comments")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, date, comment }))
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
         } else {
             alert("You need to be logged in to edit workouts.")
         }

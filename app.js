@@ -461,6 +461,24 @@ app.route("/delete/exercise")
         }
     })
 
+app.route("/delete/exercise_comments")
+    .post(checkAuthenticated, async (req, res) => {
+        const { id } = req.user
+        const { exercise_name, date, comment } = req.body
+
+        const user = await User.findById(id)
+
+        const dateIndex = user.workouts.findIndex(workout => workout.date == date)
+
+        const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
+
+        // Deletes all comments matching the one that was selected (who really is going to have multiple of the exact same comment?)
+        User.findByIdAndUpdate(id, { $pull: {[`workouts.${dateIndex}.exercises.${exerciseIndex}.comments`]: comment} } , { new: true }, (err, data) => {
+            const workout = data.workouts.find(workout => workout.date == date)
+            res.send(workout)
+        })
+    })
+
 app.route("/add/exercise_comments")
     .post(checkAuthenticated, async (req, res) => {
         const { id } = req.user
