@@ -451,7 +451,8 @@ app.route("/delete/exercise")
 
         if (user.workouts[dateIndex].exercises.length == 1) {
             User.findByIdAndUpdate(id, { $pull: { "workouts": { date } } }, { new: true }, (err, data) => {
-                res.redirect("/")
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
             })
         } else {
             User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises`]: { exercise_name } } }, { new: true }, (err, data) => {
@@ -473,13 +474,25 @@ app.route("/delete/exercise_comments")
         const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
         // Deletes all comments matching the one that was selected (who really is going to have multiple of the exact same comment?)
-        User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.comments`]: comment } }, { new: true }, (err, data) => {
-            const workout = data.workouts.find(workout => workout.date == date)
-            res.send(workout)
-        })
+        if (user.workouts[dateIndex].exercises[exerciseIndex].comments.length == 1 && user.workouts[dateIndex].exercises.length == 1 && user.workouts[dateIndex].exercises[exerciseIndex].sets.length == 0) {
+            User.findByIdAndUpdate(id, { $pull: { "workouts": { date } } }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        } else if (user.workouts[dateIndex].exercises[exerciseIndex].comments.length == 1 && user.workouts[dateIndex].exercises[exerciseIndex].sets.length == 0) {
+            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises`]: {exercise_name} } }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        } else {
+            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.comments`]: comment } }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        }
     })
 
-// Might need to change how workouts render if the last weight is deleted and there are no comments either
+
 app.route("/delete/weight")
     .post(checkAuthenticated, async (req, res) => {
         const { id } = req.user
@@ -491,10 +504,22 @@ app.route("/delete/weight")
 
         const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
-        User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets`]: { _id: set_id } } }, { new: true }, (err, data) => {
-            const workout = data.workouts.find(workout => workout.date == date)
-            res.send(workout)
-        })
+        if (user.workouts[dateIndex].exercises[exerciseIndex].sets.length == 1 && user.workouts[dateIndex].exercises[exerciseIndex].comments.length == 0 && user.workouts[dateIndex].exercises.length == 1) {
+            User.findByIdAndUpdate(id, { $pull: { "workouts": { date } } }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        } else if (user.workouts[dateIndex].exercises[exerciseIndex].sets.length == 1 && user.workouts[dateIndex].exercises[exerciseIndex].comments.length == 0) {
+            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises`]: { exercise_name } } }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        } else {
+            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets`]: { _id: set_id } } }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        }
     })
 
 app.route("/add/exercise_comments")

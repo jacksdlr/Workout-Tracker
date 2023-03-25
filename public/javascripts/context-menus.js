@@ -171,7 +171,7 @@ const deleteWeight = (exercise_name, date, set_id) => {
     $("#weight-delete").off()
     $("#weight-delete").click(() => {
         if (username) {
-            if (confirm("Are you sure you want to delete this comment?") == true) {
+            if (confirm("Are you sure you want to delete this weight?") == true) {
                 xhttp.open("POST", "/delete/weight")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
