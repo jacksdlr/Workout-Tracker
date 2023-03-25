@@ -480,7 +480,7 @@ app.route("/delete/exercise_comments")
                 res.send(workout)
             })
         } else if (user.workouts[dateIndex].exercises[exerciseIndex].comments.length == 1 && user.workouts[dateIndex].exercises[exerciseIndex].sets.length == 0) {
-            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises`]: {exercise_name} } }, { new: true }, (err, data) => {
+            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises`]: { exercise_name } } }, { new: true }, (err, data) => {
                 const workout = data.workouts.find(workout => workout.date == date)
                 res.send(workout)
             })
@@ -491,7 +491,6 @@ app.route("/delete/exercise_comments")
             })
         }
     })
-
 
 app.route("/delete/weight")
     .post(checkAuthenticated, async (req, res) => {
@@ -515,7 +514,40 @@ app.route("/delete/weight")
                 res.send(workout)
             })
         } else {
-            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets`]: { _id: set_id } } }, { new: true }, (err, data) => {
+            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets`]: { _id: set_id } }, $pull: {[`workouts.${dateIndex}.exercises.${exerciseIndex}.comments`]: {$in: comment}} }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        }
+    })
+
+app.route("/delete/reps")
+    .post(checkAuthenticated, async (req, res) => {
+        const { id } = req.user
+        const { exercise_name, date, set_id, repsIndex, newComments } = req.body
+
+        const user = await User.findById(id)
+
+        const dateIndex = user.workouts.findIndex(workout => workout.date == date)
+
+        const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
+
+        const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
+
+        if (user.workouts[dateIndex].exercises[exerciseIndex].sets[weightIndex].set_reps.length == 1 && user.workouts[dateIndex].exercises[exerciseIndex].sets.length == 1 && user.workouts[dateIndex].exercises[exerciseIndex].comments.length == 0 && user.workouts[dateIndex].exercises.length == 1) {
+            User.findByIdAndUpdate(id, { $pull: { "workouts": { date } } }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        } else if (user.workouts[dateIndex].exercises[exerciseIndex].sets[weightIndex].set_reps.length == 1 && user.workouts[dateIndex].exercises[exerciseIndex].sets.length == 1 && user.workouts[dateIndex].exercises[exerciseIndex].comments.length == 0) {
+            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises`]: { exercise_name } } }, { new: true }, (err, data) => {
+                const workout = data.workouts.find(workout => workout.date == date)
+                res.send(workout)
+            })
+        } else {
+            await User.findByIdAndUpdate(id, { $unset: {[`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps.${repsIndex}`]: ""}, $inc: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.sets_count`]: -1 }, $set: {[`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: newComments}})
+
+            User.findByIdAndUpdate(id, { $pull: {[`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps`]: null} }, { new: true }, (err, data) => {
                 const workout = data.workouts.find(workout => workout.date == date)
                 res.send(workout)
             })

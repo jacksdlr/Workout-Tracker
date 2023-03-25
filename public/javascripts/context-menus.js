@@ -219,11 +219,28 @@ const editReps = (exercise_name, date, set_id, repsIndex, reps) => {
 }
 
 // Delete set
-const deleteSet = (exercise_name, date,) => {
-    $("#").off()
-    $("#").click(() => {
+const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
+    $("#reps-delete").off()
+    $("#reps-delete").click(() => {
         if (username) {
-
+            // find the comment for the set
+            if (confirm(`Are you sure you want to delete set ${repsIndex+1}?`) == true) {
+                let newComments = []
+                comments.forEach(comment => {if (!comment.match(`Set ${repsIndex+1}: `)) {newComments.push(comment)}})
+                newComments.forEach((comment, index) => {
+                    if (parseInt(comment.split(": ")[0].split(" ")[1]) > (repsIndex+1)) {
+                        newComments[index] = `Set ${parseInt(comment.split(": ")[0].split(" ")[1])-1}: ${comment.split(": ")[1]}`
+                    }
+                })
+                xhttp.open("POST", "/delete/reps")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, date, set_id, repsIndex, newComments }))
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
         } else {
             alert("You need to be logged in to edit workouts.")
         }

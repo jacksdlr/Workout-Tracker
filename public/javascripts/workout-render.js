@@ -249,6 +249,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
 
                 editReps(exercise.exercise_name, displayDate.value, _id, index, reps)
                 addSetComment(exercise.exercise_name, displayDate.value, _id, index)
+                deleteReps(exercise.exercise_name, displayDate.value, set.comments, _id, index)
             })
             setReps.append(setRep)
         })
