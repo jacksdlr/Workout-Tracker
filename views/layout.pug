@@ -21,7 +21,7 @@ body
             if !username
                 a(href='/login' value='login') Login / Signup
             else
-                p Hi, #{username} |
+                p#username Hi, #{username} |
                 a(href='/logout' value='logout' onclick='sessionStorage.clear()') Logout
     block content
 
