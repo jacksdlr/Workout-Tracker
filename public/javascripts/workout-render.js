@@ -54,7 +54,6 @@ displayDate.addEventListener("change", () => {
 const renderWorkout = (data, reset, date) => {
     let notFound = document.getElementById("not-found")
     let dateToRemove = document.getElementById("date")
-    console.log(date)
     if (date == "example") {
         workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">Example date</p>`)
     } else {
@@ -123,7 +122,6 @@ const createExerciseContainer = (exercise) => {
     exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
     // Right click opens a prompt to change the exercise name
     exerciseName.addEventListener("contextmenu", (e) => {
-        console.log(e)
         e.preventDefault()
         hideAllMenus()
 
@@ -132,6 +130,7 @@ const createExerciseContainer = (exercise) => {
 
         // Custom right click menu to edit or delete exercise
         editExerciseName(exercise.exercise_name, displayDate.value)
+        addExerciseComment(exercise.exercise_name, displayDate.value)
         deleteExercise(exercise.exercise_name, displayDate.value)
     })
     exerciseContainer.appendChild(exerciseName)

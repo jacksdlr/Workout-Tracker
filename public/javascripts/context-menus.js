@@ -36,7 +36,6 @@ const editExerciseName = (exercise_name, date) => {
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, newName, date }))
                 xhttp.onload(() => {
-                    console.log("im here")
                     renderWorkout(JSON.parse(this.response), true, date)
                     toggleRequired()
                     populate()
@@ -95,10 +94,20 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
 }
 
 const addExerciseComment = (exercise_name, date) => {
-    $("#").off()
-    $("#").click(() => {
+    $("#exercise-comment").off()
+    $("#exercise-comment").click(() => {
         if (username) {
-
+            let newComment = prompt("New comment: ")
+            if (newComment != null && !newComment.match(/^\s+$/) && newComment != "") {
+                xhttp.open("POST", "/add/exercise_comments")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, newComment, date }))
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
         } else {
             alert("You need to be logged in to edit workouts.")
         }
@@ -129,7 +138,6 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
             let newWeight = prompt("New weight used: ", set_weight)
             if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != set_weight) {
                 if (!newWeight.match(/(^(\d+\.\d{0,2}|\d+)(kg|lbs)$)|(^$)/)) {
-                    console.log(newWeight)
                     alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
                     return
                 } else {
