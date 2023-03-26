@@ -207,6 +207,7 @@ div {
                         padding: 5px;
                         display: flex;
                         gap: 10px;
+                        flex-wrap: wrap;
                     }
                         .set-rep {
                             background: rgba(46, 153, 240, 0.1);
