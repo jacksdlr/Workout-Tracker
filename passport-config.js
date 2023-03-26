@@ -2,7 +2,7 @@ const { User } = require("./models/models")
 const LocalStrategy = require("passport-local").Strategy
 const bcrypt = require("bcrypt")
 
-const initialize = (passport, getUserById) => {
+const initialize = (passport) => {
     const authenticateUser = (username, password, done) => {
         User.findOne({username}, (err, user) => {
             if (!user) {
