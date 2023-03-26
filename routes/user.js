@@ -11,6 +11,10 @@ const checkNotAuthenticated = (req, res, next) => {
     next()
 }
 
+router.get("/", (req, res) => {
+    res.redirect("/")
+})
+
 router.get("/login", checkNotAuthenticated, (req, res) => {
     res.render("login-signup")
 })
