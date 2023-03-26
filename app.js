@@ -73,6 +73,10 @@ app.route("/signup")
         try {
             const { username, email, password } = req.body
             const hashedPassword = await bcrypt.hash(password, 10)
+            if (!username.match(/^[a-z0-9_-]{3,15}$/i)) {
+                res.render("login-signup", {signupError: "Invalid username (3-15 letters, numbers, and _ or - special characters)"})
+                return
+            }
             User.findOne({ email }, (err, existingEmail) => {
                 if (existingEmail) {
                     res.render("login-signup", { signupError: "Email already in use" })
