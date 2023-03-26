@@ -99,7 +99,7 @@ const addExerciseComment = (exercise_name, date) => {
         if (username) {
             let newComment = prompt("New comment: ")
             if (newComment != null && !newComment.match(/^\s+$/) && newComment != "") {
-                xhttp.open("POST", "/add/exercise_comments")
+                xhttp.open("POST", "/comments/exercise_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date }))
                 xhttp.onload(() => {
@@ -283,7 +283,7 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
             let newComment = prompt(`New comment for set ${setIndex + 1}: `)
             if (newComment != null && !newComment.match(/^\s+$/) && newComment != "") {
                 newComment = `Set ${setIndex + 1}: ${newComment}`
-                xhttp.open("POST", "/add/set_comments")
+                xhttp.open("POST", "/comments/set_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date, set_id }))
                 xhttp.onload(() => {
