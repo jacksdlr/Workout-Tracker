@@ -119,9 +119,9 @@ router.post("/reps", checkAuthenticated, async (req, res) => {
                 res.send(workout)
             })
         } else {
-            await User.findByIdAndUpdate(id, { $unset: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps.${repsIndex}`]: "" }, $inc: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.sets_count`]: -1 }, $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: newComments } })
+            await User.findByIdAndUpdate(id, { $unset: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps.${repsIndex}`]: "", [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps.${repsIndex}`]: "" }, $inc: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.sets_count`]: -1 }, $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: newComments } })
 
-            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps`]: null } }, { new: true }, (err, data) => {
+            User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps`]: null, [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps`]: null } }, { new: true }, (err, data) => {
                 const workout = data.workouts.find(workout => workout.date == date)
                 res.send(workout)
             })
