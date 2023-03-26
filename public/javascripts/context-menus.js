@@ -224,12 +224,12 @@ const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
     $("#reps-delete").click(() => {
         if (username) {
             // find the comment for the set
-            if (confirm(`Are you sure you want to delete set ${repsIndex+1}?`) == true) {
+            if (confirm(`Are you sure you want to delete set ${repsIndex + 1}?`) == true) {
                 let newComments = []
-                comments.forEach(comment => {if (!comment.match(`Set ${repsIndex+1}: `)) {newComments.push(comment)}})
+                comments.forEach(comment => { if (!comment.match(`Set ${repsIndex + 1}: `)) { newComments.push(comment) } })
                 newComments.forEach((comment, index) => {
-                    if (parseInt(comment.split(": ")[0].split(" ")[1]) > (repsIndex+1)) {
-                        newComments[index] = `Set ${parseInt(comment.split(": ")[0].split(" ")[1])-1}: ${comment.split(": ")[1]}`
+                    if (parseInt(comment.split(": ")[0].split(" ")[1]) > (repsIndex + 1)) {
+                        newComments[index] = `Set ${parseInt(comment.split(": ")[0].split(" ")[1]) - 1}: ${comment.split(": ")[1]}`
                     }
                 })
                 xhttp.open("POST", "/delete/reps")
@@ -280,9 +280,9 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
     $("#reps-comment").off()
     $("#reps-comment").click(() => {
         if (username) {
-            let newComment = prompt(`New comment for set ${setIndex+1}: `)
+            let newComment = prompt(`New comment for set ${setIndex + 1}: `)
             if (newComment != null && !newComment.match(/^\s+$/) && newComment != "") {
-                newComment = `Set ${setIndex+1}: ${newComment}`
+                newComment = `Set ${setIndex + 1}: ${newComment}`
                 xhttp.open("POST", "/add/set_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date, set_id }))
@@ -299,11 +299,20 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
 }
 
 // Delete set comment
-const deleteSetComment = (exercise_name, date,) => {
-    $("#").off()
-    $("#").click(() => {
+const deleteSetComment = (exercise_name, date, set_id, comment) => {
+    $("#set-comment-delete").off()
+    $("#set-comment-delete").click(() => {
         if (username) {
-
+            if (confirm("Are you sure you want to delete this comment?") == true) {
+                xhttp.open("POST", "/delete/set_comments")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, date, set_id, comment }))
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
         } else {
             alert("You need to be logged in to edit workouts.")
         }

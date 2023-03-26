@@ -334,6 +334,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 $("#set-comments-menu").show().offset({ top: e.pageY, left: e.pageX })
 
                 editSetComment(exercise.exercise_name, displayDate.value, _id, index, comment)
+                deleteSetComment(exercise.exercise_name, displayDate.value, _id, comment)
             })
             setComments.appendChild(newComment)
         })
