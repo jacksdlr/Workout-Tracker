@@ -578,6 +578,25 @@ app.route("/delete/set_comments")
         })
     })
 
+app.route("/delete/superset")
+    .post(checkAuthenticated, async (req, res) => {
+        const { id } = req.user
+        const { exercise_name, date, set_id } = req.body
+
+        const user = await User.findById(id)
+
+        const dateIndex = user.workouts.findIndex(workout => workout.date == date)
+
+        const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
+
+        const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
+
+        User.findByIdAndUpdate(id, { $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_exercise`]: "" , [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_weight`]: "", [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps.$[]`]: ""  } }, { new: true }, (err, data) => {
+            const workout = data.workouts.find(workout => workout.date == date)
+            res.send(workout)
+        })
+    })
+
 app.route("/add/exercise_comments")
     .post(checkAuthenticated, async (req, res) => {
         const { id } = req.user

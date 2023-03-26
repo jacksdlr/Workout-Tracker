@@ -373,11 +373,20 @@ const editSupersetWeight = (exercise_name, date, set_id, superset_weight) => {
 }
 
 // Delete superset
-const deleteSuperset = (exercise_name, date,) => {
-    $("#").off()
-    $("#").click(() => {
+const deleteSuperset = (exercise_name, date, set_id) => {
+    $("#superset-delete").off()
+    $("#superset-delete").click(() => {
         if (username) {
-
+            if (confirm("Are you sure you want to delete this superset?") == true) {
+                xhttp.open("POST", "/delete/superset")
+                xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+                xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
+                xhttp.onload(() => {
+                    renderWorkout(JSON.parse(this.response), true, date)
+                    toggleRequired()
+                    populate()
+                })
+            }
         } else {
             alert("You need to be logged in to edit workouts.")
         }

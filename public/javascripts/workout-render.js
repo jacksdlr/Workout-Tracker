@@ -276,6 +276,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
 
             editSupersetExercise(exercise.exercise_name, displayDate.value, _id, superset_exercise)
             editSupersetWeight(exercise.exercise_name, displayDate.value, _id, superset_weight)
+            deleteSuperset(exercise.exercise_name, displayDate.value, _id)
         })
 
         let supersetExercise = document.createElement("h4")
