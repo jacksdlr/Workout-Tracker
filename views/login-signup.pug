@@ -13,7 +13,7 @@ block content
 
     .login-signup-form
         h1 Login
-        form(action='/login' method='POST')
+        form(action='/user/login' method='POST')
             label(for='login-username') Username
             input(type='text' name='username' id='login-username' required)
             label(for='login-password') Password
@@ -21,7 +21,7 @@ block content
             button(type='submit') Login
     .login-signup-form
         h1 Signup
-        form(action='/signup' method='POST')
+        form(action='/user/signup' method='POST')
             label(for='signup-username') Username
             input(type='text' name='username' id='signup-username' minlength='3' required)
             label(for='login-email') Email

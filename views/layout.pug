@@ -19,10 +19,10 @@ body
         a(href='/')#logo Logo
         .login-container
             if !username
-                a(href='/login' value='login') Login / Signup
+                a(href='/user/login' value='login') Login / Signup
             else
                 p#username Hi, #{username} |
-                a(href='/logout' value='logout' onclick='sessionStorage.clear()') Logout
+                a(href='/user/logout' value='logout' onclick='sessionStorage.clear()') Logout
     block content
 
     footer

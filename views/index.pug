@@ -18,7 +18,7 @@ block content
                 button#clear-form(onclick='document.getElementById("exercise-form").reset(); toggleVisibility(); toggleRequired(); sessionStorage.clear()')
                     i.fa-solid.fa-arrows-rotate
                 <!-- button here -->
-            form#exercise-form.form(action='/' method='POST')
+            form#exercise-form.form(action='/workouts' method='POST')
                 .input-container
                     label(for='workout-input') Workout date:
                     input#workout-input(type='date' name='date' required='true')
