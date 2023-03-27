@@ -127,7 +127,7 @@ const createExerciseContainer = (exercise) => {
         hideAllMenus()
 
         // Position custom context menu at cursor
-        $("#exercise-menu").show().offset({ 
+        $("#exercise-menu").slideDown(200).offset({ 
             top: e.pageY,
             left: preventOutOfBounds(exerciseMenu, e.pageX)
         })
@@ -154,7 +154,7 @@ const addExerciseComments = (exercise) => {
                 e.preventDefault()
                 hideAllMenus()
 
-                $("#exercise-comments-menu").show().offset({ 
+                $("#exercise-comments-menu").slideDown(200).offset({ 
                     top: e.pageY,
                     left: preventOutOfBounds(exerciseCommentsMenu, e.pageX)
                 })
@@ -213,7 +213,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         e.preventDefault()
         hideAllMenus()
 
-        $("#weight-menu").show().offset({ 
+        $("#weight-menu").slideDown(200).offset({ 
             top: e.pageY,
             left: preventOutOfBounds(weightMenu, e.pageX)
         })
@@ -255,7 +255,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 e.preventDefault()
                 hideAllMenus()
 
-                $("#set-menu").show().offset({ 
+                $("#set-menu").slideDown(200).offset({ 
                     top: e.pageY,
                     left: preventOutOfBounds(setMenu, e.pageX)
                 })
@@ -285,7 +285,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             e.preventDefault()
             hideAllMenus()
 
-            $("#superset-menu").show().offset({ 
+            $("#superset-menu").slideDown(200).offset({ 
                 top: e.pageY,
                 left: preventOutOfBounds(supersetMenu, e.pageX)
             })
@@ -326,7 +326,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 e.preventDefault()
                 hideAllMenus()
 
-                $("#superset-reps-menu").show().offset({ 
+                $("#superset-reps-menu").slideDown(200).offset({ 
                     top: e.pageY,
                     left: preventOutOfBounds(supersetRepsMenu, e.pageX)
                 })
@@ -351,7 +351,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 e.preventDefault()
                 hideAllMenus()
 
-                $("#set-comments-menu").show().offset({ 
+                $("#set-comments-menu").slideDown(200).offset({ 
                     top: e.pageY,
                     left: preventOutOfBounds(setCommentsMenu, e.pageX)
                 })

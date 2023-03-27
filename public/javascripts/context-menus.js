@@ -1,7 +1,4 @@
 const username = document.getElementById("username")
-const workoutExercises = document.querySelector(".workout-exercises")
-const page = document.querySelector("html")
-console.log(page)
 
 // Hides context menus if clicked outside
 const hideAllMenus = () => {
@@ -26,14 +23,14 @@ document.addEventListener("click", (e) => {
 
 // Prevent context menus from overflowing off the screen
 const preventOutOfBounds = (contextMenu, pageX) => {
-    const { left: scopeOffsetX } = page.getBoundingClientRect()
+    const { left: scopeOffsetX } = workoutContainer.getBoundingClientRect()
 
     const scopeX = pageX - scopeOffsetX
 
-    const outOfBoundsX = scopeX + contextMenu.clientWidth > page.clientWidth
+    const outOfBoundsX = scopeX + contextMenu.clientWidth > workoutContainer.clientWidth
 
     if (outOfBoundsX) {
-        return scopeOffsetX + page.clientWidth - contextMenu.clientWidth
+        return scopeOffsetX + workoutContainer.clientWidth - contextMenu.clientWidth
     } else {
         return pageX
     }
