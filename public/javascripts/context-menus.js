@@ -1,4 +1,5 @@
 const username = document.getElementById("username")
+const body = document.querySelector("body")
 
 // Hides context menus if clicked outside
 const hideAllMenus = () => {
@@ -20,6 +21,30 @@ document.addEventListener("click", (e) => {
         }
     })
 })
+
+// Prevent context menus from overflowing off the screen
+const preventOutOfBounds = (contextMenu, mouseX, mouseY) => {
+    const { left: scopeOffsetX, top: scopeOffsetY } = body.getBoundingClientRect()
+
+    const scopeX = mouseX - scopeOffsetX
+    const scopeY = mouseY - scopeOffsetY
+
+    const outOfBoundsX = scopeX + contextMenu.clientWidth > body.clientWidth
+    const outOfBoundsY = scopeY + contextMenu.clientHeight > body.clientHeight
+
+    let correctedX = mouseX
+    let correctedY = mouseY
+
+    if (outOfBoundsX) {
+        correctedX = scopeOffsetX + body.clientWidth - contextMenu.clientWidth
+    }
+
+    if (outOfBoundsY) {
+        correctedY = scopeOffsetY + body.clientHeight - contextMenu.clientHeight
+    }
+
+    return { correctedX, correctedY }
+}
 
 ////////////////////////
 //  Exercise options  //
