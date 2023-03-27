@@ -128,8 +128,8 @@ const createExerciseContainer = (exercise) => {
 
         // Position custom context menu at cursor
         $("#exercise-menu").show().offset({ 
-            top: preventOutOfBounds(exerciseMenu, e.pageX, e.pageY).correctedY,
-            left: preventOutOfBounds(exerciseMenu, e.pageX, e.pageY).correctedX
+            top: e.pageY,
+            left: preventOutOfBounds(exerciseMenu, e.pageX)
         })
 
         // Custom right click menu to edit or delete exercise
@@ -155,8 +155,8 @@ const addExerciseComments = (exercise) => {
                 hideAllMenus()
 
                 $("#exercise-comments-menu").show().offset({ 
-                    top: preventOutOfBounds(exerciseCommentsMenu, e.pageX, e.pageY).correctedY,
-                    left: preventOutOfBounds(exerciseCommentsMenu, e.pageX, e.pageY).correctedX
+                    top: e.pageY,
+                    left: preventOutOfBounds(exerciseCommentsMenu, e.pageX)
                 })
 
                 editExerciseComment(exercise.exercise_name, displayDate.value, index, comment)
@@ -214,8 +214,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         hideAllMenus()
 
         $("#weight-menu").show().offset({ 
-            top: preventOutOfBounds(weightMenu, e.pageX, e.pageY).correctedY,
-            left: preventOutOfBounds(weightMenu, e.pageX, e.pageY).correctedX
+            top: e.pageY,
+            left: preventOutOfBounds(weightMenu, e.pageX)
         })
 
         editWeight(exercise.exercise_name, displayDate.value, _id, set_weight)
@@ -256,8 +256,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 hideAllMenus()
 
                 $("#set-menu").show().offset({ 
-                    top: preventOutOfBounds(setMenu, e.pageX, e.pageY).correctedY,
-                    left: preventOutOfBounds(setMenu, e.pageX, e.pageY).correctedX
+                    top: e.pageY,
+                    left: preventOutOfBounds(setMenu, e.pageX)
                 })
 
                 editReps(exercise.exercise_name, displayDate.value, _id, index, reps)
@@ -286,8 +286,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             hideAllMenus()
 
             $("#superset-menu").show().offset({ 
-                top: preventOutOfBounds(supersetMenu, e.pageX, e.pageY).correctedY,
-                left: preventOutOfBounds(supersetMenu, e.pageX, e.pageY).correctedX
+                top: e.pageY,
+                left: preventOutOfBounds(supersetMenu, e.pageX)
             })
 
             editSupersetExercise(exercise.exercise_name, displayDate.value, _id, superset_exercise)
@@ -327,8 +327,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 hideAllMenus()
 
                 $("#superset-reps-menu").show().offset({ 
-                    top: preventOutOfBounds(supersetRepsMenu, e.pageX, e.pageY).correctedY,
-                    left: preventOutOfBounds(supersetRepsMenu, e.pageX, e.pageY).correctedX
+                    top: e.pageY,
+                    left: preventOutOfBounds(supersetRepsMenu, e.pageX)
                 })
 
                 editSupersetReps(exercise.exercise_name, displayDate.value, _id, index, reps)
@@ -352,8 +352,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 hideAllMenus()
 
                 $("#set-comments-menu").show().offset({ 
-                    top: preventOutOfBounds(setCommentsMenu, e.pageX, e.pageY).correctedY,
-                    left: preventOutOfBounds(setCommentsMenu, e.pageX, e.pageY).correctedX
+                    top: e.pageY,
+                    left: preventOutOfBounds(setCommentsMenu, e.pageX)
                 })
 
                 editSetComment(exercise.exercise_name, displayDate.value, _id, index, comment)
