@@ -226,7 +226,6 @@ div {
                         border-top: 0;
                         padding: 5px;
                         display: flex;
-                        gap: 10px;
                         flex-wrap: wrap;
                     }
                         .set-rep {
@@ -234,6 +233,7 @@ div {
                             border-radius: 3px;
                             padding: 0 3px 0 3px;
                             cursor: pointer;
+                            margin: 0 1px 0 10px;
                         }
                     #superset-text {
                         border-left: 1px solid rgba(0, 0, 0, 0.2);
@@ -266,7 +266,6 @@ div {
                     }
                         .superset-reps {
                             display: flex;
-                            gap: 10px;
                         }
                     .set-comments {
                         border-radius: 2px;
