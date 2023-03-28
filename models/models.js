@@ -12,7 +12,7 @@ const setSchema = new Schema({
 }, {versionKey: false})
 
 const exerciseSchema = new Schema({
-    exercise_name: String,
+    exercise_name: {type: String, required: true},
     sets: [setSchema],
     comments: [String]
 }, {versionKey: false})
@@ -23,9 +23,9 @@ const workoutSchema = new Schema({
 }, {versionKey: false})
 
 const userSchema = new Schema({
-    username: String,
-    email: String,
-    password: String,
+    username: {type: String, required: true},
+    email: {type: String, required: true},
+    password: {type: String, required: true},
     workouts: [workoutSchema]
 }, {versionKey: false})
 
