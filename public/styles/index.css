@@ -5,9 +5,27 @@ div {
 .context-menu {
     z-index: 10000;
     position: absolute;
-    background: lightcoral;
-    display:none;
+    background:	rgb(48, 65, 80);
+    color: white;
+    display: flex;
+    border-radius: 5px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
+    .context-menu p {
+        padding: 10px;
+        border-radius: 5px;
+        user-select: none;
+        cursor:pointer;   
+    }
+    .context-menu p:last-of-type {
+        border-right: none;
+    }
+    .context-menu p:hover {
+        background: rgb(67, 91, 112);
+    }
+    .context-menu hr {
+        margin: 7px 0;
+    }
 
 #main-section {
     display: flex;
