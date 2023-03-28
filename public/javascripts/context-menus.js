@@ -50,11 +50,13 @@ const editExerciseName = (exercise_name, date) => {
                 xhttp.open("POST", "/update/exercise")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, newName, date }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -70,11 +72,13 @@ const deleteExercise = (exercise_name, date) => {
                 xhttp.open("POST", "/delete/exercise")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, date }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -96,11 +100,13 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
                 xhttp.open("POST", "/update/exercise_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, commentIndex: index, editedComment, date }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -117,11 +123,13 @@ const addExerciseComment = (exercise_name, date) => {
                 xhttp.open("POST", "/comments/exercise_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -138,11 +146,13 @@ const deleteExerciseComment = (exercise_name, date, comment) => {
                 xhttp.open("POST", "/delete/exercise_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, date, comment }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -168,15 +178,17 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
                     xhttp.open("POST", "/update/weight")
                     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                     xhttp.send(JSON.stringify({ exercise_name, set_id, newWeight, date }))
-                    xhttp.onload(() => {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
-                    })
+                    xhttp.onreadystatechange = function () {
+                        if (xhttp.readyState == 4) {
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
+                        } else {
+                            alert("You need to be logged in to edit workouts.")
+                        }
+                    }
                 }
             }
-        } else {
-            alert("You need to be logged in to edit workouts.")
         }
     })
 }
@@ -190,11 +202,13 @@ const deleteWeight = (exercise_name, date, set_id) => {
                 xhttp.open("POST", "/delete/weight")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -220,11 +234,13 @@ const editReps = (exercise_name, date, set_id, repsIndex, reps) => {
                     xhttp.open("POST", "/update/reps")
                     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                     xhttp.send(JSON.stringify({ exercise_name, set_id, repsIndex, newReps, date }))
-                    xhttp.onload(() => {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
-                    })
+                    xhttp.onreadystatechange = function () {
+                        if (xhttp.readyState == 4) {
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
+                        }
+                    }
                 }
             }
         } else {
@@ -250,11 +266,13 @@ const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
                 xhttp.open("POST", "/delete/reps")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id, repsIndex, newComments }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -278,11 +296,13 @@ const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
                 xhttp.open("POST", "/update/set_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, set_id, commentIndex, editedComment, date }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -301,11 +321,13 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
                 xhttp.open("POST", "/comments/set_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date, set_id }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -322,11 +344,13 @@ const deleteSetComment = (exercise_name, date, set_id, comment) => {
                 xhttp.open("POST", "/delete/set_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id, comment }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -348,11 +372,13 @@ const editSupersetExercise = (exercise_name, date, set_id, superset_exercise) =>
                 xhttp.open("POST", "/update/superset_name")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, set_id, newName, date }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -374,11 +400,13 @@ const editSupersetWeight = (exercise_name, date, set_id, superset_weight) => {
                     xhttp.open("POST", "/update/superset_weight")
                     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                     xhttp.send(JSON.stringify({ exercise_name, set_id, newWeight, date }))
-                    xhttp.onload(() => {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
-                    })
+                    xhttp.onreadystatechange = function () {
+                        if (xhttp.readyState == 4) {
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
+                        }
+                    }
                 }
             }
         } else {
@@ -396,11 +424,13 @@ const deleteSuperset = (exercise_name, date, set_id) => {
                 xhttp.open("POST", "/delete/superset")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
-                xhttp.onload(() => {
-                    renderWorkout(JSON.parse(this.response), true, date)
-                    toggleRequired()
-                    populate()
-                })
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 4) {
+                        renderWorkout(JSON.parse(this.response), true, date)
+                        toggleRequired()
+                        populate()
+                    }
+                }
             }
         } else {
             alert("You need to be logged in to edit workouts.")
@@ -426,11 +456,13 @@ const editSupersetReps = (exercise_name, date, set_id, repsIndex, reps) => {
                     xhttp.open("POST", "/update/superset_reps")
                     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                     xhttp.send(JSON.stringify({ exercise_name, set_id, repsIndex, newReps, date }))
-                    xhttp.onload(() => {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
-                    })
+                    xhttp.onreadystatechange = function () {
+                        if (xhttp.readyState == 4) {
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
+                        }
+                    }
                 }
             }
         } else {

@@ -20,22 +20,25 @@ if (inputDate.value == "") {
 const submitRequest = (date, reset) => {
     xhttp.open("GET", "/workouts/" + date)
     xhttp.send()
-    xhttp.onload = function () {
-        if (this.response) {
-            if (this.response.match(/^</)) {
-                renderWorkout("not found", true, date)
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4) {
+            if (this.response) {
+                if (this.response.match(/^</)) {
+                    renderWorkout("not found", true, date)
+                } else {
+                    //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
+                    renderWorkout(JSON.parse(this.response), reset, date)
+                    toggleRequired()
+                    populate()
+                }
+                
             } else {
-                //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-                renderWorkout(JSON.parse(this.response), reset, date)
+                renderWorkout("not found", reset, date)
                 toggleRequired()
-                populate()
+                
             }
-            return
-        } else {
-            renderWorkout("not found", reset, date)
-            toggleRequired()
-            return
         }
+        
     }
 }
 
@@ -79,6 +82,7 @@ const renderWorkout = (data, reset, date) => {
         return
     }
     if (data.date != displayDate.value || reset == true) {
+        console.log("i reset the workout container")
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
         existingContainers.forEach(container => container.remove())
     }
@@ -86,12 +90,16 @@ const renderWorkout = (data, reset, date) => {
 
     }
     data.exercises.forEach(exercise => {
-        let exerciseContainer = document.getElementById(exercise._id)
+        console.log(exercise._id)
+        let exerciseContainer = document.getElementById(`J${exercise._id}`)
+        console.log(exerciseContainer)
         if (!exerciseContainer) {
+            console.log("making an exercise container")
             createExerciseContainer(exercise)
             addExerciseComments(exercise)
             createweightContainers(exercise)
         } else {
+            console.log("editing an existing exercise container")
             addExerciseComments(exercise)
             createweightContainers(exercise)
         }
@@ -112,19 +120,19 @@ const renderWorkout = (data, reset, date) => {
 const createExerciseContainer = (exercise) => {
     exerciseContainer = document.createElement("div")
     exerciseContainer.classList.add("exercise-container")
-    exerciseContainer.setAttribute("id", exercise._id)
+    exerciseContainer.setAttribute("id", `J${exercise._id}`)
     workoutContainer.appendChild(exerciseContainer)
 
     if (exercise.comments != "") {
         let exerciseComments = document.createElement("div")
         exerciseComments.classList.add("exercise-comments")
-        exerciseComments.setAttribute("id", exercise._id + "-comments")
+        exerciseComments.setAttribute("id", `J${exercise._id}` + "-comments")
         exerciseContainer.appendChild(exerciseComments)
     }
 
     let exerciseName = document.createElement("h2")
     exerciseName.classList.add("exercise-name")
-    exerciseName.setAttribute("id", exercise._id + "-name")
+    exerciseName.setAttribute("id", `J${exercise._id}` + "-name")
     exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
     // Right click opens a prompt to change the exercise name
     exerciseName.addEventListener("contextmenu", (e) => {
@@ -146,7 +154,7 @@ const createExerciseContainer = (exercise) => {
 }
 
 const addExerciseComments = (exercise) => {
-    let exerciseComments = document.getElementById(exercise._id + "-comments")
+    let exerciseComments = document.getElementById(`J${exercise._id}` + "-comments")
     if (exercise.comments != "") {
         let existingComments = exerciseComments.querySelectorAll("li")
         existingComments.forEach(comment => comment.remove())
@@ -167,12 +175,12 @@ const addExerciseComments = (exercise) => {
             })
             exerciseComments.appendChild(exerciseComment)
         })
-        document.getElementById(exercise._id + "-name").insertAdjacentElement("afterend", exerciseComments)
+        document.getElementById(`J${exercise._id}` + "-name").insertAdjacentElement("afterend", exerciseComments)
     }
 }
 
 const createweightContainers = (exercise) => {
-    exerciseContainer = document.getElementById(exercise._id)
+    exerciseContainer = document.getElementById(`J${exercise._id}`)
     exercise.sets.forEach(set => {
         let weightContainer = document.getElementById(set._id)
         if (!weightContainer) {
