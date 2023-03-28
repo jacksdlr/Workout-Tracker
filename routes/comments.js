@@ -24,6 +24,9 @@ router.post("/exercise_comments", checkAuthenticated, async (req, res) => {
         const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
         User.findByIdAndUpdate(id, { $push: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.comments`]: newComment } }, { new: true }, (err, data) => {
+            if (err) {
+                return res.status(500).json({ message: "An error occurred, please try again later" })
+            }
             const workout = data.workouts.find(workout => workout.date == date)
             res.send(workout)
         })
@@ -42,6 +45,9 @@ router.post("/set_comments", checkAuthenticated, async (req, res) => {
         const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
 
         User.findByIdAndUpdate(id, { $push: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: newComment } }, { new: true }, (err, data) => {
+            if (err) {
+                return res.status(500).json({ message: "An error occurred, please try again later" })
+            }
             const workout = data.workouts.find(workout => workout.date == date)
             res.send(workout)
         })

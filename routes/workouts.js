@@ -96,9 +96,8 @@ router.post("/", checkAuthenticated, async (req, res) => {
         }
         User.findByIdAndUpdate(id, { $push: { workouts: newWorkout } }, { new: true, _id: 0 }, (err, data) => {
             if (err) {
-                res.status(400).send({ error: "Something went wrong" })
+                return res.status(500).json({ message: "An error occurred, please try again later" })
             } else {
-                console.log("Added new workout!") // !!! ENDS HERE !!!
                 res.redirect("/")
             }
         })
@@ -114,9 +113,8 @@ router.post("/", checkAuthenticated, async (req, res) => {
             }
             User.findOneAndUpdate(query, { $push: { "workouts.$.exercises": newExercise } }, { new: true }, (err, data) => {
                 if (err) {
-                    console.log(err)
+                    return res.status(500).json({ message: "An error occurred, please try again later" })
                 } else {
-                    console.log("Added new exercise!")
                     res.redirect("/")
                 }
             })
@@ -136,9 +134,8 @@ router.post("/", checkAuthenticated, async (req, res) => {
                 }
                 User.findOneAndUpdate(query, { $push: { [`workouts.$.exercises.${exerciseIndex}.sets`]: newSet, [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment } }, { new: true }, (err, data) => {
                     if (err) {
-                        console.log(err)
+                        return res.status(500).json({ message: "An error occurred, please try again later" })
                     } else {
-                        console.log("Added new weight!")
                         res.redirect("/")
                     }
                 })
@@ -151,20 +148,17 @@ router.post("/", checkAuthenticated, async (req, res) => {
                 if (!set_comment) {
                     User.findOneAndUpdate(query, { $inc: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.sets_count`]: 1 }, $push: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps`]: set_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps`]: superset_reps, [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment } }, { new: true }, (err, data) => {
                         if (err) {
-                            console.log(err)
+                            return res.status(500).json({ message: "An error occurred, please try again later" })
                         } else {
-                            console.log("Added new set of reps!")
                             res.redirect("/")
-
                         }
                     })
                 } else {
                     let count = existingWeight.sets_count + 1
                     User.findOneAndUpdate(query, { $inc: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.sets_count`]: 1 }, $push: { [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.set_reps`]: set_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps`]: superset_reps, [`workouts.$.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: `Set ${count}: ${set_comment}`, [`workouts.$.exercises.${exerciseIndex}.comments`]: exercise_comment } }, { new: true }, (err, data) => {
                         if (err) {
-                            console.log(err)
+                            return res.status(500).json({ message: "An error occurred, please try again later" })
                         } else {
-                            console.log("Added new set of reps and comment!")
                             res.redirect("/")
                         }
                     })
@@ -177,12 +171,18 @@ router.post("/", checkAuthenticated, async (req, res) => {
 
 router.get("/example", (req, res) => {
     Workout.findById("6419d3af67816706c9a419f2", (err, data) => {
+        if (err) {
+            return res.status(500).json({ message: "An error occurred, please try again later" })
+        }
         res.send(data)
     })
 })
 
 router.get("/:date", checkAuthenticated, (req, res) => {
     User.findById(req.user._id, (err, data) => {
+        if (err) {
+            return res.status(500).json({ message: "An error occurred, please try again later" })
+        }
         const workout = data.workouts.find(workout => workout.date == req.params.date)
         res.send(workout)
     })

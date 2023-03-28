@@ -40,10 +40,16 @@ router.post("/signup", checkNotAuthenticated, async (req, res) => {
             return
         }
         User.findOne({ email }, (err, existingEmail) => {
+            if (err) {
+                return res.status(500).json({ message: "An error occurred, please try again later." })
+            }
             if (existingEmail) {
                 res.render("login-signup", { signupError: "Email already in use" })
             } else {
                 User.findOne({ username: new RegExp(`^${username}$`, "i") }, (err, existingUsername) => {
+                    if (err) {
+                        return res.status(500).json({ message: "An error occurred, please try again later" })
+                    }
                     if (existingUsername) {
                         res.render("login-signup", { signupError: "Username already in use" })
                     } else {
@@ -53,9 +59,9 @@ router.post("/signup", checkNotAuthenticated, async (req, res) => {
                             password: hashedPassword
                         }, (err, newUser) => {
                             if (err) {
-                                res.status(400).send(err)
+                                return res.status(500).json({ message: "An error occurred, please try again later" })
                             } else {
-                                res.render("login-signup", { message: "Successfully created account, please login" }) // MIGHT NEED TO CHANGE THIS 13:45 IN VIDEO
+                                res.render("login-signup", { message: "Successfully created account, please login" })
                             }
                         })
                     }
