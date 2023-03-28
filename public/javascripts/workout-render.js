@@ -96,7 +96,12 @@ const renderWorkout = (data, reset, date) => {
             createweightContainers(exercise)
         }
     })
-    $(".set-weight-and-count").click(function () {
+    $(".set-weight-and-count").click(function() {
+        $header = $(this)
+        $content = $header.next()
+        $content.slideToggle(500)
+    })
+    $(".superset-exercise-and-weight").click(function() {
         $header = $(this)
         $content = $header.next()
         $content.slideToggle(500)
@@ -138,8 +143,6 @@ const createExerciseContainer = (exercise) => {
         deleteExercise(exercise.exercise_name, displayDate.value)
     })
     exerciseContainer.appendChild(exerciseName)
-
-    // EXERCISE COMMENTS SHOULD BE A LIGHT SHADED BOX BELOW THE EXERCISE NAME, ITALIC STYLING, NOT TOO MUCH SCREEN SPACE TAKEN
 }
 
 const addExerciseComments = (exercise) => {
@@ -370,7 +373,7 @@ const mobileRender = () => {
     if ($(window).width() < $(window).height()) {
         let existingCollapsers = document.querySelectorAll(".exercise-collapse")
         if (existingCollapsers.length == 0) {
-            $(".exercise-name").click(function () {
+            $(".exercise-name").click(function() {
                 $header = $(this)
                 $content = $header.nextAll()
                 $chevron = $header.children(".exercise-collapse")
