@@ -96,12 +96,12 @@ const renderWorkout = (data, reset, date) => {
             createweightContainers(exercise)
         }
     })
-    $(".set-weight-and-count").click(function() {
+    $(".set-weight-and-count").click(function () {
         $header = $(this)
         $content = $header.next()
         $content.slideToggle(500)
     })
-    $(".superset-exercise-and-weight").click(function() {
+    $(".superset-exercise-and-weight").click(function () {
         $header = $(this)
         $content = $header.next()
         $content.slideToggle(500)
@@ -132,7 +132,7 @@ const createExerciseContainer = (exercise) => {
         hideAllMenus()
 
         // Position custom context menu at cursor
-        $("#exercise-menu").slideDown(200).offset({ 
+        $("#exercise-menu").slideDown(200).offset({
             top: e.pageY,
             left: preventOutOfBounds(exerciseMenu, e.pageX)
         })
@@ -157,7 +157,7 @@ const addExerciseComments = (exercise) => {
                 e.preventDefault()
                 hideAllMenus()
 
-                $("#exercise-comments-menu").slideDown(200).offset({ 
+                $("#exercise-comments-menu").slideDown(200).offset({
                     top: e.pageY,
                     left: preventOutOfBounds(exerciseCommentsMenu, e.pageX)
                 })
@@ -216,7 +216,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         e.preventDefault()
         hideAllMenus()
 
-        $("#weight-menu").slideDown(200).offset({ 
+        $("#weight-menu").slideDown(200).offset({
             top: e.pageY,
             left: preventOutOfBounds(weightMenu, e.pageX)
         })
@@ -247,18 +247,14 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         set_reps.forEach((reps, index) => {
             let setRep = document.createElement("p")
             setRep.classList.add("set-rep")
-            if (index != set_reps.length - 1) {
-                setRep.textContent = `${reps}, `
-                //setReps.insertAdjacentHTML("beforeend", `<p class="set-rep">${set}, </p>`)
-            } else {
-                setRep.textContent = reps
-                //setReps.insertAdjacentHTML("beforeend", `<p class="set-rep">${set}</p>`)
-            }
+
+            setRep.textContent = reps
+
             setRep.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 hideAllMenus()
 
-                $("#set-menu").slideDown(200).offset({ 
+                $("#set-menu").slideDown(200).offset({
                     top: e.pageY,
                     left: preventOutOfBounds(setMenu, e.pageX)
                 })
@@ -268,6 +264,10 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 deleteReps(exercise.exercise_name, displayDate.value, set.comments, _id, index)
             })
             setReps.append(setRep)
+            if (index != set_reps.length - 1) {
+                setReps.insertAdjacentText("beforeend", ",")
+            }
+
         })
         setDetails.appendChild(setReps)
     }
@@ -280,7 +280,6 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         supersetText.setAttribute("id", "superset-text")
         supersetText.textContent = "~ Superset with ~"
         setDetails.appendChild(supersetText)
-        //setDetails.insertAdjacentHTML("afterend", "<p id='superset-text'>~ Superset with ~</p>")
 
         let supersetExerciseAndWeight = document.createElement("div")
         supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
@@ -288,7 +287,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             e.preventDefault()
             hideAllMenus()
 
-            $("#superset-menu").slideDown(200).offset({ 
+            $("#superset-menu").slideDown(200).offset({
                 top: e.pageY,
                 left: preventOutOfBounds(supersetMenu, e.pageX)
             })
@@ -318,18 +317,14 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         superset_reps.forEach((reps, index) => {
             let supersetRep = document.createElement("p")
             supersetRep.classList.add("set-rep")
-            if (index != superset_reps.length - 1) {
-                supersetRep.textContent = `${reps}, `
-                //setReps.insertAdjacentHTML("beforeend", `<p class="set-rep">${set}, </p>`)
-            } else {
-                supersetRep.textContent = reps
-                //setReps.insertAdjacentHTML("beforeend", `<p class="set-rep">${set}</p>`)
-            }
+
+            supersetRep.textContent = reps
+
             supersetRep.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 hideAllMenus()
 
-                $("#superset-reps-menu").slideDown(200).offset({ 
+                $("#superset-reps-menu").slideDown(200).offset({
                     top: e.pageY,
                     left: preventOutOfBounds(supersetRepsMenu, e.pageX)
                 })
@@ -337,6 +332,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 editSupersetReps(exercise.exercise_name, displayDate.value, _id, index, reps)
             })
             supersetReps.append(supersetRep)
+            if (index != superset_reps.length - 1) {
+                supersetReps.insertAdjacentText("beforeend", ",")
+            }
         })
         supersetDetails.appendChild(supersetReps)
 
@@ -354,7 +352,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 e.preventDefault()
                 hideAllMenus()
 
-                $("#set-comments-menu").slideDown(200).offset({ 
+                $("#set-comments-menu").slideDown(200).offset({
                     top: e.pageY,
                     left: preventOutOfBounds(setCommentsMenu, e.pageX)
                 })
@@ -373,12 +371,12 @@ const mobileRender = () => {
     if ($(window).width() < $(window).height()) {
         let existingCollapsers = document.querySelectorAll(".exercise-collapse")
         if (existingCollapsers.length == 0) {
-            $(".exercise-name").click(function() {
+            $(".exercise-name").click(function () {
                 $header = $(this)
                 $content = $header.nextAll()
                 $chevron = $header.children(".exercise-collapse")
                 if (!$content.is(":visible")) {
-                    $({deg: -90}).animate({deg: 0}, {
+                    $({ deg: -90 }).animate({ deg: 0 }, {
                         duration: 500,
                         step: (now) => {
                             $chevron.css({
@@ -387,7 +385,7 @@ const mobileRender = () => {
                         }
                     })
                 } else {
-                    $({deg: 0}).animate({deg: -90}, {
+                    $({ deg: 0 }).animate({ deg: -90 }, {
                         duration: 500,
                         step: (now) => {
                             $chevron.css({
