@@ -68,26 +68,30 @@ form.addEventListener("submit", (e) => {
     }
 })
 
-displayDate.addEventListener("change", () => {
+displayDate.addEventListener("change", (e) => {
     // Get the date and submit a GET request to return the user's workout for that date
-    xhttp.open("GET", "/workouts/" + displayDate.value)
-    xhttp.send()
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4) {
-            if (this.response) {
-                if (this.response.match(/^</)) {
-                    renderWorkout("not found", true, displayDate.value)
+    if (workoutTitle.textContent != "Workout for:Example date") {
+        xhttp.open("GET", "/workouts/" + displayDate.value)
+        xhttp.send()
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4) {
+                if (this.response) {
+                    if (this.response.match(/^</)) {
+                        renderWorkout("not found", true, displayDate.value)
+                    } else {
+                        //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
+                        renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                        toggleRequired()
+                        
+                    }
                 } else {
-                    //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-                    renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                    renderWorkout("not found", true, displayDate.value)
                     toggleRequired()
-                    
                 }
-            } else {
-                renderWorkout("not found", true, displayDate.value)
-                toggleRequired()
             }
         }
+    } else {
+        alert("You need to be logged in to see your workouts.")
     }
 })
 
