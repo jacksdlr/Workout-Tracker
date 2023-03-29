@@ -29,7 +29,7 @@ const submitRequest = (date, reset) => {
                     //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
                     renderWorkout(JSON.parse(this.response), reset, date)
                     toggleRequired()
-                    populate()
+                    
                 }
             } else {
                 renderWorkout("not found", reset, date)
@@ -41,7 +41,6 @@ const submitRequest = (date, reset) => {
 
 form.addEventListener("submit", (e) => {
     e.preventDefault()
-    sessionStorage.date = inputDate.value
     xhttp.open("POST", "/workouts")
     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
     xhttp.send(JSON.stringify({
@@ -64,7 +63,7 @@ form.addEventListener("submit", (e) => {
         if (xhttp.readyState == 4) {
             renderWorkout(JSON.parse(this.response), false, inputDate.value)
             toggleRequired()
-            populate()
+            
         }
     }
 })
@@ -82,7 +81,7 @@ displayDate.addEventListener("change", () => {
                     //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
                     renderWorkout(JSON.parse(this.response), true, displayDate.value)
                     toggleRequired()
-                    populate()
+                    
                 }
             } else {
                 renderWorkout("not found", true, displayDate.value)

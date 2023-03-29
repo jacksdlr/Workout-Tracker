@@ -38,7 +38,7 @@ const toggleVisibility = () => {
     }
 }
 toggleVisibility()
-
+/* 
 const populate = () => {
     inputDate.value = sessionStorage.getItem("date")
     if (inputDate.value == "") {
@@ -77,18 +77,16 @@ const populate = () => {
     toggleRequired()
 }
 
-populate()
-
+ */
 
 supersetCheckbox.addEventListener("change", () => {
     toggleRequired()
 })
 
 
-document.querySelectorAll("input").forEach(input => {
+/* document.querySelectorAll("input").forEach(input => {
     input.addEventListener("change", () => {
         updateSessionStorage()
-        console.log(sessionStorage)
     })
 })
 
@@ -103,6 +101,6 @@ const updateSessionStorage = () => {
     sessionStorage.setItem("superset_weight", inputSupersetWeight.value)
     sessionStorage.setItem("superset_weight_unit", inputSupersetWeightUnit.value)
     sessionStorage.setItem("superset_reps", inputSupersetReps.value)
-}
+} */
 
 toggleVisibility()

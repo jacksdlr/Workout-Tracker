@@ -54,7 +54,7 @@ const editExerciseName = (exercise_name, date) => {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                     }
                 }
             }
@@ -79,7 +79,7 @@ const deleteExercise = (exercise_name, date) => {
                         } else {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                         }
                     }
 
@@ -109,7 +109,7 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                     }
                 }
             }
@@ -132,7 +132,7 @@ const addExerciseComment = (exercise_name, date) => {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                     }
                 }
             }
@@ -158,7 +158,7 @@ const deleteExerciseComment = (exercise_name, date, index) => {
                         } else {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                         }
                     }
                 }
@@ -191,7 +191,7 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
                         if (xhttp.readyState == 4) {
                                 renderWorkout(JSON.parse(this.response), true, date)
                                 toggleRequired()
-                                populate()
+                                
                         } else {
                             alert("You need to be logged in to edit workouts.")
                         }
@@ -218,7 +218,7 @@ const deleteWeight = (exercise_name, date, set_id) => {
                         } else {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                         }
                     }
                 }
@@ -251,7 +251,7 @@ const editReps = (exercise_name, date, set_id, repsIndex, reps) => {
                         if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                         }
                     }
                 }
@@ -286,7 +286,7 @@ const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
                         } else {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                         }
                     }
                 }
@@ -317,7 +317,7 @@ const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                     }
                 }
             }
@@ -342,7 +342,7 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                     }
                 }
             }
@@ -365,7 +365,7 @@ const deleteSetComment = (exercise_name, date, set_id, comment) => {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                     }
                 }
             }
@@ -393,7 +393,7 @@ const editSupersetExercise = (exercise_name, date, set_id, superset_exercise) =>
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                     }
                 }
             }
@@ -421,7 +421,7 @@ const editSupersetWeight = (exercise_name, date, set_id, superset_weight) => {
                         if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                         }
                     }
                 }
@@ -445,7 +445,7 @@ const deleteSuperset = (exercise_name, date, set_id) => {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                     }
                 }
             }
@@ -477,7 +477,7 @@ const editSupersetReps = (exercise_name, date, set_id, repsIndex, reps) => {
                         if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
                             toggleRequired()
-                            populate()
+                            
                         }
                     }
                 }
