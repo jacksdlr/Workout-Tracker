@@ -98,7 +98,8 @@ router.post("/", checkAuthenticated, async (req, res) => {
             if (err) {
                 return res.status(500).json({ message: "An error occurred, please try again later" })
             } else {
-                res.redirect("/")
+                const workout = data.workouts.find(workout => workout.date == req.body.date)
+                res.send(workout)
             }
         })
     } else {
@@ -115,7 +116,8 @@ router.post("/", checkAuthenticated, async (req, res) => {
                 if (err) {
                     return res.status(500).json({ message: "An error occurred, please try again later" })
                 } else {
-                    res.redirect("/")
+                    const workout = data.workouts.find(workout => workout.date == req.body.date)
+                    res.send(workout)
                 }
             })
         } else {
@@ -136,7 +138,8 @@ router.post("/", checkAuthenticated, async (req, res) => {
                     if (err) {
                         return res.status(500).json({ message: "An error occurred, please try again later" })
                     } else {
-                        res.redirect("/")
+                        const workout = data.workouts.find(workout => workout.date == req.body.date)
+                        res.send(workout)
                     }
                 })
             } else {
@@ -150,7 +153,8 @@ router.post("/", checkAuthenticated, async (req, res) => {
                         if (err) {
                             return res.status(500).json({ message: "An error occurred, please try again later" })
                         } else {
-                            res.redirect("/")
+                            const workout = data.workouts.find(workout => workout.date == req.body.date)
+                            res.send(workout)
                         }
                     })
                 } else {
@@ -159,7 +163,8 @@ router.post("/", checkAuthenticated, async (req, res) => {
                         if (err) {
                             return res.status(500).json({ message: "An error occurred, please try again later" })
                         } else {
-                            res.redirect("/")
+                            const workout = data.workouts.find(workout => workout.date == req.body.date)
+                            res.send(workout)
                         }
                     })
                 }
