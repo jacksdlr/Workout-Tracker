@@ -52,9 +52,9 @@ const editExerciseName = (exercise_name, date) => {
                 xhttp.send(JSON.stringify({ exercise_name, newName, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
                     }
                 }
             }
@@ -74,10 +74,15 @@ const deleteExercise = (exercise_name, date) => {
                 xhttp.send(JSON.stringify({ exercise_name, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                        if (this.response.match(/^</) || !this.response) {
+                            renderWorkout("not found", true, date)
+                        } else {
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
+                        }
                     }
+
                 }
             }
         } else {
@@ -102,9 +107,9 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
                 xhttp.send(JSON.stringify({ exercise_name, commentIndex: index, editedComment, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
                     }
                 }
             }
@@ -125,9 +130,9 @@ const addExerciseComment = (exercise_name, date) => {
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
                     }
                 }
             }
@@ -138,19 +143,23 @@ const addExerciseComment = (exercise_name, date) => {
 }
 
 // Delete exercise comment
-const deleteExerciseComment = (exercise_name, date, comment) => {
+const deleteExerciseComment = (exercise_name, date, index) => {
     $("#exercise-comment-delete").off()
     $("#exercise-comment-delete").click(() => {
         if (username) {
             if (confirm("Are you sure you want to delete this comment?") == true) {
                 xhttp.open("POST", "/delete/exercise_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
-                xhttp.send(JSON.stringify({ exercise_name, date, comment }))
+                xhttp.send(JSON.stringify({ exercise_name, date, index }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                        if (this.response.match(/^</) || !this.response) {
+                            renderWorkout("not found", true, date)
+                        } else {
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
+                        }
                     }
                 }
             }
@@ -180,9 +189,9 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
                     xhttp.send(JSON.stringify({ exercise_name, set_id, newWeight, date }))
                     xhttp.onreadystatechange = function () {
                         if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            populate()
+                                renderWorkout(JSON.parse(this.response), true, date)
+                                toggleRequired()
+                                populate()
                         } else {
                             alert("You need to be logged in to edit workouts.")
                         }
@@ -204,9 +213,13 @@ const deleteWeight = (exercise_name, date, set_id) => {
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                        if (this.response.match(/^</) || !this.response) {
+                            renderWorkout("not found", true, date)
+                        } else {
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
+                        }
                     }
                 }
             }
@@ -268,9 +281,13 @@ const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id, repsIndex, newComments }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                        if (this.response.match(/^</) || !this.response) {
+                            renderWorkout("not found", true, date)
+                        } else {
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
+                        }
                     }
                 }
             }
@@ -298,9 +315,9 @@ const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
                 xhttp.send(JSON.stringify({ exercise_name, set_id, commentIndex, editedComment, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
                     }
                 }
             }
@@ -323,9 +340,9 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date, set_id }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
                     }
                 }
             }
@@ -346,9 +363,9 @@ const deleteSetComment = (exercise_name, date, set_id, comment) => {
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id, comment }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
                     }
                 }
             }
@@ -374,9 +391,9 @@ const editSupersetExercise = (exercise_name, date, set_id, superset_exercise) =>
                 xhttp.send(JSON.stringify({ exercise_name, set_id, newName, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
                     }
                 }
             }
@@ -426,9 +443,9 @@ const deleteSuperset = (exercise_name, date, set_id) => {
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                        renderWorkout(JSON.parse(this.response), true, date)
-                        toggleRequired()
-                        populate()
+                            renderWorkout(JSON.parse(this.response), true, date)
+                            toggleRequired()
+                            populate()
                     }
                 }
             }
