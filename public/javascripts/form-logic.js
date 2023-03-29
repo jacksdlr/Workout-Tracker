@@ -1,3 +1,4 @@
+// All form inputs
 const inputDate = document.getElementById("workout-input")
 const inputExercise = document.getElementById("exercise-input")
 const inputExerciseComment = document.getElementById("exercise-comment-input")
@@ -15,13 +16,16 @@ const inputSupersetWeightKg = document.getElementById("superset-weight-kg")
 const inputSupersetWeightLbs = document.getElementById("superset-weight-lbs")
 const inputSupersetReps = document.getElementById("superset-reps-input")
 
+// Hides superset inputs on page load
 $("#superset-input").nextAll().slideUp(0)
 
+// Toggles superset inputs' visibility and if superset exercise name is required when the checkbox is clicked
 $("#superset-input").click(function () {
     $header = $(this)
     $content = $header.nextAll()
     $content.slideToggle(500, toggleRequired())
 })
+
 // Toggles the superset exercise name to be required or not depending on if the checkbox is checked
 const toggleRequired = () => {
     if (supersetCheckbox.checked) {
