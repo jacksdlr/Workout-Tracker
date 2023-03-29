@@ -20,24 +20,13 @@ $("#superset-input").click(function () {
     $content.slideToggle(500, toggleRequired())
 })
 const toggleRequired = () => {
-    const supersetInputContainers = document.querySelectorAll(".superset-input-container")
     const supersetExercise = document.getElementById("superset-exercise-input")
     
     // If superset is selected, the respective inputs are marked as visible and the exercise name is now required
     if (supersetCheckbox.checked) {
-        /*supersetInputContainers.forEach((container) => {
-            container.style.visibility = "visible"
-            container.style.display = "flex"
-        })*/
-        //$("#superset-input").nextAll().slideDown(0)
         supersetExercise.setAttribute("required", "true")
-        // If it is unselected it resets the inputs to again be hidden, and exercise name is no longer required to submit the form
+    // If it is unselected it resets the inputs to again be hidden, and exercise name is no longer required to submit the form
     } else {
-        /*supersetInputContainers.forEach((container) => {
-            container.style.visibility = "hidden"
-            container.style.display = "none"
-        })*/
-        //$("#superset-input").nextAll().slideUp(0)
         supersetExercise.removeAttribute("required")
     }
 }
@@ -90,36 +79,30 @@ const populate = () => {
 
 populate()
 
-inputDate.addEventListener("change", () => {
-    sessionStorage.setItem("date", inputDate.value)
-})
-inputExercise.addEventListener("change", () => {
-    sessionStorage.setItem("exercise_name", inputExercise.value)
-})
-inputWeight.addEventListener("change", () => {
-    sessionStorage.setItem("set_weight", inputWeight.value)
-})
-inputWeightUnit.addEventListener("change", () => {
-    sessionStorage.setItem("set_weight_unit", inputWeightUnit.value)
-})
-inputReps.addEventListener("change", () => {
-    sessionStorage.setItem("set_reps", inputReps.value)
-})
+
 supersetCheckbox.addEventListener("change", () => {
     toggleRequired()
+})
+
+
+document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("change", () => {
+        updateSessionStorage()
+        console.log(sessionStorage)
+    })
+})
+
+const updateSessionStorage = () => {
+    sessionStorage.setItem("date", inputDate.value)
+    sessionStorage.setItem("exercise_name", inputExercise.value)
+    sessionStorage.setItem("set_weight", inputWeight.value)
+    sessionStorage.setItem("set_weight_unit", inputWeightUnit.value)
+    sessionStorage.setItem("set_reps", inputReps.value)
     sessionStorage.setItem("superset", supersetCheckbox.checked)
-})
-inputSupersetExercise.addEventListener("change", () => {
     sessionStorage.setItem("superset_exercise", inputSupersetExercise.value)
-})
-inputSupersetWeight.addEventListener("change", () => {
     sessionStorage.setItem("superset_weight", inputSupersetWeight.value)
-})
-inputSupersetWeightUnit.addEventListener("change", () => {
     sessionStorage.setItem("superset_weight_unit", inputSupersetWeightUnit.value)
-})
-inputSupersetReps.addEventListener("change", () => {
     sessionStorage.setItem("superset_reps", inputSupersetReps.value)
-})
+}
 
 toggleVisibility()
