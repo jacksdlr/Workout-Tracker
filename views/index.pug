@@ -15,7 +15,7 @@ block content
         .form-container
             .form-title
                 h1#form-name Set Input
-                button#clear-form(onclick='document.getElementById("exercise-form").reset(); document.getElementById("workout-input").value = new Date().toISOString().split("T")[0]; toggleVisibility(); toggleRequired(); ')
+                button#clear-form(onclick='document.getElementById("exercise-form").reset(); document.getElementById("workout-input").value = new Date().toISOString().split("T")[0]; $("#superset-input").nextAll().slideUp(0); toggleRequired(); ')
                     i.fa-solid.fa-arrows-rotate
             form#exercise-form.form(action='/workouts' method='POST')
                 .input-container
