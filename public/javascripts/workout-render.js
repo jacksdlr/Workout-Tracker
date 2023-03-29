@@ -31,28 +31,65 @@ const submitRequest = (date, reset) => {
                     toggleRequired()
                     populate()
                 }
-                
             } else {
                 renderWorkout("not found", reset, date)
                 toggleRequired()
-                
             }
         }
-        
     }
 }
 
-form.addEventListener("submit", () => {
-    setTimeout(() => {
-        // Get the date and submit a GET request to return the user's workout for that date
-        submitRequest(inputDate.value, true)
-    }, 250)
+form.addEventListener("submit", (e) => {
+    e.preventDefault()
+    sessionStorage.date = inputDate.value
+    xhttp.open("POST", "/workouts")
+    xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+    xhttp.send(JSON.stringify({
+        date: inputDate.value,
+        exercise_name: inputExercise.value,
+        exercise_comment: document.getElementById("exercise-comment-input").value,
+        set_weight: inputWeight.value,
+        set_weight_unit: inputWeightUnit.value,
+        set_reps: inputReps.value,
+        set_comment: document.getElementById("set-comment-input").value,
+        superset: supersetCheckbox.value,
+        superset_exercise: inputSupersetExercise.value,
+        superset_weight: inputSupersetWeight.value,
+        superset_weight_unit: inputSupersetWeightUnit.value,
+        superset_reps: inputSupersetReps.value
+    }))
+    document.getElementById("exercise-comment-input").value = ""
+    document.getElementById("set-comment-input").value = ""
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4) {
+            renderWorkout(JSON.parse(this.response), false, inputDate.value)
+            toggleRequired()
+            populate()
+        }
+    }
 })
 
 displayDate.addEventListener("change", () => {
-    setTimeout(() => {
-        submitRequest(displayDate.value, true)
-    }, 250)
+    // Get the date and submit a GET request to return the user's workout for that date
+    xhttp.open("GET", "/workouts/" + displayDate.value)
+    xhttp.send()
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4) {
+            if (this.response) {
+                if (this.response.match(/^</)) {
+                    renderWorkout("not found", true, displayDate.value)
+                } else {
+                    //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
+                    renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                    toggleRequired()
+                    populate()
+                }
+            } else {
+                renderWorkout("not found", true, displayDate.value)
+                toggleRequired()
+            }
+        }
+    }
 })
 
 const renderWorkout = (data, reset, date) => {
@@ -60,9 +97,6 @@ const renderWorkout = (data, reset, date) => {
     let dateToRemove = document.getElementById("date")
     if (date == "example") {
         workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">Example date</p>`)
-    } else {
-        workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0, -5)}</p>`)
-        displayDate.value = date
     }
     if (notFound) {
         notFound.remove()
@@ -82,24 +116,20 @@ const renderWorkout = (data, reset, date) => {
         return
     }
     if (data.date != displayDate.value || reset == true) {
-        console.log("i reset the workout container")
         const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
         existingContainers.forEach(container => container.remove())
     }
     if (date != "example") {
-
+        workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0, -5)}</p>`)
+        displayDate.value = date
     }
     data.exercises.forEach(exercise => {
-        console.log(exercise._id)
         let exerciseContainer = document.getElementById(`J${exercise._id}`)
-        console.log(exerciseContainer)
         if (!exerciseContainer) {
-            console.log("making an exercise container")
             createExerciseContainer(exercise)
             addExerciseComments(exercise)
             createweightContainers(exercise)
         } else {
-            console.log("editing an existing exercise container")
             addExerciseComments(exercise)
             createweightContainers(exercise)
         }
@@ -114,7 +144,7 @@ const renderWorkout = (data, reset, date) => {
         $content = $header.next()
         $content.slideToggle(500)
     })
-    mobileRender()
+    mobileRender(true)
 }
 
 const createExerciseContainer = (exercise) => {
@@ -155,7 +185,15 @@ const createExerciseContainer = (exercise) => {
 
 const addExerciseComments = (exercise) => {
     let exerciseComments = document.getElementById(`J${exercise._id}` + "-comments")
+
     if (exercise.comments != "") {
+        if (!exerciseComments) {
+            let exerciseComments = document.createElement("div")
+            exerciseComments.classList.add("exercise-comments")
+            exerciseComments.setAttribute("id", `J${exercise._id}` + "-comments")
+            exerciseContainer.appendChild(exerciseComments)
+        }
+        exerciseComments = document.getElementById(`J${exercise._id}` + "-comments")
         let existingComments = exerciseComments.querySelectorAll("li")
         existingComments.forEach(comment => comment.remove())
         exercise.comments.forEach((comment, index) => {
@@ -171,7 +209,7 @@ const addExerciseComments = (exercise) => {
                 })
 
                 editExerciseComment(exercise.exercise_name, displayDate.value, index, comment)
-                deleteExerciseComment(exercise.exercise_name, displayDate.value, comment)
+                deleteExerciseComment(exercise.exercise_name, displayDate.value, index)
             })
             exerciseComments.appendChild(exerciseComment)
         })
@@ -198,7 +236,6 @@ const createweightContainers = (exercise) => {
             populateweightContainers(exercise, set, weightContainer)
         }
     })
-
 }
 
 const populateweightContainers = (exercise, set, weightContainer) => {
@@ -255,9 +292,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         set_reps.forEach((reps, index) => {
             let setRep = document.createElement("p")
             setRep.classList.add("set-rep")
-
             setRep.textContent = reps
-
             setRep.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 hideAllMenus()
@@ -373,45 +408,47 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         setDetails.appendChild(setComments)
     }
 }
-console.log($(window).width())
-console.log($(window).height())
-const mobileRender = () => {
+const mobileRender = (real) => {
     if ($(window).width() < $(window).height()) {
         let existingCollapsers = document.querySelectorAll(".exercise-collapse")
-        if (existingCollapsers.length == 0) {
-            $(".exercise-name").click(function () {
-                $header = $(this)
-                $content = $header.nextAll()
-                $chevron = $header.children(".exercise-collapse")
-                if (!$content.is(":visible")) {
-                    $({ deg: -90 }).animate({ deg: 0 }, {
-                        duration: 500,
-                        step: (now) => {
-                            $chevron.css({
-                                transform: "rotate(" + now + "deg)"
-                            })
-                        }
-                    })
-                } else {
-                    $({ deg: 0 }).animate({ deg: -90 }, {
-                        duration: 500,
-                        step: (now) => {
-                            $chevron.css({
-                                transform: "rotate(" + now + "deg)"
-                            })
-                        }
-                    })
-                }
-                $content.slideToggle(500)
-            })
-            let exerciseContainers = document.querySelectorAll(".exercise-container")
-            exerciseContainers.forEach(container => {
+        $(".exercise-name").off()
+        $(".exercise-name").click(function () {
+            $header = $(this)
+            $content = $header.nextAll()
+            $chevron = $header.children(".exercise-collapse")
+            if (!$content.is(":visible")) {
+                $({ deg: -90 }).animate({ deg: 0 }, {
+                    duration: 500,
+                    step: (now) => {
+                        $chevron.css({
+                            transform: "rotate(" + now + "deg)"
+                        })
+                    }
+                })
+            } else {
+                $({ deg: 0 }).animate({ deg: -90 }, {
+                    duration: 500,
+                    step: (now) => {
+                        $chevron.css({
+                            transform: "rotate(" + now + "deg)"
+                        })
+                    }
+                })
+            }
+            $content.slideToggle(500)
+        })
+        let exerciseContainers = document.querySelectorAll(".exercise-container")
+        exerciseContainers.forEach(container => {
+            if (real == true) {
+                existingCollapsers.forEach(item => item.remove())
                 container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
                 container.childNodes.forEach(node => {
                     node.setAttribute("style", "display: flex; flex-direction: column;")
                 })
-            })
-        }
+            }
+
+        })
+
     } else {
         let exerciseCollapsers = document.querySelectorAll(".exercise-collapse")
         exerciseCollapsers.forEach(item => item.remove())
