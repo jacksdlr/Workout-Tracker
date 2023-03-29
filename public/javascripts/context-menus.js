@@ -12,6 +12,7 @@ const hideAllMenus = () => {
 }
 hideAllMenus()
 
+// If a context menu is open and the user clicks anywhere outside, the menu will close
 document.addEventListener("click", (e) => {
     const allMenus = document.querySelectorAll(".context-menu")
     allMenus.forEach(menu => {
@@ -24,9 +25,7 @@ document.addEventListener("click", (e) => {
 // Prevent context menus from overflowing off the screen
 const preventOutOfBounds = (contextMenu, pageX) => {
     const { left: scopeOffsetX } = workoutContainer.getBoundingClientRect()
-
     const scopeX = pageX - scopeOffsetX
-
     const outOfBoundsX = scopeX + contextMenu.clientWidth > workoutContainer.clientWidth
 
     if (outOfBoundsX) {
@@ -40,30 +39,31 @@ const preventOutOfBounds = (contextMenu, pageX) => {
 //  Exercise options  //
 ////////////////////////
 
-// New exercise name
+// Change exercise name
 const editExerciseName = (exercise_name, date) => {
     $("#exercise-edit").off()
     $("#exercise-edit").click(() => {
+        // Checks if an element with id "username" exists in the document; this will be false if the user is not logged in
         if (username) {
             let newName = prompt("New exercise name: ", exercise_name)
+            // Ensure new exercise name is not null, empty space, nothing, or the same as previous
             if (newName != null && !newName.match(/^\s+$/) && newName != "" && newName != exercise_name) {
                 xhttp.open("POST", "/update/exercise")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
                 xhttp.send(JSON.stringify({ exercise_name, newName, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                    }
+                            renderWorkout(JSON.parse(this.response), true, date)                    }
                 }
             }
         } else {
+            // Return an alert if the user is not logged in
             alert("You need to be logged in to edit workouts.")
         }
     })
 }
 
+// Delete the exercise and all of its data (weights, comments, etc.)
 const deleteExercise = (exercise_name, date) => {
     $("#exercise-delete").off()
     $("#exercise-delete").click(() => {
@@ -74,13 +74,11 @@ const deleteExercise = (exercise_name, date) => {
                 xhttp.send(JSON.stringify({ exercise_name, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
+                        // If no data is returned the response will match < (valid repsonses will never have this character at the start)
                         if (this.response.match(/^</) || !this.response) {
                             renderWorkout("not found", true, date)
                         } else {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                        }
+                            renderWorkout(JSON.parse(this.response), true, date)                        }
                     }
 
                 }
@@ -95,7 +93,7 @@ const deleteExercise = (exercise_name, date) => {
 //  Exercise comment options  //
 ////////////////////////////////
 
-// Edit comment
+// Edit exercise comment
 const editExerciseComment = (exercise_name, date, index, comment) => {
     $("#exercise-comment-edit").off()
     $("#exercise-comment-edit").click(() => {
@@ -108,8 +106,6 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
                     }
                 }
             }
@@ -119,6 +115,7 @@ const editExerciseComment = (exercise_name, date, index, comment) => {
     })
 }
 
+// Add a new exercise comment without adding a set to the workout
 const addExerciseComment = (exercise_name, date) => {
     $("#exercise-comment").off()
     $("#exercise-comment").click(() => {
@@ -130,10 +127,7 @@ const addExerciseComment = (exercise_name, date) => {
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                    }
+                            renderWorkout(JSON.parse(this.response), true, date)                    }
                 }
             }
         } else {
@@ -156,10 +150,7 @@ const deleteExerciseComment = (exercise_name, date, index) => {
                         if (this.response.match(/^</) || !this.response) {
                             renderWorkout("not found", true, date)
                         } else {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                        }
+                            renderWorkout(JSON.parse(this.response), true, date)                        }
                     }
                 }
             }
@@ -180,6 +171,7 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
         if (username) {
             let newWeight = prompt("New weight used: ", set_weight)
             if (newWeight != null && !newWeight.match(/^\s+$/) && newWeight != set_weight) {
+                // Ensure the new weight entered contains a kg or lbs suffix, or is empty
                 if (!newWeight.match(/(^(\d+\.\d{0,2}|\d+)(kg|lbs)$)|(^$)/)) {
                     alert("Make sure your new weight follows the structure [x]kg/lbs or [x.xx]kg/lbs.")
                     return
@@ -190,8 +182,6 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
                     xhttp.onreadystatechange = function () {
                         if (xhttp.readyState == 4) {
                                 renderWorkout(JSON.parse(this.response), true, date)
-                                toggleRequired()
-                                
                         } else {
                             alert("You need to be logged in to edit workouts.")
                         }
@@ -202,7 +192,7 @@ const editWeight = (exercise_name, date, set_id, set_weight) => {
     })
 }
 
-// Delete weight
+// Delete weight and all of its data (sets, etc.)
 const deleteWeight = (exercise_name, date, set_id) => {
     $("#weight-delete").off()
     $("#weight-delete").click(() => {
@@ -216,10 +206,7 @@ const deleteWeight = (exercise_name, date, set_id) => {
                         if (this.response.match(/^</) || !this.response) {
                             renderWorkout("not found", true, date)
                         } else {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                        }
+                            renderWorkout(JSON.parse(this.response), true, date)                        }
                     }
                 }
             }
@@ -249,10 +236,7 @@ const editReps = (exercise_name, date, set_id, repsIndex, reps) => {
                     xhttp.send(JSON.stringify({ exercise_name, set_id, repsIndex, newReps, date }))
                     xhttp.onreadystatechange = function () {
                         if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                        }
+                            renderWorkout(JSON.parse(this.response), true, date)                        }
                     }
                 }
             }
@@ -262,16 +246,17 @@ const editReps = (exercise_name, date, set_id, repsIndex, reps) => {
     })
 }
 
-// Delete set
+// Delete a set of reps and its respective comment (if any)
 const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
     $("#reps-delete").off()
     $("#reps-delete").click(() => {
         if (username) {
-            // find the comment for the set
             if (confirm(`Are you sure you want to delete set ${repsIndex + 1}?`) == true) {
                 let newComments = []
+                // Any comment that is not for the deleted set will be pushed to a new array
                 comments.forEach(comment => { if (!comment.match(`Set ${repsIndex + 1}: `)) { newComments.push(comment) } })
                 newComments.forEach((comment, index) => {
+                    // Each comment for sets after the deleted set, the respective set number will be decremented by one
                     if (parseInt(comment.split(": ")[0].split(" ")[1]) > (repsIndex + 1)) {
                         newComments[index] = `Set ${parseInt(comment.split(": ")[0].split(" ")[1]) - 1}: ${comment.split(": ")[1]}`
                     }
@@ -284,10 +269,7 @@ const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
                         if (this.response.match(/^</) || !this.response) {
                             renderWorkout("not found", true, date)
                         } else {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                        }
+                            renderWorkout(JSON.parse(this.response), true, date)                        }
                     }
                 }
             }
@@ -315,10 +297,7 @@ const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
                 xhttp.send(JSON.stringify({ exercise_name, set_id, commentIndex, editedComment, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                    }
+                            renderWorkout(JSON.parse(this.response), true, date)                    }
                 }
             }
         } else {
@@ -327,7 +306,7 @@ const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
     })
 }
 
-// New set comment
+// New set comment for the selected set of reps
 const addSetComment = (exercise_name, date, set_id, setIndex) => {
     $("#reps-comment").off()
     $("#reps-comment").click(() => {
@@ -340,10 +319,7 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date, set_id }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                    }
+                            renderWorkout(JSON.parse(this.response), true, date)                    }
                 }
             }
         } else {
@@ -352,7 +328,7 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
     })
 }
 
-// Delete set comment
+// Delete set comment for the selected set of reps
 const deleteSetComment = (exercise_name, date, set_id, comment) => {
     $("#set-comment-delete").off()
     $("#set-comment-delete").click(() => {
@@ -363,10 +339,7 @@ const deleteSetComment = (exercise_name, date, set_id, comment) => {
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id, comment }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                    }
+                            renderWorkout(JSON.parse(this.response), true, date)                    }
                 }
             }
         } else {
@@ -379,7 +352,7 @@ const deleteSetComment = (exercise_name, date, set_id, comment) => {
 //  Superset options  //
 ////////////////////////
 
-// Edit superset exercise
+// Edit superset exercise name
 const editSupersetExercise = (exercise_name, date, set_id, superset_exercise) => {
     $("#superset-exercise-edit").off()
     $("#superset-exercise-edit").click(() => {
@@ -391,10 +364,7 @@ const editSupersetExercise = (exercise_name, date, set_id, superset_exercise) =>
                 xhttp.send(JSON.stringify({ exercise_name, set_id, newName, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                    }
+                            renderWorkout(JSON.parse(this.response), true, date)                    }
                 }
             }
         } else {
@@ -403,7 +373,7 @@ const editSupersetExercise = (exercise_name, date, set_id, superset_exercise) =>
     })
 }
 
-// Edit superset weight
+// Edit superset weight used
 const editSupersetWeight = (exercise_name, date, set_id, superset_weight) => {
     $("#superset-weight-edit").off()
     $("#superset-weight-edit").click(() => {
@@ -419,10 +389,7 @@ const editSupersetWeight = (exercise_name, date, set_id, superset_weight) => {
                     xhttp.send(JSON.stringify({ exercise_name, set_id, newWeight, date }))
                     xhttp.onreadystatechange = function () {
                         if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                        }
+                            renderWorkout(JSON.parse(this.response), true, date)                        }
                     }
                 }
             }
@@ -432,7 +399,7 @@ const editSupersetWeight = (exercise_name, date, set_id, superset_weight) => {
     })
 }
 
-// Delete superset
+// Delete superset and its respective data
 const deleteSuperset = (exercise_name, date, set_id) => {
     $("#superset-delete").off()
     $("#superset-delete").click(() => {
@@ -443,10 +410,7 @@ const deleteSuperset = (exercise_name, date, set_id) => {
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                    }
+                            renderWorkout(JSON.parse(this.response), true, date)                    }
                 }
             }
         } else {
@@ -475,10 +439,7 @@ const editSupersetReps = (exercise_name, date, set_id, repsIndex, reps) => {
                     xhttp.send(JSON.stringify({ exercise_name, set_id, repsIndex, newReps, date }))
                     xhttp.onreadystatechange = function () {
                         if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)
-                            toggleRequired()
-                            
-                        }
+                            renderWorkout(JSON.parse(this.response), true, date)                        }
                     }
                 }
             }
