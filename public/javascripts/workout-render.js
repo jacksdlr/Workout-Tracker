@@ -13,6 +13,7 @@ const supersetMenu = document.getElementById("superset-menu")
 const supersetRepsMenu = document.getElementById("superset-reps-menu")
 const setCommentsMenu = document.getElementById("set-comments-menu")
 
+// If the date input for the form is empty (on page load) it defaults to current date
 if (inputDate.value == "") {
     inputDate.value = new Date().toISOString().split("T")[0]
 }
@@ -28,12 +29,9 @@ const submitRequest = (date, reset) => {
                 } else {
                     //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
                     renderWorkout(JSON.parse(this.response), reset, date)
-                    toggleRequired()
-                    
                 }
             } else {
                 renderWorkout("not found", reset, date)
-                toggleRequired()
             }
         }
     }
@@ -46,24 +44,24 @@ form.addEventListener("submit", (e) => {
     xhttp.send(JSON.stringify({
         date: inputDate.value,
         exercise_name: inputExercise.value,
-        exercise_comment: document.getElementById("exercise-comment-input").value,
+        exercise_comment: inputExerciseComment.value,
         set_weight: inputWeight.value,
         set_weight_unit: inputWeightUnit.value,
         set_reps: inputReps.value,
-        set_comment: document.getElementById("set-comment-input").value,
+        set_comment: inputSetComment.value,
         superset: supersetCheckbox.value,
         superset_exercise: inputSupersetExercise.value,
         superset_weight: inputSupersetWeight.value,
         superset_weight_unit: inputSupersetWeightUnit.value,
         superset_reps: inputSupersetReps.value
     }))
-    document.getElementById("exercise-comment-input").value = ""
-    document.getElementById("set-comment-input").value = ""
+    // Clear comment inputs
+    inputExerciseComment.value = ""
+    inputSetComment.value = ""
+    // When ready state reaches 4 (request is complete and response data has been returned), the workout renders
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4) {
             renderWorkout(JSON.parse(this.response), false, inputDate.value)
-            toggleRequired()
-            
         }
     }
 })
@@ -81,12 +79,9 @@ displayDate.addEventListener("change", (e) => {
                     } else {
                         //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
                         renderWorkout(JSON.parse(this.response), true, displayDate.value)
-                        toggleRequired()
-                        
                     }
                 } else {
                     renderWorkout("not found", true, displayDate.value)
-                    toggleRequired()
                 }
             }
         }
