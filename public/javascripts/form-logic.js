@@ -1,10 +1,12 @@
 const inputDate = document.getElementById("workout-input")
 const inputExercise = document.getElementById("exercise-input")
+const inputExerciseComment = document.getElementById("exercise-comment-input")
 const inputWeight = document.getElementById("weight-input")
 const inputWeightUnit = document.getElementById("weight-unit")
 const inputWeightKg = document.getElementById("weight-kg")
 const inputWeightLbs = document.getElementById("weight-lbs")
 const inputReps = document.getElementById("reps-input")
+const inputSetComment = document.getElementById("set-comment-input")
 const supersetCheckbox = document.getElementById("superset-input")
 const inputSupersetExercise = document.getElementById("superset-exercise-input")
 const inputSupersetWeight = document.getElementById("superset-weight-input")
@@ -19,15 +21,13 @@ $("#superset-input").click(function () {
     $header = $(this)
     $content = $header.nextAll()
     $content.slideToggle(500, toggleRequired())
-    
 })
 // Toggles the superset exercise name to be required or not depending on if the checkbox is checked
 const toggleRequired = () => {
-    const supersetExercise = document.getElementById("superset-exercise-input")
     if (supersetCheckbox.checked) {
-        supersetExercise.setAttribute("required", "true")
+        inputSupersetExercise.setAttribute("required", "true")
     } else {
-        supersetExercise.removeAttribute("required")
+        inputSupersetExercise.removeAttribute("required")
         // Removes values for superset details when superset is unchecked
         inputSupersetExercise.value = ""
         inputSupersetWeight.value = ""
