@@ -113,6 +113,7 @@ const renderWorkout = (data, reset, date) => {
         existingContainers.forEach(container => container.remove())
         workoutContainer.appendChild(notFound)
         displayDate.value = date
+        workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0, -5)}</p>`)
         return
     }
     if (data.date != displayDate.value || reset == true) {
