@@ -168,7 +168,7 @@ router.post("/reps", checkAuthenticated, async (req, res) => {
 
 router.post("/set_comments", checkAuthenticated, async (req, res) => {
     const { id } = req.user
-    const { exercise_name, date, set_id, comment } = req.body
+    const { exercise_name, date, set_id, index } = req.body
 
     const user = await User.findById(id)
 
@@ -178,7 +178,9 @@ router.post("/set_comments", checkAuthenticated, async (req, res) => {
 
     const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
 
-    User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: comment } }, { new: true }, (err, data) => {
+    await User.findByIdAndUpdate(id, { $unset: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments.${index}`]: "" } })
+
+    User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: null } }, { new: true }, (err, data) => {
         if (err) {
             return res.status(500).json({ message: "An error occurred, please try again later" })
         }
@@ -199,7 +201,9 @@ router.post("/superset", checkAuthenticated, async (req, res) => {
 
     const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
 
-    User.findByIdAndUpdate(id, { $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_exercise`]: "", [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_weight`]: "", [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps.$[]`]: "" } }, { new: true }, (err, data) => {
+    //await User.findByIdAndUpdate(id, { $unset: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_exercise`]: "" } })
+
+    User.findByIdAndUpdate(id, { $unset: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_exercise`]: "", [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_weight`]: "", [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.superset_reps.$[]`]: "" } }, { new: true }, (err, data) => {
         if (err) {
             return res.status(500).json({ message: "An error occurred, please try again later" })
         }

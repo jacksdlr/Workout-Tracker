@@ -5,6 +5,7 @@ const workoutContainer = document.querySelector(".workout-exercises")
 const workoutTitle = document.getElementById("workout-name")
 const displayDate = document.getElementById("display-date")
 
+// Context menus
 const exerciseMenu = document.getElementById("exercise-menu")
 const exerciseCommentsMenu = document.getElementById("exercise-comments-menu")
 const weightMenu = document.getElementById("weight-menu")
@@ -25,22 +26,24 @@ const submitRequest = (date, reset) => {
         if (xhttp.readyState == 4) {
             if (this.response) {
                 if (this.response.match(/^</)) {
-                    renderWorkout("not found", true, date)
+                    renderWorkout("not found", false, date)
                 } else {
                     //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-                    renderWorkout(JSON.parse(this.response), reset, date)
+                    renderWorkout(JSON.parse(this.response), false, date)
                 }
             } else {
-                renderWorkout("not found", reset, date)
+                renderWorkout("not found", false, date)
             }
         }
     }
 }
 
 form.addEventListener("submit", (e) => {
+    // Submitting the form prevents default action of POSTing data and reloading page with response
     e.preventDefault()
     xhttp.open("POST", "/workouts")
     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+    // Converts form inputs into a JSON object that is POSTed to the workouts route
     xhttp.send(JSON.stringify({
         date: inputDate.value,
         exercise_name: inputExercise.value,
@@ -68,20 +71,20 @@ form.addEventListener("submit", (e) => {
 
 displayDate.addEventListener("change", (e) => {
     // Get the date and submit a GET request to return the user's workout for that date
-    if (workoutTitle.textContent != "Workout for:Example date") {
+    if (workoutTitle.textContent !== "Workout for:Example date") {
         xhttp.open("GET", "/workouts/" + displayDate.value)
         xhttp.send()
         xhttp.onreadystatechange = function () {
             if (xhttp.readyState == 4) {
                 if (this.response) {
                     if (this.response.match(/^</)) {
-                        renderWorkout("not found", true, displayDate.value)
+                        renderWorkout("not found", false, displayDate.value)
                     } else {
                         //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-                        renderWorkout(JSON.parse(this.response), true, displayDate.value)
+                        renderWorkout(JSON.parse(this.response), false, displayDate.value)
                     }
                 } else {
-                    renderWorkout("not found", true, displayDate.value)
+                    renderWorkout("not found", false, displayDate.value)
                 }
             }
         }
@@ -96,6 +99,7 @@ const renderWorkout = (data, reset, date) => {
     if (date == "example") {
         workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">Example date</p>`)
     }
+    // change this to just remove all children??
     if (notFound) {
         notFound.remove()
     }
@@ -123,15 +127,9 @@ const renderWorkout = (data, reset, date) => {
         displayDate.value = date
     }
     data.exercises.forEach(exercise => {
-        let exerciseContainer = document.getElementById(`J${exercise._id}`)
-        if (!exerciseContainer) {
-            createExerciseContainer(exercise)
-            addExerciseComments(exercise)
-            createweightContainers(exercise)
-        } else {
-            addExerciseComments(exercise)
-            createweightContainers(exercise)
-        }
+        createExerciseContainer(exercise)
+        addExerciseComments(exercise)
+        createweightContainers(exercise)
     })
     $(".set-weight-and-count").click(function () {
         $header = $(this)
@@ -147,73 +145,80 @@ const renderWorkout = (data, reset, date) => {
 }
 
 const createExerciseContainer = (exercise) => {
-    exerciseContainer = document.createElement("div")
-    exerciseContainer.classList.add("exercise-container")
-    exerciseContainer.setAttribute("id", `J${exercise._id}`)
-    workoutContainer.appendChild(exerciseContainer)
-
-    if (exercise.comments != "") {
-        let exerciseComments = document.createElement("div")
-        exerciseComments.classList.add("exercise-comments")
-        exerciseComments.setAttribute("id", `J${exercise._id}` + "-comments")
-        exerciseContainer.appendChild(exerciseComments)
+    let exerciseContainer = document.getElementById(`J${exercise._id}`)
+    if (!exerciseContainer) {
+        exerciseContainer = document.createElement("div")
+        exerciseContainer.classList.add("exercise-container")
+        exerciseContainer.setAttribute("id", `J${exercise._id}`)
+        workoutContainer.appendChild(exerciseContainer)
     }
 
-    let exerciseName = document.createElement("h2")
-    exerciseName.classList.add("exercise-name")
-    exerciseName.setAttribute("id", `J${exercise._id}` + "-name")
-    exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
-    // Right click opens a prompt to change the exercise name
-    exerciseName.addEventListener("contextmenu", (e) => {
-        e.preventDefault()
-        hideAllMenus()
+    let exerciseName = document.getElementById(`J${exercise._id}-name`)
+    if (!exerciseName) {
+        exerciseName = document.createElement("h2")
+        exerciseName.classList.add("exercise-name")
+        exerciseName.setAttribute("id", `J${exercise._id}-name`)
+        exerciseName.insertAdjacentText("afterbegin", exercise.exercise_name)
+        exerciseContainer.appendChild(exerciseName)
+        exerciseName.addEventListener("contextmenu", (e) => {
+            e.preventDefault()
+            hideAllMenus()
 
-        // Position custom context menu at cursor
-        $("#exercise-menu").slideDown(200).offset({
-            top: e.pageY,
-            left: preventOutOfBounds(exerciseMenu, e.pageX)
+            // Position custom context menu at cursor
+            $("#exercise-menu").slideDown(200).offset({
+                top: e.pageY,
+                left: preventOutOfBounds(exerciseMenu, e.pageX)
+            })
+
+            // Custom right click menu to edit or delete exercise
+            editExerciseName($(`#J${exercise._id}-name`)[0].textContent, displayDate.value)
+            addExerciseComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value)
+            deleteExercise($(`#J${exercise._id}-name`)[0].textContent, displayDate.value)
         })
-
-        // Custom right click menu to edit or delete exercise
-        editExerciseName(exercise.exercise_name, displayDate.value)
-        addExerciseComment(exercise.exercise_name, displayDate.value)
-        deleteExercise(exercise.exercise_name, displayDate.value)
-    })
-    exerciseContainer.appendChild(exerciseName)
-}
-
-const addExerciseComments = (exercise) => {
+    } else if (exerciseName.textContent != exercise.exercise_name) {
+        exerciseName.textContent = exercise.exercise_name
+    }
+    //addExerciseComments(exercise, exerciseContainer)
     let exerciseComments = document.getElementById(`J${exercise._id}` + "-comments")
 
     if (exercise.comments != "") {
         if (!exerciseComments) {
-            let exerciseComments = document.createElement("div")
+            exerciseComments = document.createElement("div")
             exerciseComments.classList.add("exercise-comments")
             exerciseComments.setAttribute("id", `J${exercise._id}` + "-comments")
             exerciseContainer.appendChild(exerciseComments)
         }
-        exerciseComments = document.getElementById(`J${exercise._id}` + "-comments")
-        let existingComments = exerciseComments.querySelectorAll("li")
-        existingComments.forEach(comment => comment.remove())
+
         exercise.comments.forEach((comment, index) => {
-            let exerciseComment = document.createElement("li")
-            exerciseComment.textContent = comment
-            exerciseComment.addEventListener("contextmenu", (e) => {
-                e.preventDefault()
-                hideAllMenus()
+            let exerciseComment = exerciseComments.querySelectorAll("li")
+            if (!exerciseComment[index]) {
+                exerciseComment = document.createElement("li")
+                exerciseComment.textContent = comment
+                exerciseComments.appendChild(exerciseComment)
+                exerciseComment.addEventListener("contextmenu", function contextMenu(e) {
+                    e.preventDefault()
+                    hideAllMenus()
 
-                $("#exercise-comments-menu").slideDown(200).offset({
-                    top: e.pageY,
-                    left: preventOutOfBounds(exerciseCommentsMenu, e.pageX)
+                    $("#exercise-comments-menu").slideDown(200).offset({
+                        top: e.pageY,
+                        left: preventOutOfBounds(exerciseCommentsMenu, e.pageX)
+                    })
+
+                    editExerciseComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, index, exerciseComment.textContent)
+                    deleteExerciseComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, index)
                 })
-
-                editExerciseComment(exercise.exercise_name, displayDate.value, index, comment)
-                deleteExerciseComment(exercise.exercise_name, displayDate.value, index)
-            })
-            exerciseComments.appendChild(exerciseComment)
+            } else if (exerciseComment[index].textContent != comment) {
+                exerciseComment[index].textContent = comment
+            }
         })
         document.getElementById(`J${exercise._id}` + "-name").insertAdjacentElement("afterend", exerciseComments)
     }
+    // Right click opens a prompt to change the exercise name
+
+}
+
+const addExerciseComments = (exercise, exerciseContainer) => {
+    
 }
 
 const createweightContainers = (exercise) => {
@@ -225,22 +230,24 @@ const createweightContainers = (exercise) => {
             weightContainer.classList.add("weight-container")
             weightContainer.setAttribute("id", set._id)
             exerciseContainer.appendChild(weightContainer)
-            populateweightContainers(exercise, set, weightContainer)
-        } else {
-            weightContainer.remove()
-            weightContainer = document.createElement("div")
-            weightContainer.classList.add("weight-container")
-            weightContainer.setAttribute("id", set._id)
-            exerciseContainer.appendChild(weightContainer)
-            populateweightContainers(exercise, set, weightContainer)
+            //weightContainer.remove()
+            //weightContainer = document.createElement("div")
+            //weightContainer.classList.add("weight-container")
+            //weightContainer.setAttribute("id", set._id)
+            //exerciseContainer.appendChild(weightContainer)
         }
+        populateweightContainers(exercise, set, weightContainer)
     })
 }
 
 const populateweightContainers = (exercise, set, weightContainer) => {
+    let setWeightAndCount = weightContainer.querySelector(".set-weight-and-count")
+    if (!setWeightAndCount) {
+        setWeightAndCount = document.createElement("div")
+        setWeightAndCount.classList.add("set-weight-and-count")
+        weightContainer.appendChild(setWeightAndCount)
+    }
     // Create the element that holds that set data
-    let setWeightAndCount = document.createElement("div")
-    setWeightAndCount.classList.add("set-weight-and-count")
 
     // Descructure all possible set variables
     let {
@@ -253,45 +260,81 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         _id
     } = set
 
-    let setWeight = document.createElement("h3")
-    setWeight.classList.add("set-weight")
-    setWeight.textContent = set_weight
-    setWeightAndCount.addEventListener("contextmenu", (e) => {
-        e.preventDefault()
-        hideAllMenus()
-
-        $("#weight-menu").slideDown(200).offset({
-            top: e.pageY,
-            left: preventOutOfBounds(weightMenu, e.pageX)
-        })
-
-        editWeight(exercise.exercise_name, displayDate.value, _id, set_weight)
-        deleteWeight(exercise.exercise_name, displayDate.value, _id)
-    })
-    setWeightAndCount.appendChild(setWeight)
-
-    let setCount = document.createElement("h3")
-    setCount.classList.add("set-count")
-
-    // Get the sets count so that grammar is correct when displaying set data
-    if (sets_count == 1) {
-        setCount.textContent = "1 set"
-    } else if (sets_count > 1) {
-        setCount.textContent = `${sets_count} sets`
+    if (!set_weight) {
+        set_weight = ""
     }
-    setWeightAndCount.appendChild(setCount)
 
-    let setDetails = document.createElement("div")
-    setDetails.classList.add("set-details")
+    let setWeight = setWeightAndCount.querySelector(".set-weight")
+    if (!setWeight) {
+        setWeight = document.createElement("h3")
+        setWeight.classList.add("set-weight")
+        setWeight.textContent = set_weight
+        setWeightAndCount.addEventListener("contextmenu", (e) => {
+            e.preventDefault()
+            hideAllMenus()
 
-    if (set_reps != "") {
-        let setReps = document.createElement("p")
+            $("#weight-menu").slideDown(200).offset({
+                top: e.pageY,
+                left: preventOutOfBounds(weightMenu, e.pageX)
+            })
+
+            editWeight($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, setWeight.textContent)
+            deleteWeight($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id)
+        })
+        setWeightAndCount.appendChild(setWeight)
+    } else if (setWeight.textContent != set_weight) {
+        setWeight.textContent = set_weight
+    }
+
+    let setCount = setWeightAndCount.querySelector(".set-count")
+
+    if (!setCount) {
+        setCount = document.createElement("h3")
+        setCount.classList.add("set-count")
+
+        // Get the sets count so that grammar is correct when displaying set data
+        if (sets_count == 1) {
+            setCount.textContent = "1 set"
+        } else if (sets_count > 1) {
+            setCount.textContent = `${sets_count} sets`
+        }
+        setWeightAndCount.appendChild(setCount)
+    } else if (setCount.textContent.split(" ")[0] != sets_count) {
+        if (sets_count == 1) {
+            setCount.textContent = "1 set"
+        } else if (sets_count > 1) {
+            setCount.textContent = `${sets_count} sets`
+        }
+    }
+
+    let setDetails = weightContainer.querySelector(".set-details")
+    if (!setDetails) {
+        setDetails = document.createElement("div")
+        setDetails.classList.add("set-details")
+        weightContainer.appendChild(setDetails)
+    }
+
+    let setReps = setDetails.querySelector(".set-reps")
+    if (!setReps) {
+        setReps = document.createElement("p")
         setReps.classList.add("set-reps")
         setReps.textContent = `Reps: `
-        set_reps.forEach((reps, index) => {
-            let setRep = document.createElement("p")
+        setDetails.appendChild(setReps)
+    }
+
+    set_reps.forEach((reps, index) => {
+        let setRep = setReps.querySelectorAll(".set-rep")
+        if (!setRep[index]) {
+            if (setReps.textContent.slice(-1) != "," && index != 0) {
+                setReps.insertAdjacentText("beforeend", ",")
+            }
+            setRep = document.createElement("p")
             setRep.classList.add("set-rep")
             setRep.textContent = reps
+            setReps.append(setRep)
+            if (index != set_reps.length - 1) {
+                setReps.insertAdjacentText("beforeend", ",")
+            }
             setRep.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 hideAllMenus()
@@ -301,110 +344,138 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                     left: preventOutOfBounds(setMenu, e.pageX)
                 })
 
-                editReps(exercise.exercise_name, displayDate.value, _id, index, reps)
-                addSetComment(exercise.exercise_name, displayDate.value, _id, index)
-                deleteReps(exercise.exercise_name, displayDate.value, set.comments, _id, index)
+                editReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index, setRep.textContent)
+                addSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index)
+                deleteReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, set.comments, _id, index)
             })
-            setReps.append(setRep)
-            if (index != set_reps.length - 1) {
-                setReps.insertAdjacentText("beforeend", ",")
-            }
-
-        })
-        setDetails.appendChild(setReps)
-    }
-
-    weightContainer.appendChild(setWeightAndCount)
-    weightContainer.appendChild(setDetails)
+        } else if (setRep[index].textContent != reps) {
+            setRep[index].textContent = reps
+        }
+    })
 
     if (superset_exercise) {
-        let supersetText = document.createElement("p")
-        supersetText.setAttribute("id", "superset-text")
-        supersetText.textContent = "~ Superset with ~"
-        setDetails.appendChild(supersetText)
+        let supersetText = setDetails.querySelector("#superset-text")
+        if (!supersetText) {
+            supersetText = document.createElement("p")
+            supersetText.setAttribute("id", "superset-text")
+            supersetText.textContent = "~ Superset with ~"
+            setDetails.appendChild(supersetText)
+        }
 
-        let supersetExerciseAndWeight = document.createElement("div")
-        supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
-        supersetExerciseAndWeight.addEventListener("contextmenu", (e) => {
-            e.preventDefault()
-            hideAllMenus()
-
-            $("#superset-menu").slideDown(200).offset({
-                top: e.pageY,
-                left: preventOutOfBounds(supersetMenu, e.pageX)
-            })
-
-            editSupersetExercise(exercise.exercise_name, displayDate.value, _id, superset_exercise)
-            editSupersetWeight(exercise.exercise_name, displayDate.value, _id, superset_weight)
-            deleteSuperset(exercise.exercise_name, displayDate.value, _id)
-        })
-
-        let supersetExercise = document.createElement("h4")
-        supersetExercise.classList.add("superset-exercise")
-        supersetExercise.textContent = superset_exercise
-        supersetExerciseAndWeight.appendChild(supersetExercise)
-
-        let supersetWeight = document.createElement("h4")
-        supersetWeight.classList.add("superset-weight")
-        supersetWeight.textContent = superset_weight
-
-        supersetExerciseAndWeight.appendChild(supersetWeight)
-
-        let supersetDetails = document.createElement("div")
-        supersetDetails.classList.add("superset-details")
-
-        let supersetReps = document.createElement("p")
-        supersetReps.classList.add("superset-reps")
-        supersetReps.textContent = `Reps: `
-        superset_reps.forEach((reps, index) => {
-            let supersetRep = document.createElement("p")
-            supersetRep.classList.add("set-rep")
-
-            supersetRep.textContent = reps
-
-            supersetRep.addEventListener("contextmenu", (e) => {
+        let supersetExerciseAndWeight = setDetails.querySelector(".superset-exercise-and-weight")
+        if (!supersetExerciseAndWeight) {
+            supersetExerciseAndWeight = document.createElement("div")
+            supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
+            supersetExerciseAndWeight.addEventListener("contextmenu", (e) => {
                 e.preventDefault()
                 hideAllMenus()
 
-                $("#superset-reps-menu").slideDown(200).offset({
+                $("#superset-menu").slideDown(200).offset({
                     top: e.pageY,
-                    left: preventOutOfBounds(supersetRepsMenu, e.pageX)
+                    left: preventOutOfBounds(supersetMenu, e.pageX)
                 })
 
-                editSupersetReps(exercise.exercise_name, displayDate.value, _id, index, reps)
+                editSupersetExercise($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, supersetExercise.textContent)
+                editSupersetWeight($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, supersetWeight.textContent)
+                deleteSuperset($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id)
             })
-            supersetReps.append(supersetRep)
-            if (index != superset_reps.length - 1) {
-                supersetReps.insertAdjacentText("beforeend", ",")
+            setDetails.appendChild(supersetExerciseAndWeight)
+        }
+
+        let supersetExercise = supersetExerciseAndWeight.querySelector(".superset-exercise")
+        if (!supersetExercise) {
+            supersetExercise = document.createElement("h4")
+            supersetExercise.classList.add("superset-exercise")
+            supersetExercise.textContent = superset_exercise
+            supersetExerciseAndWeight.appendChild(supersetExercise)
+        } else if (supersetExercise.textContent != superset_exercise) {
+            supersetExercise.textContent = superset_exercise
+        }
+
+        let supersetWeight = supersetExerciseAndWeight.querySelector(".superset-weight")
+        if (!supersetWeight) {
+            supersetWeight = document.createElement("h4")
+            supersetWeight.classList.add("superset-weight")
+            supersetWeight.textContent = superset_weight
+            supersetExerciseAndWeight.appendChild(supersetWeight)
+        } else if (supersetWeight.textContent != superset_weight) {
+            supersetWeight.textContent = superset_weight
+        }
+
+        let supersetDetails = setDetails.querySelector(".superset-details")
+        if (!supersetDetails) {
+            supersetDetails = document.createElement("div")
+            supersetDetails.classList.add("superset-details")
+            setDetails.appendChild(supersetDetails)
+        }
+
+        let supersetReps = supersetDetails.querySelector(".superset-reps")
+        if (!supersetReps) {
+            supersetReps = document.createElement("p")
+            supersetReps.classList.add("superset-reps")
+            supersetReps.textContent = `Reps: `
+            supersetDetails.appendChild(supersetReps)
+        }
+
+        superset_reps.forEach((reps, index) => {
+            let supersetRep = supersetReps.querySelectorAll(".superset-rep")
+            if (!supersetRep[index]) {
+                if (supersetReps.textContent.slice(-1) != "," && index != 0) {
+                    supersetReps.insertAdjacentText("beforeend", ",")
+                }
+                supersetRep = document.createElement("p")
+                supersetRep.classList.add("superset-rep")
+                supersetRep.textContent = reps
+                supersetReps.append(supersetRep)
+                if (index != superset_reps.length - 1) {
+                    supersetReps.insertAdjacentText("beforeend", ",")
+                }
+                supersetRep.addEventListener("contextmenu", (e) => {
+                    e.preventDefault()
+                    hideAllMenus()
+
+                    $("#superset-reps-menu").slideDown(200).offset({
+                        top: e.pageY,
+                        left: preventOutOfBounds(supersetRepsMenu, e.pageX)
+                    })
+
+                    editSupersetReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index, supersetRep.textContent)
+                })
+            } else if (supersetRep[index].textContent != reps) {
+                supersetRep[index].textContent = reps
             }
         })
-        supersetDetails.appendChild(supersetReps)
-
-        setDetails.appendChild(supersetExerciseAndWeight)
-        setDetails.appendChild(supersetDetails)
     }
 
     if (set.comments != "") {
-        let setComments = document.createElement("ul")
-        setComments.classList.add("set-comments")
+        let setComments = setDetails.querySelector(".set-comments")
+        if (!setComments) {
+            setComments = document.createElement("ul")
+            setComments.classList.add("set-comments")
+            setDetails.appendChild(setComments)
+        }
         set.comments.forEach((comment, index) => {
-            let newComment = document.createElement("li")
-            newComment.textContent = comment
-            newComment.addEventListener("contextmenu", (e) => {
-                e.preventDefault()
-                hideAllMenus()
+            let setComment = setComments.querySelectorAll("li")
+            if (!setComment[index]) {
+                setComment = document.createElement("li")
+                setComment.textContent = comment
+                setComments.appendChild(setComment)
+                setComment.addEventListener("contextmenu", (e) => {
+                    e.preventDefault()
+                    hideAllMenus()
 
-                $("#set-comments-menu").slideDown(200).offset({
-                    top: e.pageY,
-                    left: preventOutOfBounds(setCommentsMenu, e.pageX)
+                    $("#set-comments-menu").slideDown(200).offset({
+                        top: e.pageY,
+                        left: preventOutOfBounds(setCommentsMenu, e.pageX)
+                    })
+
+                    editSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index, setComment.textContent)
+                    deleteSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index)
                 })
-
-                editSetComment(exercise.exercise_name, displayDate.value, _id, index, comment)
-                deleteSetComment(exercise.exercise_name, displayDate.value, _id, comment)
-            })
-            setComments.appendChild(newComment)
+            } else if (setComment[index].textContent != comment) {
+                setComment[index].textContent = comment
+            }
         })
-        setDetails.appendChild(setComments)
     }
 }
 const mobileRender = (real) => {
@@ -438,14 +509,16 @@ const mobileRender = (real) => {
         })
         let exerciseContainers = document.querySelectorAll(".exercise-container")
         exerciseContainers.forEach(container => {
-            if (real == true) {
+            
+            if (real == true && container.firstChild.children.length == 0) {
+                console.log(container.firstChild)
                 existingCollapsers.forEach(item => item.remove())
                 container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
                 container.childNodes.forEach(node => {
                     node.setAttribute("style", "display: flex; flex-direction: column;")
                 })
             }
-
+            //console.log(container.firstChild.children)
         })
 
     } else {

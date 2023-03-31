@@ -123,6 +123,7 @@ router.post("/", checkAuthenticated, async (req, res) => {
         } else {
             const exerciseIndex = existingWorkout.workouts.exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
+
             // Find if a set has been done with the same weight, reps, etc.
             const existingWeight = existingWorkout.workouts.exercises[exerciseIndex].sets.find(set =>
                 set.set_weight == set_weight &&
