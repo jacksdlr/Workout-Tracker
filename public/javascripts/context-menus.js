@@ -411,7 +411,7 @@ const deleteSuperset = (exercise_name, date, set_id) => {
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)                    }
+                            renderWorkout(JSON.parse(this.response), false, date)                    }
                 }
             }
         } else {

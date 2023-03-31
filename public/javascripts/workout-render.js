@@ -445,6 +445,10 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 supersetRep[index].textContent = reps
             }
         })
+    } else if (setDetails.querySelector(".superset-exercise-and-weight")) {
+        setDetails.querySelector(".superset-exercise-and-weight").remove()
+        setDetails.querySelector(".superset-text").remove()
+        setDetails.querySelector(".superset-details").remove()
     }
 
     if (set.comments != "") {
