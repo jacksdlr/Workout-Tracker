@@ -206,7 +206,7 @@ const deleteWeight = (exercise_name, date, set_id) => {
                         if (this.response.match(/^</) || !this.response) {
                             renderWorkout("not found", false, date)
                         } else {
-                            renderWorkout(JSON.parse(this.response), true, date)                        }
+                            renderWorkout(JSON.parse(this.response), false, date)                        }
                     }
                 }
             }
@@ -253,6 +253,7 @@ const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
         if (username) {
             if (confirm(`Are you sure you want to delete set ${repsIndex + 1}?`) == true) {
                 let newComments = []
+                console.log(comments)
                 // Any comment that is not for the deleted set will be pushed to a new array
                 comments.forEach(comment => { if (!comment.match(`Set ${repsIndex + 1}: `)) { newComments.push(comment) } })
                 newComments.forEach((comment, index) => {
@@ -269,7 +270,8 @@ const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
                         if (this.response.match(/^</) || !this.response) {
                             renderWorkout("not found", false, date)
                         } else {
-                            renderWorkout(JSON.parse(this.response), true, date)                        }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                     }
                 }
             }

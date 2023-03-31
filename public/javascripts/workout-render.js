@@ -131,11 +131,13 @@ const renderWorkout = (data, reset, date) => {
         addExerciseComments(exercise)
         createweightContainers(exercise)
     })
+    $(".set-weight-and-count").off()
     $(".set-weight-and-count").click(function () {
         $header = $(this)
         $content = $header.next()
         $content.slideToggle(500)
     })
+    $(".superset-exercise-and-weight").off()
     $(".superset-exercise-and-weight").click(function () {
         $header = $(this)
         $content = $header.next()
@@ -186,6 +188,7 @@ const createExerciseContainer = (exercise) => {
             exerciseComments = document.createElement("div")
             exerciseComments.classList.add("exercise-comments")
             exerciseComments.setAttribute("id", `J${exercise._id}` + "-comments")
+            exerciseComments.setAttribute("style", "display: flex; flex-direction: column;")
             exerciseContainer.appendChild(exerciseComments)
         }
 
@@ -218,18 +221,24 @@ const createExerciseContainer = (exercise) => {
 }
 
 const addExerciseComments = (exercise, exerciseContainer) => {
-    
+
 }
 
 const createweightContainers = (exercise) => {
     exerciseContainer = document.getElementById(`J${exercise._id}`)
+    if (exercise.sets.length != exerciseContainer.querySelectorAll(".weight-container").length) {
+        mobileRender(false, $(`#J${exercise._id}`))
+        exerciseContainer.querySelectorAll(".weight-container").forEach(container => container.remove())
+    }
     exercise.sets.forEach(set => {
-        let weightContainer = document.getElementById(set._id)
+        let weightContainer = document.getElementById(`J${set._id}`)
         if (!weightContainer) {
             weightContainer = document.createElement("div")
             weightContainer.classList.add("weight-container")
-            weightContainer.setAttribute("id", set._id)
+            weightContainer.setAttribute("id", `J${set._id}`)
+            weightContainer.setAttribute("style", "display: flex; flex-direction: column;")
             exerciseContainer.appendChild(weightContainer)
+            
             //weightContainer.remove()
             //weightContainer = document.createElement("div")
             //weightContainer.classList.add("weight-container")
@@ -315,6 +324,16 @@ const populateweightContainers = (exercise, set, weightContainer) => {
     }
 
     let setReps = setDetails.querySelector(".set-reps")
+
+    if (setReps) {
+        if (set_reps.length != setReps.querySelectorAll(".set-rep").length) {
+            mobileRender(false, $(`#J${exercise._id}-name`), $(`#J${set._id}`))
+            setReps.querySelectorAll(".set-rep").forEach(set => set.remove())
+            setReps.textContent = `Reps: `
+        }
+    }
+
+    //console.log($(`#J${_id}`)[0].children[1].getElementsByClassName("set-rep")/*.children ren[0].children.length */)
     if (!setReps) {
         setReps = document.createElement("p")
         setReps.classList.add("set-reps")
@@ -344,9 +363,12 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                     left: preventOutOfBounds(setMenu, e.pageX)
                 })
 
+                comments = []
+                setDetails.querySelectorAll("li").forEach(item => comments.push(item.textContent))
+
                 editReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index, setRep.textContent)
                 addSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index)
-                deleteReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, set.comments, _id, index)
+                deleteReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, comments, _id, index)
             })
         } else if (setRep[index].textContent != reps) {
             setRep[index].textContent = reps
@@ -447,12 +469,18 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         })
     } else if (setDetails.querySelector(".superset-exercise-and-weight")) {
         setDetails.querySelector(".superset-exercise-and-weight").remove()
-        setDetails.querySelector(".superset-text").remove()
+        setDetails.querySelector("#superset-text").remove()
         setDetails.querySelector(".superset-details").remove()
     }
 
+    let setComments = setDetails.querySelector(".set-comments")
+    if (setComments) {
+        if (setComments.querySelectorAll("li").length > set.comments.length) {
+            setComments.querySelectorAll("li").forEach(comment => comment.remove())
+        }
+    }
+
     if (set.comments != "") {
-        let setComments = setDetails.querySelector(".set-comments")
         if (!setComments) {
             setComments = document.createElement("ul")
             setComments.classList.add("set-comments")
@@ -482,9 +510,8 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         })
     }
 }
-const mobileRender = (real) => {
+const mobileRender = (real, exercise, weight) => {
     if ($(window).width() < $(window).height()) {
-        let existingCollapsers = document.querySelectorAll(".exercise-collapse")
         $(".exercise-name").off()
         $(".exercise-name").click(function () {
             $header = $(this)
@@ -513,16 +540,21 @@ const mobileRender = (real) => {
         })
         let exerciseContainers = document.querySelectorAll(".exercise-container")
         exerciseContainers.forEach(container => {
-            
-            if (real == true && container.firstChild.children.length == 0) {
-                console.log(container.firstChild)
+
+            if ((real == true && container.firstChild.children.length == 0) || exercise) {
+                let existingCollapsers = container.querySelectorAll(".exercise-collapse")
                 existingCollapsers.forEach(item => item.remove())
-                container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
-                container.childNodes.forEach(node => {
+                    container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
+                /* container.childNodes.forEach(node => {
                     node.setAttribute("style", "display: flex; flex-direction: column;")
-                })
+                }) */
+                if (exercise) {
+                    exercise.nextAll().slideDown(0)
+                }
+                if (weight) {
+                    weight[0].children[1].setAttribute("style", "display: flex; flex-direction: column;")
+                }
             }
-            //console.log(container.firstChild.children)
         })
 
     } else {
