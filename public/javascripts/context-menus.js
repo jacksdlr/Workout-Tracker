@@ -59,7 +59,8 @@ const editExerciseName = (exercise_name, date) => {
                 xhttp.send(JSON.stringify({ exercise_name, newName, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), false, date)                    }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                    }
                 }
             }
         } else {
@@ -84,7 +85,8 @@ const deleteExercise = (exercise_name, date) => {
                         if (this.response.match(/^</) || !this.response) {
                             renderWorkout("not found", false, date)
                         } else {
-                            renderWorkout(JSON.parse(this.response), true, date)                        }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                     }
 
                 }
@@ -133,7 +135,8 @@ const addExerciseComment = (exercise_name, date) => {
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), false, date)                    }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                 }
             }
         } else {
@@ -156,7 +159,8 @@ const deleteExerciseComment = (exercise_name, date, index) => {
                         if (this.response.match(/^</) || !this.response) {
                             renderWorkout("not found", false, date)
                         } else {
-                            renderWorkout(JSON.parse(this.response), true, date)                        }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                     }
                 }
             }
@@ -212,7 +216,8 @@ const deleteWeight = (exercise_name, date, set_id) => {
                         if (this.response.match(/^</) || !this.response) {
                             renderWorkout("not found", false, date)
                         } else {
-                            renderWorkout(JSON.parse(this.response), false, date)                        }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                     }
                 }
             }
@@ -242,7 +247,8 @@ const editReps = (exercise_name, date, set_id, repsIndex, reps) => {
                     xhttp.send(JSON.stringify({ exercise_name, set_id, repsIndex, newReps, date }))
                     xhttp.onreadystatechange = function () {
                         if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), false, date)                        }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                     }
                 }
             }
@@ -327,7 +333,8 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
                 xhttp.send(JSON.stringify({ exercise_name, newComment, date, set_id }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), false, date)                    }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                 }
             }
         } else {
@@ -347,7 +354,8 @@ const deleteSetComment = (exercise_name, date, set_id, index, comment) => {
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id, index, comment }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), true, date)                    }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                 }
             }
         } else {
@@ -372,7 +380,8 @@ const editSupersetExercise = (exercise_name, date, set_id, superset_exercise) =>
                 xhttp.send(JSON.stringify({ exercise_name, set_id, newName, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), false, date)                    }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                 }
             }
         } else {
@@ -397,7 +406,8 @@ const editSupersetWeight = (exercise_name, date, set_id, superset_weight) => {
                     xhttp.send(JSON.stringify({ exercise_name, set_id, newWeight, date }))
                     xhttp.onreadystatechange = function () {
                         if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), false, date)                        }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                     }
                 }
             }
@@ -418,7 +428,8 @@ const deleteSuperset = (exercise_name, date, set_id) => {
                 xhttp.send(JSON.stringify({ exercise_name, date, set_id }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), false, date)                    }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                 }
             }
         } else {
@@ -447,7 +458,8 @@ const editSupersetReps = (exercise_name, date, set_id, repsIndex, reps) => {
                     xhttp.send(JSON.stringify({ exercise_name, set_id, repsIndex, newReps, date }))
                     xhttp.onreadystatechange = function () {
                         if (xhttp.readyState == 4) {
-                            renderWorkout(JSON.parse(this.response), false, date)                        }
+                            renderWorkout(JSON.parse(this.response), false, date)
+                        }
                     }
                 }
             }

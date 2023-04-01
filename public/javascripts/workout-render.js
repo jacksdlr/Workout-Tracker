@@ -120,7 +120,18 @@ const renderWorkout = (data, reset, date) => {
     if (data.date != displayDate.value || reset == true) {
         existingContainers.forEach(container => container.remove())
     } else if (existingContainers.length > data.exercises.length) {
-        existingContainers.forEach(container => container.remove())
+        existingContainers.forEach(container => {
+            let exists = false
+            data.exercises.forEach(exercise => {
+                if (container.id == `J${exercise._id}`) {
+                    return exists = true
+                }
+            })
+            if (exists == false) {
+                container.remove()
+            }
+        })
+        //existingContainers.forEach(container => container.remove())
     }
     if (date != "example") {
         workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0, -5)}</p>`)
@@ -185,7 +196,26 @@ const createExerciseContainer = (exercise) => {
             exerciseContainer.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
         }
     }
-    let exerciseComments = document.getElementById(`J${exercise._id}` + "-comments")
+    let exerciseComments = document.getElementById(`J${exercise._id}-comments`)
+
+    if (exerciseComments) {
+        let exerciseComment = exerciseComments.querySelectorAll("li")
+        if (exerciseComment.length > exercise.comments.length) {
+            exerciseComment.forEach(comment => {
+                let exists = false
+                exercise.comments.forEach(exercise => {
+                    if (comment.textContent == exercise) {
+                        return exists = true
+                    }
+                })
+                if (exists == false && exerciseComment.length == 1) {
+                    exerciseComments.remove()
+                } else if (exists == false) {
+                    comment.remove()
+                }
+            })
+        }
+    }
 
     if (exercise.comments != "") {
         if (!exerciseComments) {
@@ -471,8 +501,21 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
 
     let setComments = setDetails.querySelector(".set-comments")
     if (setComments) {
-        if (setComments.querySelectorAll("li").length > set.comments.length) {
-            setComments.querySelectorAll("li").forEach(comment => comment.remove())
+        let setComment = setComments.querySelectorAll("li")
+        if (setComment.length > set.comments.length) {
+            setComment.forEach(comment => {
+                let exists = false
+                set.comments.forEach(set => {
+                    if (comment.textContent == set) {
+                        return exists = true
+                    }
+                })
+                if (exists == false && setComment.length == 1) {
+                    setComments.remove()
+                } else if (exists == false) {
+                    comment.remove()
+                }
+            })
         }
     }
 
