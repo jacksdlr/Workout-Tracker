@@ -179,6 +179,12 @@ const createExerciseContainer = (exercise) => {
         })
     } else if (exerciseName.textContent != exercise.exercise_name) {
         exerciseName.textContent = exercise.exercise_name
+        // For some reason the exercise name chevron disappears, so if renaming it needs to be added back, with rotation depending on if it was collapsed or not
+        if (!$(exerciseName).nextAll().is(":visible")) {
+            exerciseContainer.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse' style='transform: rotate(-90deg);'></i>")
+        } else {
+            exerciseContainer.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
+        }
     }
     //addExerciseComments(exercise, exerciseContainer)
     let exerciseComments = document.getElementById(`J${exercise._id}` + "-comments")
@@ -234,7 +240,6 @@ const createWeightContainers = (exercise) => {
             setTimeout(() => {
                 toggleVisibility(exercise._id)
             }, 1);
-
         }
         populateWeightContainers(exercise, set, weightContainer)
     })
@@ -537,10 +542,13 @@ const mobileRender = (real) => {
             $content.slideToggle(500)
         })
         let exerciseContainers = document.querySelectorAll(".exercise-container")
+
         exerciseContainers.forEach(container => {
+            console.log(container.firstChild.children)
             if (real == true && container.firstChild.children.length == 0) {
                 let existingCollapsers = container.querySelectorAll(".exercise-collapse")
                 existingCollapsers.forEach(item => item.remove())
+
                 container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
             }
         })
