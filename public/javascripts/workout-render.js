@@ -129,7 +129,7 @@ const renderWorkout = (data, reset, date) => {
     }
     data.exercises.forEach(exercise => {
         createExerciseContainer(exercise)
-        createweightContainers(exercise)
+        createWeightContainers(exercise)
     })
     $(".set-weight-and-count").off()
     $(".set-weight-and-count").click(function () {
@@ -218,7 +218,7 @@ const createExerciseContainer = (exercise) => {
     }
 }
 
-const createweightContainers = (exercise) => {
+const createWeightContainers = (exercise) => {
     exerciseContainer = document.getElementById(`J${exercise._id}`)
     if (exercise.sets.length < exerciseContainer.querySelectorAll(".weight-container").length) {
         exerciseContainer.querySelectorAll(".weight-container").forEach(container => container.remove())
@@ -231,12 +231,16 @@ const createweightContainers = (exercise) => {
             weightContainer.setAttribute("id", `J${set._id}`)
             weightContainer.setAttribute("style", "display: flex; flex-direction: column;")
             exerciseContainer.appendChild(weightContainer)
+            setTimeout(() => {
+                toggleVisibility(exercise._id)
+            }, 1);
+
         }
-        populateweightContainers(exercise, set, weightContainer)
+        populateWeightContainers(exercise, set, weightContainer)
     })
 }
 
-const populateweightContainers = (exercise, set, weightContainer) => {
+const populateWeightContainers = (exercise, set, weightContainer) => {
     let setWeightAndCount = weightContainer.querySelector(".set-weight-and-count")
     // Create the element that holds that set data if not found
     if (!setWeightAndCount) {
@@ -312,18 +316,21 @@ const populateweightContainers = (exercise, set, weightContainer) => {
 
     let setReps = setDetails.querySelector(".set-reps")
 
-    if (setReps) {
+    /* if (setReps) {
         if (set_reps.length < setReps.querySelectorAll(".set-rep").length) {
             setReps.querySelectorAll(".set-rep").forEach(set => set.remove())
             setReps.textContent = `Reps: `
         }
-    }
+    } */
 
     if (!setReps) {
         setReps = document.createElement("p")
         setReps.classList.add("set-reps")
         setReps.textContent = `Reps: `
         setDetails.appendChild(setReps)
+    } else if (set_reps.length < setReps.querySelectorAll(".set-rep").length) {
+        setReps.querySelectorAll(".set-rep").forEach(set => set.remove())
+        setReps.textContent = `Reps: `
     }
 
     set_reps.forEach((reps, index) => {
@@ -355,6 +362,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
                 addSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index)
                 deleteReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, comments, _id, index)
             })
+            setTimeout(() => {
+                toggleVisibility(exercise._id)
+            }, 1);
         } else if (setRep[index].textContent != reps) {
             setRep[index].textContent = reps
         }
@@ -422,6 +432,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
             supersetReps.classList.add("superset-reps")
             supersetReps.textContent = `Reps: `
             supersetDetails.appendChild(supersetReps)
+        } else if (superset_reps.length < supersetReps.querySelectorAll(".superset-rep").length) {
+            supersetReps.querySelectorAll(".superset-rep").forEach(set => set.remove())
+            supersetReps.textContent = `Reps: `
         }
 
         superset_reps.forEach((reps, index) => {
@@ -552,4 +565,21 @@ if (falseSubmit) {
     submitRequest("example")
 } else {
     submitRequest(inputDate.value)
+}
+
+const toggleVisibility = (id) => {
+    $header = $(`#J${id}-name`)
+    $content = $header.nextAll()
+    $chevron = $header.children(".exercise-collapse")
+    if ($chevron[0].style.transform == "rotate(-90deg)") {
+        $({ deg: -90 }).animate({ deg: 0 }, {
+            duration: 500,
+            step: (now) => {
+                $chevron.css({
+                    transform: "rotate(" + now + "deg)"
+                })
+            }
+        })
+    }
+    $content.slideDown(500)
 }
