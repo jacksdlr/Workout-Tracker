@@ -223,7 +223,7 @@ const createExerciseContainer = (exercise) => {
             exerciseComments.classList.add("exercise-comments")
             exerciseComments.setAttribute("id", `J${exercise._id}` + "-comments")
             exerciseComments.setAttribute("style", "display: flex; flex-direction: column;")
-            exerciseContainer.appendChild(exerciseComments)
+            document.getElementById(`J${exercise._id}` + "-name").insertAdjacentElement("afterend", exerciseComments)
         }
 
         exercise.comments.forEach((comment, index) => {
@@ -251,7 +251,6 @@ const createExerciseContainer = (exercise) => {
                 exerciseComment[index].textContent = comment
             }
         })
-        document.getElementById(`J${exercise._id}` + "-name").insertAdjacentElement("afterend", exerciseComments)
     }
 }
 
