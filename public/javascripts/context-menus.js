@@ -12,6 +12,12 @@ const hideAllMenus = () => {
 }
 hideAllMenus()
 
+setTimeout(() => {
+    document.querySelectorAll(".context-menu").forEach(menu => {
+        menu.style.visibility = "visible"
+    })
+}, 250);
+
 // If a context menu is open and the user clicks anywhere outside, the menu will close
 document.addEventListener("click", (e) => {
     const allMenus = document.querySelectorAll(".context-menu")
@@ -253,7 +259,6 @@ const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
         if (username) {
             if (confirm(`Are you sure you want to delete set ${repsIndex + 1}?`) == true) {
                 let newComments = []
-                console.log(comments)
                 // Any comment that is not for the deleted set will be pushed to a new array
                 comments.forEach(comment => { if (!comment.match(`Set ${repsIndex + 1}: `)) { newComments.push(comment) } })
                 newComments.forEach((comment, index) => {

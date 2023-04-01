@@ -3,7 +3,7 @@ div {
 }
 
 .context-menu {
-    z-index: 10000;
+    visibility: hidden;
     position: absolute;
     background:	rgb(48, 65, 80);
     color: white;
