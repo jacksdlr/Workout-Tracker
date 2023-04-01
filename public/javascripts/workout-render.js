@@ -28,7 +28,6 @@ const submitRequest = (date, reset) => {
                 if (this.response.match(/^</)) {
                     renderWorkout("not found", false, date)
                 } else {
-                    //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
                     renderWorkout(JSON.parse(this.response), false, date)
                 }
             } else {
@@ -120,11 +119,8 @@ const renderWorkout = (data, reset, date) => {
     }
     let existingContainers = workoutContainer.querySelectorAll(".exercise-container")
     if (data.date != displayDate.value || reset == true) {
-        console.log("yes")
-        
         existingContainers.forEach(container => container.remove())
     } else if (existingContainers.length > data.exercises.length) {
-        console.log("more exercises on the page than the database")
         existingContainers.forEach(container => container.remove())
     }
     if (date != "example") {
@@ -133,7 +129,6 @@ const renderWorkout = (data, reset, date) => {
     }
     data.exercises.forEach(exercise => {
         createExerciseContainer(exercise)
-        addExerciseComments(exercise)
         createweightContainers(exercise)
     })
     $(".set-weight-and-count").off()
@@ -221,12 +216,6 @@ const createExerciseContainer = (exercise) => {
         })
         document.getElementById(`J${exercise._id}` + "-name").insertAdjacentElement("afterend", exerciseComments)
     }
-    // Right click opens a prompt to change the exercise name
-
-}
-
-const addExerciseComments = (exercise, exerciseContainer) => {
-
 }
 
 const createweightContainers = (exercise) => {
@@ -242,26 +231,19 @@ const createweightContainers = (exercise) => {
             weightContainer.setAttribute("id", `J${set._id}`)
             weightContainer.setAttribute("style", "display: flex; flex-direction: column;")
             exerciseContainer.appendChild(weightContainer)
-
-            //weightContainer.remove()
-            //weightContainer = document.createElement("div")
-            //weightContainer.classList.add("weight-container")
-            //weightContainer.setAttribute("id", set._id)
-            //exerciseContainer.appendChild(weightContainer)
         }
         populateweightContainers(exercise, set, weightContainer)
-
     })
 }
 
 const populateweightContainers = (exercise, set, weightContainer) => {
     let setWeightAndCount = weightContainer.querySelector(".set-weight-and-count")
+    // Create the element that holds that set data if not found
     if (!setWeightAndCount) {
         setWeightAndCount = document.createElement("div")
         setWeightAndCount.classList.add("set-weight-and-count")
         weightContainer.appendChild(setWeightAndCount)
     }
-    // Create the element that holds that set data
 
     // Descructure all possible set variables
     let {
@@ -337,7 +319,6 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         }
     }
 
-    //console.log($(`#J${_id}`)[0].children[1].getElementsByClassName("set-rep")/*.children ren[0].children.length */)
     if (!setReps) {
         setReps = document.createElement("p")
         setReps.classList.add("set-reps")
@@ -516,7 +497,6 @@ const populateweightContainers = (exercise, set, weightContainer) => {
 }
 const mobileRender = (real) => {
     if ($(window).width() < $(window).height()) {
-        let existingCollapsers = document.querySelectorAll(".exercise-collapse")
         $(".exercise-name").off()
         $(".exercise-name").click(function () {
             $header = $(this)
@@ -545,16 +525,12 @@ const mobileRender = (real) => {
         })
         let exerciseContainers = document.querySelectorAll(".exercise-container")
         exerciseContainers.forEach(container => {
-
             if (real == true && container.firstChild.children.length == 0) {
+                let existingCollapsers = container.querySelectorAll(".exercise-collapse")
                 existingCollapsers.forEach(item => item.remove())
                 container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
-                /* container.childNodes.forEach(node => {
-                    node.setAttribute("style", "display: flex; flex-direction: column;")
-                }) */
             }
         })
-
     } else {
         let exerciseCollapsers = document.querySelectorAll(".exercise-collapse")
         exerciseCollapsers.forEach(item => item.remove())
