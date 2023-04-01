@@ -81,7 +81,7 @@ displayDate.addEventListener("change", (e) => {
                         renderWorkout("not found", false, displayDate.value)
                     } else {
                         //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
-                        renderWorkout(JSON.parse(this.response), false, displayDate.value)
+                        renderWorkout(JSON.parse(this.response), true, displayDate.value)
                     }
                 } else {
                     renderWorkout("not found", false, displayDate.value)
@@ -118,8 +118,13 @@ const renderWorkout = (data, reset, date) => {
         workoutTitle.insertAdjacentHTML("beforeend", `<p id="date">${new Date(date).toDateString().slice(0, -5)}</p>`)
         return
     }
+    let existingContainers = workoutContainer.querySelectorAll(".exercise-container")
     if (data.date != displayDate.value || reset == true) {
-        const existingContainers = workoutContainer.querySelectorAll(".exercise-container")
+        console.log("yes")
+        
+        existingContainers.forEach(container => container.remove())
+    } else if (existingContainers.length > data.exercises.length) {
+        console.log("more exercises on the page than the database")
         existingContainers.forEach(container => container.remove())
     }
     if (date != "example") {
@@ -226,8 +231,7 @@ const addExerciseComments = (exercise, exerciseContainer) => {
 
 const createweightContainers = (exercise) => {
     exerciseContainer = document.getElementById(`J${exercise._id}`)
-    if (exercise.sets.length != exerciseContainer.querySelectorAll(".weight-container").length) {
-        mobileRender(false, $(`#J${exercise._id}`))
+    if (exercise.sets.length < exerciseContainer.querySelectorAll(".weight-container").length) {
         exerciseContainer.querySelectorAll(".weight-container").forEach(container => container.remove())
     }
     exercise.sets.forEach(set => {
@@ -238,7 +242,7 @@ const createweightContainers = (exercise) => {
             weightContainer.setAttribute("id", `J${set._id}`)
             weightContainer.setAttribute("style", "display: flex; flex-direction: column;")
             exerciseContainer.appendChild(weightContainer)
-            
+
             //weightContainer.remove()
             //weightContainer = document.createElement("div")
             //weightContainer.classList.add("weight-container")
@@ -246,6 +250,7 @@ const createweightContainers = (exercise) => {
             //exerciseContainer.appendChild(weightContainer)
         }
         populateweightContainers(exercise, set, weightContainer)
+
     })
 }
 
@@ -326,8 +331,7 @@ const populateweightContainers = (exercise, set, weightContainer) => {
     let setReps = setDetails.querySelector(".set-reps")
 
     if (setReps) {
-        if (set_reps.length != setReps.querySelectorAll(".set-rep").length) {
-            mobileRender(false, $(`#J${exercise._id}-name`), $(`#J${set._id}`))
+        if (set_reps.length < setReps.querySelectorAll(".set-rep").length) {
             setReps.querySelectorAll(".set-rep").forEach(set => set.remove())
             setReps.textContent = `Reps: `
         }
@@ -510,8 +514,9 @@ const populateweightContainers = (exercise, set, weightContainer) => {
         })
     }
 }
-const mobileRender = (real, exercise, weight) => {
+const mobileRender = (real) => {
     if ($(window).width() < $(window).height()) {
+        let existingCollapsers = document.querySelectorAll(".exercise-collapse")
         $(".exercise-name").off()
         $(".exercise-name").click(function () {
             $header = $(this)
@@ -541,19 +546,12 @@ const mobileRender = (real, exercise, weight) => {
         let exerciseContainers = document.querySelectorAll(".exercise-container")
         exerciseContainers.forEach(container => {
 
-            if ((real == true && container.firstChild.children.length == 0) || exercise) {
-                let existingCollapsers = container.querySelectorAll(".exercise-collapse")
+            if (real == true && container.firstChild.children.length == 0) {
                 existingCollapsers.forEach(item => item.remove())
-                    container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
+                container.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
                 /* container.childNodes.forEach(node => {
                     node.setAttribute("style", "display: flex; flex-direction: column;")
                 }) */
-                if (exercise) {
-                    exercise.nextAll().slideDown(0)
-                }
-                if (weight) {
-                    weight[0].children[1].setAttribute("style", "display: flex; flex-direction: column;")
-                }
             }
         })
 
