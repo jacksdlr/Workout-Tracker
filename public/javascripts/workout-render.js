@@ -79,7 +79,6 @@ displayDate.addEventListener("change", (e) => {
                     if (this.response.match(/^</)) {
                         renderWorkout("not found", false, displayDate.value)
                     } else {
-                        //console.log(JSON.stringify(JSON.parse(this.response), null, 4))
                         renderWorkout(JSON.parse(this.response), true, displayDate.value)
                     }
                 } else {
@@ -186,7 +185,6 @@ const createExerciseContainer = (exercise) => {
             exerciseContainer.firstChild.insertAdjacentHTML("beforeend", "<i class='fa-solid fa-chevron-down exercise-collapse'></i>")
         }
     }
-    //addExerciseComments(exercise, exerciseContainer)
     let exerciseComments = document.getElementById(`J${exercise._id}` + "-comments")
 
     if (exercise.comments != "") {
@@ -216,6 +214,9 @@ const createExerciseContainer = (exercise) => {
                     editExerciseComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, index, exerciseComment.textContent)
                     deleteExerciseComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, index)
                 })
+                setTimeout(() => {
+                    toggleVisibility(exercise._id)
+                }, 1);
             } else if (exerciseComment[index].textContent != comment) {
                 exerciseComment[index].textContent = comment
             }
@@ -320,14 +321,6 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
     }
 
     let setReps = setDetails.querySelector(".set-reps")
-
-    /* if (setReps) {
-        if (set_reps.length < setReps.querySelectorAll(".set-rep").length) {
-            setReps.querySelectorAll(".set-rep").forEach(set => set.remove())
-            setReps.textContent = `Reps: `
-        }
-    } */
-
     if (!setReps) {
         setReps = document.createElement("p")
         setReps.classList.add("set-reps")
@@ -544,7 +537,6 @@ const mobileRender = (real) => {
         let exerciseContainers = document.querySelectorAll(".exercise-container")
 
         exerciseContainers.forEach(container => {
-            console.log(container.firstChild.children)
             if (real == true && container.firstChild.children.length == 0) {
                 let existingCollapsers = container.querySelectorAll(".exercise-collapse")
                 existingCollapsers.forEach(item => item.remove())
