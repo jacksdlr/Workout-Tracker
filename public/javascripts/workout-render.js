@@ -198,23 +198,15 @@ const createExerciseContainer = (exercise) => {
     }
     let exerciseComments = document.getElementById(`J${exercise._id}-comments`)
 
-    if (exerciseComments) {
+    if (exerciseComments && exercise.comments.length != 0) {
         let exerciseComment = exerciseComments.querySelectorAll("li")
-        if (exerciseComment.length > exercise.comments.length) {
+        if (exerciseComment.length != exercise.comments.length) {
             exerciseComment.forEach(comment => {
-                let exists = false
-                exercise.comments.forEach(exercise => {
-                    if (comment.textContent == exercise) {
-                        return exists = true
-                    }
-                })
-                if (exists == false && exerciseComment.length == 1) {
-                    exerciseComments.remove()
-                } else if (exists == false) {
-                    comment.remove()
-                }
+                comment.remove()
             })
         }
+    } else if (exerciseComments) {
+        exerciseComments.remove()
     }
 
     if (exercise.comments != "") {
@@ -499,27 +491,15 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
     }
 
     let setComments = setDetails.querySelector(".set-comments")
-    if (setComments) {
+    if (setComments && set.comments.length != 0) {
         let setComment = setComments.querySelectorAll("li")
-        if (setComment.length > set.comments.length) {
-            setComment.forEach(comment => {
-                let exists = false
-                set.comments.forEach(set => {
-                    if (comment.textContent == set) {
-                        return exists = true
-                    }
-                })
-                if (exists == false && setComment.length == 1) {
-                    setComments.remove()
-                } else if (exists == false) {
-                    comment.remove()
-                }
-            })
-        } else if (setComment.length < set.comments.length) {
+        if (setComment.length != set.comments.length) {
             setComment.forEach(comment => {
                 comment.remove()
             })
         }
+    } else if (setComments) {
+        setComments.remove()
     }
 
     if (set.comments != "") {
