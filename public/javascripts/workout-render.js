@@ -544,8 +544,8 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
                         left: preventOutOfBounds(setCommentsMenu, e.pageX)
                     })
 
-                    editSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index, setComment.textContent)
-                    deleteSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index)
+                    editSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, setComment.textContent)
+                    deleteSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, setComment.textContent)
                 })
             } else if (setComment[index].textContent != comment) {
                 setComment[index].textContent = comment

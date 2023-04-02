@@ -297,7 +297,7 @@ const deleteReps = (exercise_name, date, comments, set_id, repsIndex) => {
 ///////////////////////////
 
 // Edit set comment
-const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
+const editSetComment = (exercise_name, date, set_id, comment) => {
     $("#set-comment-edit").off()
     $("#set-comment-edit").click(() => {
         if (username) {
@@ -307,7 +307,7 @@ const editSetComment = (exercise_name, date, set_id, commentIndex, comment) => {
                 editedComment = `${setIndex}: ${editedComment}`
                 xhttp.open("POST", "/update/set_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
-                xhttp.send(JSON.stringify({ exercise_name, set_id, commentIndex, editedComment, date }))
+                xhttp.send(JSON.stringify({ exercise_name, set_id, comment, editedComment, date }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), false, date)
@@ -344,14 +344,14 @@ const addSetComment = (exercise_name, date, set_id, setIndex) => {
 }
 
 // Delete set comment for the selected set of reps
-const deleteSetComment = (exercise_name, date, set_id, index, comment) => {
+const deleteSetComment = (exercise_name, date, set_id, comment) => {
     $("#set-comment-delete").off()
     $("#set-comment-delete").click(() => {
         if (username) {
             if (confirm("Are you sure you want to delete this comment?") == true) {
                 xhttp.open("POST", "/delete/set_comments")
                 xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
-                xhttp.send(JSON.stringify({ exercise_name, date, set_id, index, comment }))
+                xhttp.send(JSON.stringify({ exercise_name, date, set_id, comment }))
                 xhttp.onreadystatechange = function () {
                     if (xhttp.readyState == 4) {
                             renderWorkout(JSON.parse(this.response), false, date)

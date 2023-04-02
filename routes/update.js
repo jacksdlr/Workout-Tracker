@@ -95,7 +95,7 @@ router.post("/reps", checkAuthenticated, async (req, res) => {
 
 router.post("/set_comments", checkAuthenticated, async (req, res) => {
     const { id } = req.user
-    const { exercise_name, set_id, commentIndex, editedComment, date } = req.body
+    const { exercise_name, set_id, comment, editedComment, date } = req.body
 
     const user = await User.findById(id)
 
@@ -104,6 +104,8 @@ router.post("/set_comments", checkAuthenticated, async (req, res) => {
     const exerciseIndex = user.workouts[dateIndex].exercises.findIndex(exercise => exercise.exercise_name == exercise_name)
 
     const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
+
+    const commentIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets[weightIndex].comments.findIndex(item => item == comment)
 
     User.findByIdAndUpdate(id, { $set: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments.${commentIndex}`]: editedComment } }, { new: true }, (err, data) => {
         if (err) {

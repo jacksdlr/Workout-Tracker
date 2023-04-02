@@ -168,7 +168,7 @@ router.post("/reps", checkAuthenticated, async (req, res) => {
 
 router.post("/set_comments", checkAuthenticated, async (req, res) => {
     const { id } = req.user
-    const { exercise_name, date, set_id, index } = req.body
+    const { exercise_name, date, set_id, comment } = req.body
 
     const user = await User.findById(id)
 
@@ -178,7 +178,9 @@ router.post("/set_comments", checkAuthenticated, async (req, res) => {
 
     const weightIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets.findIndex(set => set._id == set_id)
 
-    await User.findByIdAndUpdate(id, { $unset: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments.${index}`]: "" } })
+    const commentIndex = user.workouts[dateIndex].exercises[exerciseIndex].sets[weightIndex].comments.findIndex(item => item == comment)
+
+    await User.findByIdAndUpdate(id, { $unset: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments.${commentIndex}`]: "" } })
 
     User.findByIdAndUpdate(id, { $pull: { [`workouts.${dateIndex}.exercises.${exerciseIndex}.sets.${weightIndex}.comments`]: null } }, { new: true }, (err, data) => {
         if (err) {
