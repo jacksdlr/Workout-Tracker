@@ -223,7 +223,7 @@ const createExerciseContainer = (exercise) => {
             exerciseComments.classList.add("exercise-comments")
             exerciseComments.setAttribute("id", `J${exercise._id}` + "-comments")
             exerciseComments.setAttribute("style", "display: flex; flex-direction: column;")
-            document.getElementById(`J${exercise._id}` + "-name").insertAdjacentElement("afterend", exerciseComments)
+            document.getElementById(`J${exercise._id}-name`).insertAdjacentElement("afterend", exerciseComments)
         }
 
         exercise.comments.forEach((comment, index) => {
@@ -515,10 +515,15 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
                     comment.remove()
                 }
             })
+        } else if (setComment.length < set.comments.length) {
+            setComment.forEach(comment => {
+                comment.remove()
+            })
         }
     }
 
     if (set.comments != "") {
+        set.comments.sort()
         if (!setComments) {
             setComments = document.createElement("ul")
             setComments.classList.add("set-comments")
