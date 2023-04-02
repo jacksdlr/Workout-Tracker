@@ -15,6 +15,8 @@ block content
         .form-container
             .form-title
                 h1#form-name Set Input
+                if username
+                    .success Successfully add set!
                 button#clear-form(onclick='document.getElementById("exercise-form").reset(); document.getElementById("workout-input").value = new Date().toISOString().split("T")[0]; $("#superset-input").nextAll().slideUp(0); toggleRequired(); ')
                     i.fa-solid.fa-arrows-rotate
             form#exercise-form.form(action='/workouts' method='POST')

@@ -64,6 +64,11 @@ form.addEventListener("submit", (e) => {
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4) {
             renderWorkout(JSON.parse(this.response), false, inputDate.value)
+            $(".success").css({"display": "none"})
+            $(".success").fadeIn(500)
+            setTimeout(() => {
+                $(".success").fadeOut(5000)
+            }, 5000);
         }
     }
 })
