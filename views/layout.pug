@@ -16,13 +16,17 @@ head
   title Workout Tracker
 body
     header
-        a(href='/')#logo Logo
-        .login-container
+        a.logo(href='/')
+            i.fa-solid.fa-dumbbell.fa-2xl
+                span JS Tracker
+        .login-container.fa-solid(style="display: flex;")
             if !username
                 a(href='/user/login' value='login') Login / Signup
             else
-                p#username Hi, #{username} |
+                p#username Hi, #{username}
+                hr
                 a(href='/user/logout' value='logout') Logout
+                    i.fa-solid.fa-right-from-bracket
     block content
 
     footer
