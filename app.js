@@ -1,12 +1,11 @@
-if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config()
-}
+require("dotenv").config()
 
 const express = require("express")
 const bodyParser = require("body-parser")
 const passport = require("passport")
 const flash = require("express-flash")
 const session = require("express-session")
+const MongoStore = require("connect-mongo")
 
 const initializePassport = require("./passport-config")
 initializePassport(passport)
@@ -32,7 +31,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI
+    })
 }))
 app.use(passport.initialize())
 app.use(passport.session())
