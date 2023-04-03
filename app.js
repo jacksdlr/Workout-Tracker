@@ -22,10 +22,11 @@ const commentRoutes = require("./routes/comments")
 
 const app = express();
 
-// Middleware
+//////////////////
+//  Middleware  //
+//////////////////
+
 app.set("view engine", "pug")
-//app.use(express.json())
-//app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
@@ -49,7 +50,9 @@ const checkAuthenticated = (req, res, next) => {
     res.render("index")
 } // PUT THIS ANYWHERE THE USER NEEDS TO BE LOGGED IN (viewing all workouts, etc.)
 
-// Routes
+//////////////
+//  Routes  //
+//////////////
 
 app.get("/", checkAuthenticated, (req, res) => {
     const { username } = req.user
@@ -57,29 +60,24 @@ app.get("/", checkAuthenticated, (req, res) => {
 })
 
 // LOGIN/SIGNUP PAGE ROUTES
-
 app.use("/user", userRoutes)
 
 // WORKOUT CREATION ROUTES
-
 app.use("/workouts", workoutRoutes)
 
 // WORKOUT UPDATE ROUTES
-
 app.use("/update", updateRoutes)
 
 // WORKOUT DELETE ROUTES
-
 app.use("/delete", deleteRoutes)
 
 // WORKOUT NEW COMMENTS ROUTES
-
 app.use("/comments", commentRoutes)
 
+////////////
+//  PORT  //
+////////////
 
+const PORT = process.env.PORT || 8080
 
-// PORT
-
-const port = 3000
-
-app.listen(port, console.log(`App is listening on port ${port}...`))
+app.listen(PORT, console.log(`App is listening on port ${PORT}...`))
