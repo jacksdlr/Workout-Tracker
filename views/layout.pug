@@ -23,8 +23,7 @@ body
             if !username
                 a(href='/user/login' value='login') Login / Signup
             else
-                p#username Hi, #{username}
-                hr
+                p#username Hi, #{username} |
                 a(href='/user/logout' value='logout') Logout
                     i.fa-solid.fa-right-from-bracket
     block content

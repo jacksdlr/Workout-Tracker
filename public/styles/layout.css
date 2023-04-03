@@ -38,12 +38,6 @@ header {
         display: flex;
         align-items: end;
     }
-        hr {
-            height: 20px;
-            width: 2px;
-            background-color: black;
-            border: none;
-        }
         a {
             text-decoration: none;
             color: rgb(7, 98, 172);
