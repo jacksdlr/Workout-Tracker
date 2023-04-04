@@ -14,9 +14,8 @@ header {
     display: flex;
     justify-content: space-between;
     padding: 15px 10px 5px 10px;
-    
     border-bottom: 3px solid rgb(46, 153, 240);
-    box-shadow: rgba(46, 153, 240, 0.35) 0px 5px 15px;
+    box-shadow: rgba(46, 153, 240, 0.2) 0px 5px 15px;
 }
     .logo {
         height: 30px;
@@ -45,3 +44,9 @@ header {
             .fa-right-from-bracket {
                 padding-left: 5px;
             }
+        .login-container hr {
+            font-family: inherit;
+            height: 50%;
+            border: 1px solid black;
+            border-radius: 5px;
+        }

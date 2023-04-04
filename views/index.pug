@@ -29,14 +29,14 @@ block content
                 textarea#exercise-comment-input(name='exercise_comment' placeholder='Exercise comments (e.g. technique used, rest time)')
                 #weight-and-reps
                     .input-container
-                        label(for='weight-input') Weight used:
+                        label(for='weight-input') Weight:
                         .weight
                             input#weight-input(type='number' name='set_weight' min='0' step='0.01' )
                             select#weight-unit(name='set_weight_unit')
                                 option#weight-kg(value='kg') kg
                                 option#weight-lbs(value='lbs') lbs
                     .input-container
-                        label(for='reps-input') Repetitions:
+                        label(for='reps-input') Reps:
                         input#reps-input(type='number' name='set_reps' min='0' )
                 #superset-check.input-container
                     label(for='superset-input') Superset?
@@ -46,14 +46,14 @@ block content
                         input(type='text' name='superset_exercise' id='superset-exercise-input')
                     #weight-and-reps
                         .superset-input-container.input-container
-                            label(for='superset-weight-input') Weight used:
+                            label(for='superset-weight-input') Weight:
                             .weight
                                 input(type='number' name='superset_weight' id='superset-weight-input' min='0' step='0.01')
                                 select#superset-weight-unit(name='superset_weight_unit')
                                     option#superset-weight-kg(value='kg') kg
                                     option#superset-weight-lbs(value='lbs') lbs
                         .superset-input-container.input-container
-                            label(for='superset-reps-input') Repetitions:
+                            label(for='superset-reps-input') Reps:
                             input(type='number' name='superset_reps' id='superset-reps-input' min='0')
                 textarea#set-comment-input(name='set_comment' placeholder='Set comments (e.g. reps in reserve)')
                 if !username

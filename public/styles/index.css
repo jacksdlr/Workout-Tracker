@@ -49,6 +49,8 @@ div {
         #clear-form {
             height: 30px;
             width: 30px;
+            border: none;
+            border-radius: 5px;
         }
     .form {
         display: flex;
@@ -65,6 +67,9 @@ div {
             input {
                 margin-left: 5px;
             }
+            input[type=number] {
+                appearance: textfield;
+            }
             textarea {
                 padding: 2px;
                 margin-bottom: 5px;
@@ -80,6 +85,12 @@ div {
                 display: flex;
                 justify-content: space-between;
                 flex-wrap: wrap;
+            }
+            #weight-and-reps label {
+                width: 82px;
+            }
+            #weight-and-reps .input-container:last-of-type label {
+                text-align: right;
             }
             #weight-input {
                 width: 50px;
@@ -98,6 +109,10 @@ div {
             .superset-input-container {
                 margin-left: 25px;
             }
+            .superset-input-container label {
+                width: 83px;
+                text-align: right;
+            }
                 #superset-exercise-input {
                     width: 100%;
                     height: 20px;
@@ -113,8 +128,14 @@ div {
                     width: 40px;
                     height: 20px;
                 }
-        #submit-button {
+        #submit-button, #submit-button-false {
             height: 30px;
+            border: none;
+            border-radius: 5px;
+        }
+        #submit-button:active, #submit-button-false:active {
+            background-image: linear-gradient(rgb(0 0 0/15%) 0 0);
+            transform: translateY(4px);
         }
         .success {
             display: none;
@@ -128,9 +149,6 @@ div {
             border-bottom: 2px solid rgb(46, 153, 240);
             border-radius: 5px;
             box-shadow: rgba(46, 153, 240, 0.4) 5px 0px, rgba(46, 153, 240, 0.3) 10px 0px, rgba(46, 153, 240, 0.2) 15px 0px, rgba(46, 153, 240, 0.1) 20px 0px, rgba(46, 153, 240, 0.05) 25px 0px, rgba(46, 153, 240, 0.4) -5px 0px, rgba(46, 153, 240, 0.3) -10px 0px, rgba(46, 153, 240, 0.2) -15px 0px, rgba(46, 153, 240, 0.1) -20px 0px, rgba(46, 153, 240, 0.05) -25px 0px;
-        }
-        #submit-button-false {
-            height: 30px;
         }
     
 .workout-container {
@@ -156,6 +174,7 @@ div {
             width: 100px;
             margin: 0;
             cursor: pointer;
+            border: none;
         }
     .workout-exercises {
         display: flex;
@@ -357,10 +376,7 @@ div {
                 #weight-and-reps .superset-input-container {
                     margin-top: 0;
                 }
-                #submit-button {
-                    margin: 10px 0 10px 0;
-                }
-                #submit-button-false {
+                #submit-button, #submit-button-false {
                     margin: 10px 0 10px 0;
                 }
         .workout-container {
@@ -401,6 +417,7 @@ div {
             }
             .exercise-name {
                 padding: 10px;
+                background: #fafafa;
             }
             .weight-container {
                 display: none;
@@ -412,7 +429,7 @@ div {
             }
             .set-weight-and-count {
                 padding: 10px;
-                box-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
+                box-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px, rgba(0, 0, 0, 0.025) 0px -50px 36px -28px inset;
             }
             .set-reps {
                 padding: 10px;
