@@ -1,11 +1,19 @@
-# Workout-Tracker
-## Track workouts by logging in via authenticated passport sessions and save data to MongoDB database.
+# JS Workout Tracker
+## Get jacked and stacked using this weightlifting workout tracking app to store your daily sessions database with secure login
 
+### Features:
+- User login system
+- Add workouts by date
+- Include comments per exercise and set
+- Select which workout is displayed to compare between sessions
+- Edit workout details by simply holding/right clicking on the element you wish to change
+    - Change exercise names, weight used, reps performed
+    - Add comments to exercises and each set
+    - Delete sets, comments, weights, or the whole exercise
+- Collapse containers for better viewing and navigation of workouts
 
-To run this application/server yourself, follow these steps:
-1. Install NodeJS
-2. Clone this git repository
-3. Run "npm install" in the terminal to ensure necessary modules are installed
-4. Edit sample.env where instructed in the file to the required specifications (this will require a MongoDB account to connect to a database)
-5. Rename sample.env to just .env
-6. Use "npm start" in the terminal to run the app/server at localhost:3000
+### Planned features:
+- Profile page (including some statistics tracking)
+- Autocomplete/autofill system
+    - Copy last week's workout
+    - Choose to include progression (increase reps or weight)
