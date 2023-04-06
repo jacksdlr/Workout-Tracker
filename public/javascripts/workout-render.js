@@ -64,7 +64,7 @@ form.addEventListener("submit", (e) => {
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4) {
             renderWorkout(JSON.parse(this.response), false, inputDate.value)
-            if ($(window).width() < $(window).height()) {
+            if ($(window).width() <= 1024) {
                 $(".success-mobile").css({ "display": "none" })
                 $(".success-mobile").fadeIn(500)
                 setTimeout(() => {
@@ -546,7 +546,7 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
     }
 }
 const mobileRender = (real) => {
-    if ($(window).width() < $(window).height()) {
+    if ($(window).width() <= 1024) {
         $(".exercise-name").off()
         $(".exercise-name").click(function () {
             $header = $(this)
@@ -610,7 +610,7 @@ const toggleVisibility = (id) => {
     $header = $(`#J${id}-name`)
     $content = $header.nextAll()
     $chevron = $header.children(".exercise-collapse")
-    if ($(window).width() < $(window).height()) {
+    if ($(window).width() <= 1024) {
         if ($chevron[0].style.transform == "rotate(-90deg)") {
             $({ deg: -90 }).animate({ deg: 0 }, {
                 duration: 500,

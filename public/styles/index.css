@@ -2,6 +2,18 @@ div {
     background-color: white;
 }
 
+h1 {
+    font-size: 1.5rem;
+}
+h2 {
+    font-size: 1.3rem;
+}
+h3 {
+    font-size: 0.9rem;
+}
+h4 {
+    font-size: 0.9rem;
+}
 .context-menu {
     visibility: hidden;
     position: absolute;
@@ -235,7 +247,7 @@ div {
             display: flex;
             flex-direction: column;
             height: 97%;
-            width: 250px;
+            width: 300px;
             min-width: 250px;
             margin: 5px;
             background: linear-gradient(0deg, rgba(46, 153, 240, 0.8) 0%, rgba(255, 255, 255) 100%);
@@ -296,6 +308,7 @@ div {
                     text-align: left;
                     padding: 5px;
                     padding-top: 0;
+                    font-size: 0.85rem;
                 }
                     .set-reps {
                         border-radius: 0 0 5px 5px;
@@ -318,6 +331,7 @@ div {
                         background: linear-gradient(0deg, rgba(46, 153, 240, 0.1) 0%, rgba(255, 255, 255) 33%, rgba(255, 255, 255) 66%, rgba(46, 153, 240, 0.1) 100%);
                         text-align: center;
                         padding: 5px 2px 5px 2px;
+                        margin: 0 5px 0 5px;
                         user-select: none;
                     }
                     .superset-exercise-and-weight {
@@ -343,6 +357,7 @@ div {
                     }
                         .superset-reps {
                             display: flex;
+                            flex-wrap: wrap;
                         }
                     .set-comments {
                         border-radius: 2px;
@@ -361,7 +376,7 @@ div {
                             border-bottom: none
                         }
 
-@media only screen and (orientation: portrait) and (max-width: 600px) {
+@media only screen and (max-width: 1024px) {
     h1 {
         font-size: 1.5rem;
     }
@@ -495,8 +510,6 @@ div {
                 font-size: 1rem;
             }
             #superset-text {
-                margin: 0 5px 0 5px;
-                background: linear-gradient(0deg, rgba(46, 153, 240, 0.1) 0%, rgba(255, 255, 255) 33%, rgba(255, 255, 255) 66%, rgba(46, 153, 240, 0.1) 100%);
                 font-size: 0.9rem;
             }
 }
