@@ -35,7 +35,7 @@ router.post("/signup", checkNotAuthenticated, async (req, res) => {
             res.render("login-signup", { signupError: "Invalid username (3-15 letters, numbers, and _ or - special characters)" })
             return
             // Minimum 8 characters, one uppercase, one lowercase, and one number
-        } else if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)) {
+        } else if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\S]{8,}$/)) {
             res.render("login-signup", { signupError: "Invalid password (must include one uppercase letter, one lowercase letter, and one number)" })
             return
         }
