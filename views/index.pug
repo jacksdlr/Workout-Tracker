@@ -16,7 +16,7 @@ block content
             .form-title
                 h1#form-name Set Input
                 if username
-                    .success Successfully add set!
+                    .success-mobile Successfully added!
                 button#clear-form(onclick='document.getElementById("exercise-form").reset(); document.getElementById("workout-input").value = new Date().toISOString().split("T")[0]; $("#superset-input").nextAll().slideUp(0); toggleRequired(); ')
                     i.fa-solid.fa-arrows-rotate
             form#exercise-form.form(action='/workouts' method='POST')
@@ -60,6 +60,8 @@ block content
                     button#submit-button-false(type='submit') Submit
                 else
                     button#submit-button(type='submit') Submit
+            if username
+                .success-default Successfully added!
         .workout-container
             .workout-title
                 h1#workout-name Workout for:
