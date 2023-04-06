@@ -30,12 +30,15 @@ app.set("view engine", "pug")
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
+    },
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URI,
-        ttl: 31557600000
+        ttl: 1000 * 60 * 60 * 24 * 365
     })
 }))
 app.use(passport.initialize())
