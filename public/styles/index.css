@@ -36,7 +36,10 @@ div {
 .form-container {
     flex: 1 1 auto;
     max-width: 400px;
-    width: 24%
+    background: none;
+    width: 24%;
+    display: flex;
+    flex-direction: column;
 }
     .form-title {
         border: 1px solid black;
@@ -45,6 +48,23 @@ div {
         align-items: center;
         padding: 10px;
         user-select: none;
+    }
+    .form-title {
+        padding: 10px 0 10px 0;
+        margin: 0 10px 0 10px;
+        border: none;
+        border-bottom: 2px solid rgba(46, 153, 240, 1);
+        background: none;
+    }
+        #form-name {
+            font-size: 1.2rem;
+        }
+    .form {
+        border: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        padding-top: 10px;
+        box-shadow: rgba(0, 0, 0, 0.2) -1px -1px 5px, rgba(46, 153, 240, 0.4) 0px 5px, rgba(46, 153, 240, 0.3) 0px 10px, rgba(46, 153, 240, 0.2) 0px 15px, rgba(46, 153, 240, 0.1) 0px 20px, rgba(46, 153, 240, 0.05) 0px 25px;
     }
         #clear-form {
             height: 30px;
@@ -55,7 +75,7 @@ div {
     .form {
         display: flex;
         flex-direction: column;
-        border: 1px solid black;
+        
         padding: 5px;
     }
         .input-container {
@@ -86,18 +106,14 @@ div {
                 justify-content: space-between;
                 flex-wrap: wrap;
             }
-            #weight-and-reps label {
-                width: 82px;
-            }
-            #weight-and-reps .input-container:last-of-type label {
-                text-align: right;
-            }
             #weight-input {
                 width: 50px;
                 height: 20px;
             }
-            #weight-unit {
+            #weight-unit, #superset-weight-unit {
                 height: 24px;
+                border: none;
+                background: none;
             }
             #reps-input {
                 width: 40px;
@@ -110,8 +126,15 @@ div {
                 margin-left: 25px;
             }
             .superset-input-container label {
-                width: 83px;
+                width: auto;
                 text-align: right;
+            }
+            .superset-input-container:last-of-type label {
+                width: auto;
+                text-align: right;
+            }
+            .superset-input-container:last-of-type {
+                margin-left: 0px; 
             }
                 #superset-exercise-input {
                     width: 100%;
@@ -137,7 +160,21 @@ div {
             background-image: linear-gradient(rgb(0 0 0/15%) 0 0);
             transform: translateY(4px);
         }
-        .success {
+        .success-default {
+            display: none;
+            width: 85%;
+            margin-top: 25px;
+            align-self: center;
+            font-style: italic;
+            padding: 2px;
+            font-size: 1rem;
+            text-align: center;
+            border-top: 2px solid rgb(46, 153, 240);
+            border-bottom: 2px solid rgb(46, 153, 240);
+            border-radius: 5px;
+            box-shadow: rgba(46, 153, 240, 0.4) 5px 0px, rgba(46, 153, 240, 0.3) 10px 0px, rgba(46, 153, 240, 0.2) 15px 0px, rgba(46, 153, 240, 0.1) 20px 0px, rgba(46, 153, 240, 0.05) 25px 0px, rgba(46, 153, 240, 0.4) -5px 0px, rgba(46, 153, 240, 0.3) -10px 0px, rgba(46, 153, 240, 0.2) -15px 0px, rgba(46, 153, 240, 0.1) -20px 0px, rgba(46, 153, 240, 0.05) -25px 0px;
+        }
+        .success-mobile {
             display: none;
             width: 50%;
             align-self: center;
@@ -156,6 +193,7 @@ div {
     flex-direction: column;
     flex: 7 1 auto;
     width: 74%;
+    background: none;
 }
     .workout-title {
         border: 1px solid black;
@@ -164,6 +202,13 @@ div {
         align-items: center;
         padding: 10px;
     }
+    .workout-title {
+        padding: 10px 0 10px 0;
+        margin: 0 10px 0 10px;
+        border: none;
+        border-bottom: 2px solid rgba(46, 153, 240, 1);
+        background: none;
+}
         #workout-name {
             display: flex;
             gap: 5px;
@@ -180,7 +225,7 @@ div {
         display: flex;
         overflow-x: scroll;
         height: 100%;
-        border: 1px solid lightgray;
+        margin-top: 5px;
     }
         #not-found {
             padding: 10px;
@@ -316,7 +361,7 @@ div {
                             border-bottom: none
                         }
 
-@media only screen and (orientation: portrait) {
+@media only screen and (orientation: portrait) and (max-width: 600px) {
     h1 {
         font-size: 1.5rem;
     }
@@ -342,7 +387,6 @@ div {
             width: 100%;
             flex: 0;
             font-size: larger;
-            background: none;
         }
             .form-title {
                 padding: 10px 0 10px 0;
@@ -350,7 +394,7 @@ div {
                 border: none;
                 border-bottom: 2px solid rgba(46, 153, 240, 1);
                 background: none;
-        }
+            }
                 #form-name {
                     font-size: 1.2rem;
                 }
@@ -383,7 +427,6 @@ div {
             max-width: 100%;
             width: 100%;
             flex: 0;
-            background: none;
             font-size: larger;
         }
             .workout-title {
@@ -402,7 +445,6 @@ div {
                 padding: 0 10px 10px 10px;
                 height: fit-content;
                 align-items: center;
-                border: none;
             }
             .exercise-container {
                 width: 100%;
