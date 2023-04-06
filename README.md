@@ -1,5 +1,5 @@
 # JS Workout Tracker
-## Get jacked and stacked using this weightlifting workout tracking app to store your daily sessions database with secure login
+## Get jacked and stacked using this weightlifting workout tracking app to store your daily sessions to a database with secure login
 
 ### Features:
 - User login system
