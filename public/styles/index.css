@@ -443,6 +443,7 @@ h4 {
             width: 100%;
             flex: 0;
             font-size: larger;
+            user-select: none;
         }
             .workout-title {
                 padding: 10px 0 10px 0;
