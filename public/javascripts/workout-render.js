@@ -64,11 +64,18 @@ form.addEventListener("submit", (e) => {
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4) {
             renderWorkout(JSON.parse(this.response), false, inputDate.value)
-            $(".success").css({"display": "none"})
-            $(".success").fadeIn(500)
-            setTimeout(() => {
-                $(".success").fadeOut(5000)
-            }, 5000);
+            if ($(window).width() < $(window).height()) {
+                $(".success-mobile").css({ "display": "none" })
+                $(".success-mobile").fadeIn(500)
+                setTimeout(() => {
+                    $(".success-mobile").fadeOut(5000)
+                }, 5000)
+            } else {
+                $(".success-default").stop(true, true).fadeIn({duration: 500, queue: false}).css({ "display": "none" }).slideDown(500)
+                setTimeout(() => {
+                    $(".success-default").stop(true, true).fadeOut({duration: 2500, queue: false}).slideUp(5000)
+                }, 5000)
+            }
         }
     }
 })
@@ -603,15 +610,17 @@ const toggleVisibility = (id) => {
     $header = $(`#J${id}-name`)
     $content = $header.nextAll()
     $chevron = $header.children(".exercise-collapse")
-    if ($chevron[0].style.transform == "rotate(-90deg)") {
-        $({ deg: -90 }).animate({ deg: 0 }, {
-            duration: 500,
-            step: (now) => {
-                $chevron.css({
-                    transform: "rotate(" + now + "deg)"
-                })
-            }
-        })
+    if ($(window).width() < $(window).height()) {
+        if ($chevron[0].style.transform == "rotate(-90deg)") {
+            $({ deg: -90 }).animate({ deg: 0 }, {
+                duration: 500,
+                step: (now) => {
+                    $chevron.css({
+                        transform: "rotate(" + now + "deg)"
+                    })
+                }
+            })
+        }
     }
     $content.slideDown(500)
 }
