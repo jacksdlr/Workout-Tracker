@@ -1,3 +1,7 @@
+$(document).on("mobileinit", () => {
+    $.mobile.autoInitializePage = false
+})
+
 const xhttp = new XMLHttpRequest()
 
 const form = document.getElementById("exercise-form")
@@ -71,9 +75,9 @@ form.addEventListener("submit", (e) => {
                     $(".success-mobile").fadeOut(5000)
                 }, 5000)
             } else {
-                $(".success-default").stop(true, true).fadeIn({duration: 500, queue: false}).css({ "display": "none" }).slideDown(500)
+                $(".success-default").stop(true, true).fadeIn({ duration: 500, queue: false }).css({ "display": "none" }).slideDown(500)
                 setTimeout(() => {
-                    $(".success-default").stop(true, true).fadeOut({duration: 2500, queue: false}).slideUp(5000)
+                    $(".success-default").stop(true, true).fadeOut({ duration: 2500, queue: false }).slideUp(5000)
                 }, 5000)
             }
         }
@@ -199,6 +203,21 @@ const createExerciseContainer = (exercise) => {
             addExerciseComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value)
             deleteExercise($(`#J${exercise._id}-name`)[0].textContent, displayDate.value)
         })
+        $(".exercise-name").bind("taphold", (e) => {
+            e.preventDefault()
+            hideAllMenus()
+
+            // Position custom context menu at cursor
+            $("#exercise-menu").slideDown(200).offset({
+                top: e.pageY,
+                left: preventOutOfBounds(exerciseMenu, e.pageX)
+            })
+
+            // Custom right click menu to edit or delete exercise
+            editExerciseName($(`#J${exercise._id}-name`)[0].textContent, displayDate.value)
+            addExerciseComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value)
+            deleteExercise($(`#J${exercise._id}-name`)[0].textContent, displayDate.value)
+        })
     } else if (exerciseName.textContent != exercise.exercise_name) {
         exerciseName.textContent = exercise.exercise_name
         // For some reason the exercise name chevron disappears, so if renaming it needs to be added back, with rotation depending on if it was collapsed or not
@@ -237,6 +256,18 @@ const createExerciseContainer = (exercise) => {
                 exerciseComment.textContent = comment
                 exerciseComments.appendChild(exerciseComment)
                 exerciseComment.addEventListener("contextmenu", function contextMenu(e) {
+                    e.preventDefault()
+                    hideAllMenus()
+
+                    $("#exercise-comments-menu").slideDown(200).offset({
+                        top: e.pageY,
+                        left: preventOutOfBounds(exerciseCommentsMenu, e.pageX)
+                    })
+
+                    editExerciseComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, index, exerciseComment.textContent)
+                    deleteExerciseComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, index)
+                })
+                $(".exercise-comment").bind("taphold", (e) => {
                     e.preventDefault()
                     hideAllMenus()
 
@@ -309,6 +340,18 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
         setWeight.classList.add("set-weight")
         setWeight.textContent = set_weight
         setWeightAndCount.addEventListener("contextmenu", (e) => {
+            e.preventDefault()
+            hideAllMenus()
+
+            $("#weight-menu").slideDown(200).offset({
+                top: e.pageY,
+                left: preventOutOfBounds(weightMenu, e.pageX)
+            })
+
+            editWeight($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, setWeight.textContent)
+            deleteWeight($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id)
+        })
+        $(".set-weight-and-count").bind("taphold", (e) => {
             e.preventDefault()
             hideAllMenus()
 
@@ -393,6 +436,22 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
                 addSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index)
                 deleteReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, comments, _id, index)
             })
+            $(".set-rep").bind("taphold", (e) => {
+                e.preventDefault()
+                hideAllMenus()
+
+                $("#set-menu").slideDown(200).offset({
+                    top: e.pageY,
+                    left: preventOutOfBounds(setMenu, e.pageX)
+                })
+
+                comments = []
+                setDetails.querySelectorAll("li").forEach(item => comments.push(item.textContent))
+
+                editReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index, setRep.textContent)
+                addSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index)
+                deleteReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, comments, _id, index)
+            })
             setTimeout(() => {
                 toggleVisibility(exercise._id)
             }, 1);
@@ -415,6 +474,19 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
             supersetExerciseAndWeight = document.createElement("div")
             supersetExerciseAndWeight.classList.add("superset-exercise-and-weight")
             supersetExerciseAndWeight.addEventListener("contextmenu", (e) => {
+                e.preventDefault()
+                hideAllMenus()
+
+                $("#superset-menu").slideDown(200).offset({
+                    top: e.pageY,
+                    left: preventOutOfBounds(supersetMenu, e.pageX)
+                })
+
+                editSupersetExercise($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, supersetExercise.textContent)
+                editSupersetWeight($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, supersetWeight.textContent)
+                deleteSuperset($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id)
+            })
+            $(".superset-exercise-and-weight").bind("taphold", (e) => {
                 e.preventDefault()
                 hideAllMenus()
 
@@ -492,6 +564,17 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
 
                     editSupersetReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index, supersetRep.textContent)
                 })
+                $(".superset-rep").bind("taphold", (e) => {
+                    e.preventDefault()
+                    hideAllMenus()
+
+                    $("#superset-reps-menu").slideDown(200).offset({
+                        top: e.pageY,
+                        left: preventOutOfBounds(supersetRepsMenu, e.pageX)
+                    })
+
+                    editSupersetReps($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, index, supersetRep.textContent)
+                })
             } else if (supersetRep[index].textContent != reps) {
                 supersetRep[index].textContent = reps
             }
@@ -528,6 +611,18 @@ const populateWeightContainers = (exercise, set, weightContainer) => {
                 setComment.textContent = comment
                 setComments.appendChild(setComment)
                 setComment.addEventListener("contextmenu", (e) => {
+                    e.preventDefault()
+                    hideAllMenus()
+
+                    $("#set-comments-menu").slideDown(200).offset({
+                        top: e.pageY,
+                        left: preventOutOfBounds(setCommentsMenu, e.pageX)
+                    })
+
+                    editSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, setComment.textContent)
+                    deleteSetComment($(`#J${exercise._id}-name`)[0].textContent, displayDate.value, _id, setComment.textContent)
+                })
+                $(".set-comment").bind("taphold", (e) => {
                     e.preventDefault()
                     hideAllMenus()
 
