@@ -1,5 +1,6 @@
 $(document).on("mobileinit", () => {
     $.mobile.autoInitializePage = false
+    $.event.special.tap.tapholdThreshold = 250
 })
 
 const xhttp = new XMLHttpRequest()
